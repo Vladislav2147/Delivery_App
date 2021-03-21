@@ -17,9 +17,5 @@ public class Login {
     private int status;
     @Basic@Column(name = "email", nullable = false, length = 320)
     private String email;
-    @OneToOne(mappedBy = "loginById")
-    private Admin adminById;
-    @OneToOne(mappedBy = "loginById")
-    private Courier courierById;
 
 }

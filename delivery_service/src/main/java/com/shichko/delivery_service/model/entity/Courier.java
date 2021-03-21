@@ -18,7 +18,7 @@ public class Courier {
     private String phone;
     @OneToOne@JoinColumn(name = "id", referencedColumnName = "id", nullable = false)
     private Login loginById;
-    @OneToMany(mappedBy = "courierByCourierId")
+    @OneToMany(mappedBy = "courier")
     private Collection<Order> ordersById;
 
 }

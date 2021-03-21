@@ -16,7 +16,7 @@ public class Product {
     private double price;
     @Basic@Column(name = "weight", nullable = false, precision = 0)
     private double weight;
-    @OneToMany(mappedBy = "productByProductId")
-    private Collection<Ordered> orderedsById;
+    @OneToMany(mappedBy = "product")
+    private Collection<Ordered> ordered;
 
 }
