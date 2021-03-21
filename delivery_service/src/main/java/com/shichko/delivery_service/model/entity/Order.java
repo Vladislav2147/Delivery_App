@@ -1,6 +1,6 @@
 package com.shichko.delivery_service.model.entity;
 
-import lombok.*;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -8,7 +8,7 @@ import java.util.Collection;
 @Data
 @Entity
 public class Order {
-    @Id@Column(name = "id", nullable = false)
+    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)@Column(name = "id", nullable = false)
     private long id;
     @Basic@Column(name = "address", nullable = false, length = 255)
     private String address;

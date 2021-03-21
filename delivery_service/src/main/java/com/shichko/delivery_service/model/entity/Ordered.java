@@ -1,6 +1,6 @@
 package com.shichko.delivery_service.model.entity;
 
-import lombok.*;
+import lombok.Data;
 
 import javax.persistence.*;
 
@@ -9,7 +9,7 @@ import javax.persistence.*;
 public class Ordered {
     @Basic@Column(name = "amount", nullable = false)
     private int amount;
-    @Id@Column(name = "id", nullable = false)
+    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)@Column(name = "id", nullable = false)
     private long id;
     @ManyToOne@JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false)
     private Product product;
