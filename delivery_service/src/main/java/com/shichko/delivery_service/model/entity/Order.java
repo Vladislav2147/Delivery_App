@@ -1,32 +1,30 @@
 package com.shichko.delivery_service.model.entity;
-import com.shichko.delivery_service.model.entity.enums.OrderState;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 @Data
 @Entity
-@Table(name = "order")
-@AllArgsConstructor
-@NoArgsConstructor
 public class Order {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Id@Column(name = "id", nullable = false)
+    private long id;
+    @Basic@Column(name = "customer_id", nullable = false)
+    private long customerId;
+    @Basic@Column(name = "courier_id", nullable = true)
+    private Long courierId;
+    @Basic@Column(name = "address", nullable = false, length = 255)
     private String address;
+    @Basic@Column(name = "info", nullable = true, length = 255)
     private String info;
-    @Enumerated
-    private OrderState State;
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private Collection<Ordered> ordered;
-    @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Courier courier;
+    @Basic@Column(name = "state", nullable = false)
+    private int state;
+    @ManyToOne@JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
+    private Customer customerByCustomerId;
+    @ManyToOne@JoinColumn(name = "courier_id", referencedColumnName = "id")
+    private Courier courierByCourierId;
+    @OneToMany(mappedBy = "orderByOrderId")
+    private Collection<Ordered> orderedsById;
+
 }

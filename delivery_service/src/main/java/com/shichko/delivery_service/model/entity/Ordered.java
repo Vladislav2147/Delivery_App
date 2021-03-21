@@ -1,26 +1,23 @@
 package com.shichko.delivery_service.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "ordered")
-@AllArgsConstructor
-@NoArgsConstructor
 public class Ordered {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Basic@Column(name = "product_id", nullable = false)
+    private long productId;
+    @Basic@Column(name = "order_id", nullable = false)
+    private long orderId;
+    @Basic@Column(name = "amount", nullable = false)
     private int amount;
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
-    @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
-    private Order order;
+    @Id@Column(name = "id", nullable = false)
+    private long id;
+    @ManyToOne@JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false)
+    private Product productByProductId;
+    @ManyToOne@JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false)
+    private Order orderByOrderId;
+
 }

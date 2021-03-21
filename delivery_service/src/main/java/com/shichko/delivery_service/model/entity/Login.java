@@ -1,20 +1,25 @@
 package com.shichko.delivery_service.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "login")
-@AllArgsConstructor
-@NoArgsConstructor
 public class Login {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Id@Column(name = "id", nullable = false)
+    private long id;
+    @Basic@Column(name = "login", nullable = false, length = 64)
+    private String login;
+    @Basic@Column(name = "password", nullable = false, length = 64)
+    private String password;
+    @Basic@Column(name = "status", nullable = false)
+    private int status;
+    @Basic@Column(name = "email", nullable = false, length = 320)
+    private String email;
+    @OneToOne(mappedBy = "loginById")
+    private Admin adminById;
+    @OneToOne(mappedBy = "loginById")
+    private Courier courierById;
 
 }

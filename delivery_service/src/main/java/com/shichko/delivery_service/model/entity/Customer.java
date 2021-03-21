@@ -1,31 +1,24 @@
 package com.shichko.delivery_service.model.entity;
 
-
-import com.shichko.delivery_service.model.entity.enums.OrderState;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 @Data
 @Entity
-@Table(name = "customer")
-@AllArgsConstructor
-@NoArgsConstructor
 public class Customer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-    @Column(name = "first_name")
+    @Id@Column(name = "id", nullable = false)
+    private long id;
+    @Basic@Column(name = "first_name", nullable = false, length = 50)
     private String firstName;
-    @Column(name = "second_name")
+    @Basic@Column(name = "second_name", nullable = false, length = 50)
     private String secondName;
+    @Basic@Column(name = "email", nullable = false, length = 320)
     private String email;
+    @Basic@Column(name = "phone", nullable = false, length = 50)
     private String phone;
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private Collection<Order> orders;
+    @OneToMany(mappedBy = "customerByCustomerId")
+    private Collection<Order> ordersById;
 
 }
