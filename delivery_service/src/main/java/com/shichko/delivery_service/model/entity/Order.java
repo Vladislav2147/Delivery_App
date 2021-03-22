@@ -1,5 +1,6 @@
 package com.shichko.delivery_service.model.entity;
 
+import com.shichko.delivery_service.model.entity.enums.OrderState;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,12 +16,13 @@ public class Order {
     @Basic@Column(name = "info", nullable = true, length = 255)
     private String info;
     @Basic@Column(name = "state", nullable = false)
-    private int state;
+    @Enumerated
+    private OrderState state;
     @ManyToOne@JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
-    private Customer customer;
+    private Customer customerByCustomerId;
     @ManyToOne@JoinColumn(name = "courier_id", referencedColumnName = "id")
-    private Courier courier;
-    @OneToMany(mappedBy = "order")
-    private Collection<Ordered> ordered;
+    private User userByCourierId;
+    @OneToMany(mappedBy = "orderByOrderId")
+    private Collection<Ordered> orderedById;
 
 }

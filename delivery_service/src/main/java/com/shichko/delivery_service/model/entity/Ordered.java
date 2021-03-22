@@ -7,13 +7,13 @@ import javax.persistence.*;
 @Data
 @Entity
 public class Ordered {
-    @Basic@Column(name = "amount", nullable = false)
-    private int amount;
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)@Column(name = "id", nullable = false)
     private long id;
-    @ManyToOne@JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false)
-    private Product product;
+    @Basic@Column(name = "amount", nullable = false)
+    private int amount;
     @ManyToOne@JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false)
-    private Order order;
+    private Order orderByOrderId;
+    @ManyToOne@JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false)
+    private Product productByProductId;
 
 }

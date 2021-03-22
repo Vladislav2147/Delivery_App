@@ -16,9 +16,9 @@ public class Customer {
     private String secondName;
     @Basic@Column(name = "email", nullable = false, length = 320)
     private String email;
-    @Basic@Column(name = "phone", nullable = false, length = 50, unique = true)
+    @Basic@Column(name = "phone", nullable = false, length = 50)
     private String phone;
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customerByCustomerId")
     private Collection<Order> ordersById;
 
 }
