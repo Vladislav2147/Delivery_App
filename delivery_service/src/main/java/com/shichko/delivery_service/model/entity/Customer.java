@@ -20,5 +20,4 @@ public class Customer {
     private String phone;
     @OneToMany(mappedBy = "customerByCustomerId")
     private Collection<Order> ordersById;
-
 }

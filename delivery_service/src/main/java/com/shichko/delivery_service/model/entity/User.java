@@ -1,30 +1,68 @@
 package com.shichko.delivery_service.model.entity;
 
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Collections;
 
 @Data
-@Entity
-public class User {
+@Entity(name = "usr")
+public class User implements UserDetails {
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)@Column(name = "id", nullable = false)
     private long id;
-    @Basic@Column(name = "first_name", nullable = false, length = 50)
-    private String firstName;
-    @Basic@Column(name = "second_name", nullable = false, length = 50)
-    private String secondName;
-    @Basic@Column(name = "phone", nullable = false, length = 20)
-    private String phone;
+//    @Basic@Column(name = "first_name", length = 50)
+//    private String firstName;
+//    @Basic@Column(name = "second_name", length = 50)
+//    private String secondName;
+//    @Basic@Column(name = "phone", length = 20)
+//    private String phone;
     @Basic@Column(name = "email", nullable = false, length = 320)
     private String email;
     @Basic@Column(name = "password", nullable = false, length = 64)
     private String password;
-    @Basic@Column(name = "password_salt", nullable = false, length = 64)
-    private String passwordSalt;
+//    @Basic@Column(name = "password_salt", length = 64)
+//    private String passwordSalt;
     @OneToMany(mappedBy = "userByCourierId")
     private Collection<Order> ordersById;
-    @OneToMany(mappedBy = "userByRoleId")
-    private Collection<UserRole> userRolesById;
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    private Role role;
+//    @Basic
+//    @Column(name = "is_approved")
+//    private boolean isApproved;
+    @Transient
+    private String passwordConfirm;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singleton(role);
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

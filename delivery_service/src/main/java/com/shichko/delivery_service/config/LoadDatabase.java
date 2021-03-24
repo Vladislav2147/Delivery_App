@@ -26,9 +26,9 @@ public class LoadDatabase {
         product2.setWeight(.5);
 
         return args -> {
-            repository.deleteAll();
-            log.info("Preloading " + repository.save(product1));
-            log.info("Preloading " + repository.save(product2));
+//            repository.deleteAll();
+//            log.info("Preloading " + repository.save(product1));
+//            log.info("Preloading " + repository.save(product2));
 
         };
     }
