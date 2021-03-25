@@ -72,4 +72,11 @@ public class UserService implements UserDetailsService {
         return em.createQuery("SELECT u FROM usr u WHERE u.id > :paramId", User.class)
                 .setParameter("paramId", idMin).getResultList();
     }
+
+    public void confirmUser(Long id) {
+        userRepository.findById(id).ifPresent(user -> {
+            user.getRoles().add(roleRepository.findFirstByName("ROLE_USER"));
+            userRepository.save(user);
+        });
+    }
 }
