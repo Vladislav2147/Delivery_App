@@ -1,6 +1,5 @@
 package com.shichko.delivery_service.model.service;
 
-import com.shichko.delivery_service.model.entity.Role;
 import com.shichko.delivery_service.model.entity.User;
 import com.shichko.delivery_service.model.repository.RoleRepository;
 import com.shichko.delivery_service.model.repository.UserRepository;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,7 +54,7 @@ public class UserService implements UserDetailsService {
             return false;
         }
 
-        user.setRole(new Role(1L, "ROLE_USER"));
+        user.setRoles(Collections.singleton(roleRepository.findFirstByName("ROLE_NOT_CONFIRMED")));
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;

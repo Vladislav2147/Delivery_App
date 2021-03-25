@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.Set;
 
 @Data
 @Entity(name = "usr")
@@ -23,13 +23,14 @@ public class User implements UserDetails {
     private String email;
     @Basic@Column(name = "password", nullable = false, length = 64)
     private String password;
-//    @Basic@Column(name = "password_salt", length = 64)
-//    private String passwordSalt;
     @OneToMany(mappedBy = "userByCourierId")
     private Collection<Order> ordersById;
-    @ManyToOne
-    @JoinColumn(name = "role_id", referencedColumnName = "id")
-    private Role role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
 //    @Basic
 //    @Column(name = "is_approved")
 //    private boolean isApproved;
@@ -38,7 +39,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(role);
+        return getRoles();
     }
 
     @Override
