@@ -54,6 +54,11 @@ public class UserService implements UserDetailsService {
             return false;
         }
 
+        //TODO delete this
+        user.setFirstName("Ivan");
+        user.setSecondName("Ivanov");
+        user.setPhone("+375291234567");
+
         user.setRoles(Collections.singleton(roleRepository.findFirstByName("ROLE_NOT_CONFIRMED")));
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);

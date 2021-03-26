@@ -30,21 +30,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+        //Test
         httpSecurity
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                //Доступ только для не зарегистрированных пользователей
-                .antMatchers("/registration").not().fullyAuthenticated()
-                //Доступ только для пользователей с ролью Администратор
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/news").hasRole("USER")
-                //Доступ разрешен всем пользователей
-                .antMatchers("/", "/resources/**").permitAll()
-                //Все остальные страницы требуют аутентификации
-                .anyRequest().authenticated()
+                .antMatchers("/**").not().fullyAuthenticated()
                 .and()
-                //Настройка для входа в систему
                 .formLogin()
                 .loginPage("/login")
                 .failureHandler(new AuthenticationFailureHandler() {
@@ -68,6 +60,45 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .permitAll()
                 .logoutSuccessUrl("/");
+        //Valid config
+//        httpSecurity
+//                .csrf()
+//                .disable()
+//                .authorizeRequests()
+//                //Доступ только для не зарегистрированных пользователей
+//                .antMatchers("/registration").not().fullyAuthenticated()
+//                //Доступ только для пользователей с ролью Администратор
+//                .antMatchers("/admin/**").hasRole("ADMIN")
+//                .antMatchers("/news").hasRole("USER")
+//                //Доступ разрешен всем пользователей
+//                .antMatchers("/", "/resources/**").permitAll()
+//                //Все остальные страницы требуют аутентификации
+//                .anyRequest().authenticated()
+//                .and()
+//                //Настройка для входа в систему
+//                .formLogin()
+//                .loginPage("/login")
+//                .failureHandler(new AuthenticationFailureHandler() {
+//
+//                    @Override
+//                    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+//                                                        AuthenticationException exception) throws IOException, ServletException {
+//                        String email = request.getParameter("email");
+//                        String error = exception.getMessage();
+//                        System.out.println("A failed login attempt with email: "
+//                                + email + ". Reason: " + error);
+//
+//                        String redirectUrl = request.getContextPath() + "/login?error=true";
+//                        response.sendRedirect(redirectUrl);
+//                    }
+//                })
+//                //Перенарпавление на главную страницу после успешного входа
+//                .defaultSuccessUrl("/")
+//                .permitAll()
+//                .and()
+//                .logout()
+//                .permitAll()
+//                .logoutSuccessUrl("/");
     }
 
     @Autowired

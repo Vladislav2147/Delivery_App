@@ -1,24 +1,30 @@
 package com.shichko.delivery_service.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
 
 @Data
 @Entity(name = "usr")
-public class User implements UserDetails {
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
+public class User implements UserDetails, Serializable {
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)@Column(name = "id", nullable = false)
     private long id;
-//    @Basic@Column(name = "first_name", length = 50)
-//    private String firstName;
-//    @Basic@Column(name = "second_name", length = 50)
-//    private String secondName;
-//    @Basic@Column(name = "phone", length = 20)
-//    private String phone;
+    @Basic@Column(name = "first_name", length = 50)
+    private String firstName;
+    @Basic@Column(name = "second_name", length = 50)
+    private String secondName;
+    @Basic@Column(name = "phone", length = 20)
+    private String phone;
     @Basic@Column(name = "email", nullable = false, length = 320)
     private String email;
     @Basic@Column(name = "password", nullable = false, length = 64)
