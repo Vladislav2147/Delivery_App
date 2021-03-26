@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,6 +17,7 @@ import java.util.Set;
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
+@Transactional
 public class User implements UserDetails, Serializable {
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)@Column(name = "id", nullable = false)
     private long id;
@@ -29,7 +31,7 @@ public class User implements UserDetails, Serializable {
     private String email;
     @Basic@Column(name = "password", nullable = false, length = 64)
     private String password;
-    @OneToMany(mappedBy = "userByCourierId")
+    @OneToMany(mappedBy = "userByCourierId", fetch = FetchType.EAGER)
     private Collection<Order> ordersById;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

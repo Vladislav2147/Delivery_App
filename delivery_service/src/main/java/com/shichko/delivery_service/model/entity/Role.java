@@ -23,7 +23,7 @@ public class Role implements GrantedAuthority, Serializable {
     private String name;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     private Set<User> users;
 
     public Role(long id, String name) {
