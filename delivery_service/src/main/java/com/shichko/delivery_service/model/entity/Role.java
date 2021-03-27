@@ -11,14 +11,13 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
-public class Role implements GrantedAuthority, Serializable {
-    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)@Column(name = "id", nullable = false)
-    private long id;
+public class Role extends AbstractEntity implements GrantedAuthority, Serializable {
     @Basic@Column(name = "name", nullable = false)
     private String name;
     @ToString.Exclude
@@ -27,7 +26,7 @@ public class Role implements GrantedAuthority, Serializable {
     private Set<User> users;
 
     public Role(long id, String name) {
-        this.id = id;
+        setId(id);
         this.name = name;
     }
 

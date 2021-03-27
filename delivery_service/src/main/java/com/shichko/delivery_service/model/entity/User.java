@@ -3,6 +3,7 @@ package com.shichko.delivery_service.model.entity;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,15 +13,14 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity(name = "usr")
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
 @Transactional
-public class User implements UserDetails, Serializable {
-    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)@Column(name = "id", nullable = false)
-    private long id;
+public class User extends AbstractEntity implements UserDetails, Serializable {
     @Basic@Column(name = "first_name", length = 50)
     private String firstName;
     @Basic@Column(name = "second_name", length = 50)
@@ -39,9 +39,6 @@ public class User implements UserDetails, Serializable {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
-//    @Basic
-//    @Column(name = "is_approved")
-//    private boolean isApproved;
     @Transient
     private String passwordConfirm;
 
