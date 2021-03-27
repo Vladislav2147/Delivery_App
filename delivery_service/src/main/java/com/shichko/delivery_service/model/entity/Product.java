@@ -1,7 +1,5 @@
 package com.shichko.delivery_service.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,9 +13,6 @@ import java.util.Collection;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 public class Product extends AbstractEntity implements Serializable {
     @Basic@Column(name = "name", nullable = false, length = 50)
     private String name;

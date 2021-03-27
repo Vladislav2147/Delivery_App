@@ -1,7 +1,5 @@
 package com.shichko.delivery_service.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,9 +14,6 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity(name = "usr")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 @Transactional
 public class User extends AbstractEntity implements UserDetails, Serializable {
     @Basic@Column(name = "first_name", length = 50)
