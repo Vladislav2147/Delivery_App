@@ -1,6 +1,7 @@
 package com.shichko.delivery_service.controller;
 
-import com.shichko.delivery_service.model.entity.User;
+import com.shichko.delivery_service.controller.mapper.UserMapper;
+import com.shichko.delivery_service.model.dto.UserDto;
 import com.shichko.delivery_service.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -14,9 +15,12 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserMapper mapper;
+
     @GetMapping
-    public List<User> userList(Model model) {
-        return userService.allUsers();
+    public List<UserDto> userList() {
+        return mapper.entitiesToDtos(userService.allUsers());
     }
 
     @PostMapping

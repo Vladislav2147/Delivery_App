@@ -3,6 +3,7 @@ package com.shichko.delivery_service.model.dto;
 import lombok.Data;
 
 import java.util.Collection;
+import java.util.Set;
 
 @Data
 public class UserDto extends AbstractDto {
@@ -13,5 +14,5 @@ public class UserDto extends AbstractDto {
     private String password;
     private String confirmPassword;
     private Collection<Long> ordersId;
-    private Collection<String> roles;
+    private Set<Long> roles;
 }
