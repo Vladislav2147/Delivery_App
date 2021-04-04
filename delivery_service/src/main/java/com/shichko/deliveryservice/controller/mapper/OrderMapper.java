@@ -26,10 +26,10 @@ public interface OrderMapper extends CommonMapper<Order, OrderDto> {
     }
 
     @Named("idToOrdered")
-    default Order idToOrdered(long id) {
-        Order order = new Order();
-        order.setId(id);
-        return order;
+    default Ordered idToOrdered(long id) {
+        Ordered ordered = new Ordered();
+        ordered.setId(id);
+        return ordered;
     }
 
     @Named("customerToId")

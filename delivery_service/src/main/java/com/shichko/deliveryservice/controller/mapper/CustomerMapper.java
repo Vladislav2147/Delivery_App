@@ -14,12 +14,12 @@ public interface CustomerMapper extends CommonMapper<Customer, CustomerDto> {
     @Mapping(target = "ordersId", source = "ordersById", qualifiedByName = "ordersToId")
     CustomerDto entityToDto(Customer entity);
 
-    @Named("orderedToId")
+    @Named("ordersToId")
     default long ordersToId(Order order) {
         return order.getId();
     }
 
-    @Named("idToOrdered")
+    @Named("idToOrders")
     default Order idToOrders(long id) {
         Order order = new Order();
         order.setId(id);
