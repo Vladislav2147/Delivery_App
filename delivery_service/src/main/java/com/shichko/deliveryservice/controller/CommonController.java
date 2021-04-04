@@ -1,5 +1,7 @@
 package com.shichko.deliveryservice.controller;
 
+import com.shichko.deliveryservice.controller.mapper.CommonMapper;
+import com.shichko.deliveryservice.model.dto.AbstractDto;
 import com.shichko.deliveryservice.model.entity.AbstractEntity;
 import com.shichko.deliveryservice.model.repository.CommonRepository;
 import com.shichko.deliveryservice.model.service.CrudService;
@@ -9,37 +11,40 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-public class CommonController<E extends AbstractEntity, R extends CommonRepository<E>, S extends CrudService<E, R>> {
+public class CommonController<E extends AbstractEntity, D extends AbstractDto, R extends CommonRepository<E>, S extends CrudService<E, R>, M extends CommonMapper<E, D>> {
     protected final S service;
+    protected final M mapper;
 
     @Autowired
-    public CommonController(S service) {
+    public CommonController(S service, M mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
     @GetMapping
-    public List<E> getAll() {
-        return service.getAll();
+    public List<D> getAll() {
+        return mapper.entitiesToDtos(service.getAll());
     }
 
     @GetMapping("/{id}")
-    public Optional<E> getById(@PathVariable("id") Long id) {
-        return service.findById(id);
+    public Optional<D> getById(@PathVariable("id") Long id) {
+        Optional<E> entity = service.findById(id);
+        return entity.map(mapper::entityToDto);
     }
 
     @PostMapping
-    public void save(E entity) {
-        service.add(entity);
+    public void save(D dto) {
+        service.add(mapper.dtoToEntity(dto));
     }
 
     @PutMapping
-    public void update(E newEntity, E entityFromDb) {
-        service.update(newEntity, entityFromDb);
+    public void update(D dto) {
+        service.update(mapper.dtoToEntity(dto), dto.getId());
     }
 
     @DeleteMapping
-    public void delete(E entity) {
-        service.delete(entity);
+    public void delete(long id) {
+        service.deleteById(id);
     }
 
 }

@@ -20,13 +20,15 @@ public abstract class CrudService<E extends AbstractEntity, R extends CommonRepo
         repository.save(entity);
     }
 
-    public void update(E newEntity, E entityFromDb) {
-        BeanUtils.copyProperties(newEntity, entityFromDb, "id");
-        repository.save(entityFromDb);
+    public void update(E newEntity, long id) {
+        repository.findById(id).ifPresent(entityFromDb -> {
+            BeanUtils.copyProperties(newEntity, entityFromDb, "id");
+            repository.save(entityFromDb);
+        });
     }
 
-    public void delete(E entity) {
-        repository.delete(entity);
+    public void deleteById(long id) {
+        repository.deleteById(id);
     }
 
     public List<E> getAll() {
