@@ -16,11 +16,11 @@ import java.util.Collection;
 public class Product extends AbstractEntity implements Serializable {
     @Basic@Column(name = "name", nullable = false, length = 50)
     private String name;
-    @Basic@Column(name = "price", nullable = false, precision = 0)
+    @Basic@Column(name = "price", nullable = false)
     private double price;
-    @Basic@Column(name = "weight", nullable = false, precision = 0)
+    @Basic@Column(name = "weight", nullable = false)
     private double weight;
-    @OneToMany(mappedBy = "productByProductId")
-    private Collection<Ordered> orderedById;
+    @OneToMany(mappedBy = "product")
+    private Collection<Ordered> ordereds;
 
 }

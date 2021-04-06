@@ -22,6 +22,6 @@ public class Customer extends AbstractEntity implements Serializable {
     private String email;
     @Basic@Column(name = "phone", nullable = false, length = 50)
     private String phone;
-    @OneToMany(mappedBy = "customerByCustomerId")
-    private Collection<Order> ordersById;
+    @OneToMany(mappedBy = "customer")
+    private Collection<Order> orders;
 }

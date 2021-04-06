@@ -6,5 +6,5 @@ import lombok.Data;
 public class OrderedDto extends AbstractDto {
     private int amount;
     private long orderId;
-    private long productId;
+    private ProductDto product;
 }

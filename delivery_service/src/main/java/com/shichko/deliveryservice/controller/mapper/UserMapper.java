@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface UserMapper extends CommonMapper<User, UserDto> {
 
-    @Mapping(source = "ordersById", target = "ordersId", qualifiedByName = "orderToOrderId")
+    @Mapping(source = "orders", target = "ordersId", qualifiedByName = "orderToOrderId")
     @Mapping(source = "roles", target = "roles", qualifiedByName = "roleToId")
     UserDto entityToDto(User entity);
 
-    @Mapping(source = "ordersId", target = "ordersById", qualifiedByName = "orderIdToOrder")
+    @Mapping(source = "ordersId", target = "orders", qualifiedByName = "orderIdToOrder")
     @Mapping(source = "roles", target = "roles", qualifiedByName = "idToRole")
     User dtoToEntity(UserDto dto);
 

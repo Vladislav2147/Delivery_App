@@ -9,9 +9,9 @@ import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper extends CommonMapper<Product, ProductDto> {
-    @Mapping(target = "orderedById", source = "orderedIds", qualifiedByName = "idToOrdered")
+    @Mapping(target = "ordereds", source = "orderedIds", qualifiedByName = "idToOrdered")
     Product dtoToEntity(ProductDto dto);
-    @Mapping(target = "orderedIds", source = "orderedById", qualifiedByName = "orderedToId")
+    @Mapping(target = "orderedIds", source = "ordereds", qualifiedByName = "orderedToId")
     ProductDto entityToDto(Product entity);
 
     @Named("orderedToId")

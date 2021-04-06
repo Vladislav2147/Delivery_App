@@ -15,6 +15,7 @@ public class CommonController<E extends AbstractEntity, D extends AbstractDto, R
     protected final S service;
     protected final M mapper;
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     public CommonController(S service, M mapper) {
         this.service = service;
@@ -33,17 +34,17 @@ public class CommonController<E extends AbstractEntity, D extends AbstractDto, R
     }
 
     @PostMapping
-    public void save(D dto) {
+    public void save(@RequestBody D dto) {
         service.add(mapper.dtoToEntity(dto));
     }
 
     @PutMapping
-    public void update(D dto) {
+    public void update(@RequestBody D dto) {
         service.update(mapper.dtoToEntity(dto), dto.getId());
     }
 
-    @DeleteMapping
-    public void delete(long id) {
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable long id) {
         service.deleteById(id);
     }
 

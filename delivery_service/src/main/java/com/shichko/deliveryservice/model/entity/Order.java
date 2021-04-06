@@ -20,10 +20,10 @@ public class Order extends AbstractEntity implements Serializable {
     @Enumerated
     private OrderState state;
     @ManyToOne@JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
-    private Customer customerByCustomerId;
+    private Customer customer;
     @ManyToOne@JoinColumn(name = "courier_id", referencedColumnName = "id")
-    private User userByCourierId;
-    @OneToMany(mappedBy = "orderByOrderId")
-    private Collection<Ordered> orderedById;
+    private User courier;
+    @OneToMany(mappedBy = "order")
+    private Collection<Ordered> ordered;
 
 }
