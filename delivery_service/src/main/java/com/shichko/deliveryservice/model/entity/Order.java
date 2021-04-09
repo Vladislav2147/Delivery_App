@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Collection;
 
 @EqualsAndHashCode(callSuper = true)
@@ -17,7 +18,7 @@ public class Order extends AbstractEntity implements Serializable {
     @Basic@Column(name = "info", nullable = true, length = 255)
     private String info;
     @Basic@Column(name = "state", nullable = false)
-    @Enumerated
+    @Enumerated(value = EnumType.STRING)
     private OrderState state;
     @ManyToOne@JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
     private Customer customer;
@@ -25,5 +26,9 @@ public class Order extends AbstractEntity implements Serializable {
     private User courier;
     @OneToMany(mappedBy = "order")
     private Collection<Ordered> ordered;
+    @Basic@Column(name = "ordered_at")
+    private Timestamp orderedAt;
+    @Basic@Column(name = "delivered_at")
+    private Timestamp deliveredAt;
 
 }

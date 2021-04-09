@@ -11,6 +11,7 @@ import java.util.Optional;
 public abstract class CrudService<E extends AbstractEntity, R extends CommonRepository<E>> {
     protected final R repository;
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     public CrudService(R repository) {
         this.repository = repository;
