@@ -14,5 +14,5 @@ public class UserDto extends AbstractDto {
     private String password;
     private String confirmPassword;
     private Collection<Long> ordersId;
-    private Set<Long> roles;
+    private Set<RoleDto> roles;
 }

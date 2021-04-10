@@ -26,9 +26,9 @@ public class User extends AbstractEntity implements UserDetails, Serializable {
     private String email;
     @Basic@Column(name = "password", nullable = false, length = 64)
     private String password;
-    @OneToMany(mappedBy = "courier", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "courier", fetch = FetchType.LAZY)
     private Collection<Order> orders;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),

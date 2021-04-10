@@ -3,7 +3,6 @@ package com.shichko.deliveryservice.controller.mapper;
 import com.shichko.deliveryservice.model.dto.UserDto;
 import com.shichko.deliveryservice.model.entity.AbstractEntity;
 import com.shichko.deliveryservice.model.entity.Order;
-import com.shichko.deliveryservice.model.entity.Role;
 import com.shichko.deliveryservice.model.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,11 +15,9 @@ import java.util.stream.Collectors;
 public interface UserMapper extends CommonMapper<User, UserDto> {
 
     @Mapping(source = "orders", target = "ordersId", qualifiedByName = "orderToOrderId")
-    @Mapping(source = "roles", target = "roles", qualifiedByName = "roleToId")
     UserDto entityToDto(User entity);
 
     @Mapping(source = "ordersId", target = "orders", qualifiedByName = "orderIdToOrder")
-    @Mapping(source = "roles", target = "roles", qualifiedByName = "idToRole")
     User dtoToEntity(UserDto dto);
 
     @Named("orderToOrderId")
@@ -32,17 +29,5 @@ public interface UserMapper extends CommonMapper<User, UserDto> {
         Order order = new Order();
         order.setId(id);
         return order;
-    }
-
-    @Named("roleToId")
-    default long roleToId(Role role) {
-        return role.getId();
-    }
-
-    @Named("idToRole")
-    default Role idToRole(long id) {
-        Role role = new Role();
-        role.setId(id);
-        return role;
     }
 }
