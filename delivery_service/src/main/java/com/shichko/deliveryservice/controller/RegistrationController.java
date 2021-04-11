@@ -1,44 +1,31 @@
 package com.shichko.deliveryservice.controller;
 
-import com.shichko.deliveryservice.model.entity.User;
+import com.shichko.deliveryservice.exception.DeliveryServiceException;
+import com.shichko.deliveryservice.model.dto.UserDto;
 import com.shichko.deliveryservice.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 
-@Controller
+@RestController
 public class RegistrationController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping("/registration")
-    public String registration(Model model) {
-        model.addAttribute("userForm", new User());
-
-        return "registration";
-    }
-
     @PostMapping("/registration")
-    public String addUser(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
-
-        if (bindingResult.hasErrors()) {
-            return "registration";
+    public void addUser(@RequestBody UserDto userDto, HttpServletResponse response) throws IOException {
+        try {
+            userService.saveUser(userDto);
+            response.setStatus(HttpStatus.CREATED.value());
+        } catch (DeliveryServiceException e) {
+            response.sendError(HttpStatus.FORBIDDEN.value(), e.getMessage());
         }
-        if (!userForm.getPassword().equals(userForm.getPasswordConfirm())){
-            model.addAttribute("passwordError", "Пароли не совпадают");
-            return "registration";
-        }
-        if (!userService.saveUser(userForm)){
-            model.addAttribute("usernameError", "Пользователь с таким именем уже существует");
-            return "registration";
-        }
-
-        return "redirect:/";
     }
 }

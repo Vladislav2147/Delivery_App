@@ -1,5 +1,8 @@
 package com.shichko.deliveryservice.model.service;
 
+import com.shichko.deliveryservice.controller.mapper.UserMapper;
+import com.shichko.deliveryservice.exception.DeliveryServiceException;
+import com.shichko.deliveryservice.model.dto.UserDto;
 import com.shichko.deliveryservice.model.entity.User;
 import com.shichko.deliveryservice.model.repository.RoleRepository;
 import com.shichko.deliveryservice.model.repository.UserRepository;
@@ -26,6 +29,8 @@ public class UserService implements UserDetailsService {
     RoleRepository roleRepository;
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    UserMapper mapper;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -47,11 +52,16 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public boolean saveUser(User user) {
+    public void saveUser(UserDto userDto) throws DeliveryServiceException {
+        if (!userDto.getPassword().equals(userDto.getConfirmPassword())) {
+            throw new DeliveryServiceException("Passwords not equals");
+        }
+
+        User user = mapper.dtoToEntity(userDto);
         User userFromDB = userRepository.findByEmail(user.getUsername());
 
         if (userFromDB != null) {
-            return false;
+            throw new DeliveryServiceException("User already exists");
         }
 
         //TODO delete this
@@ -59,10 +69,9 @@ public class UserService implements UserDetailsService {
         user.setSecondName("Ivanov");
         user.setPhone("+375291234567");
 
-        user.setRoles(Collections.singleton(roleRepository.findFirstByName("ROLE_NOT_CONFIRMED")));
+        user.setRoles(Collections.singleton(roleRepository.findFirstByName("ROLE_BASIC")));
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        return true;
     }
 
     public boolean deleteUser(Long userId) {
@@ -80,7 +89,7 @@ public class UserService implements UserDetailsService {
 
     public void confirmUser(Long id) {
         userRepository.findById(id).ifPresent(user -> {
-            user.getRoles().add(roleRepository.findFirstByName("ROLE_USER"));
+            user.getRoles().add(roleRepository.findFirstByName("ROLE_COURIER"));
             userRepository.save(user);
         });
     }

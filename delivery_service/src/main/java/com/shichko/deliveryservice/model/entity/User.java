@@ -34,8 +34,6 @@ public class User extends AbstractEntity implements UserDetails, Serializable {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
-    @Transient
-    private String passwordConfirm;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
