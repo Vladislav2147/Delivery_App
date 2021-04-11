@@ -4,8 +4,10 @@ import com.shichko.deliveryservice.controller.mapper.UserMapper;
 import com.shichko.deliveryservice.model.dto.UserDto;
 import com.shichko.deliveryservice.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -23,25 +25,12 @@ public class AdminController {
         return mapper.entitiesToDtos(userService.allUsers());
     }
 
-    @PostMapping
-    public String deleteUser(@RequestParam(required = true, defaultValue = "" ) Long userId,
-                              @RequestParam(required = true, defaultValue = "" ) String action,
-                              Model model) {
-        if (action.equals("delete")){
-            userService.deleteUser(userId);
-        }
-        return "redirect:/admin";
-    }
-
-    @GetMapping("/gt/{userId}")
-    public String  gtUser(@PathVariable("userId") Long userId, Model model) {
-        model.addAttribute("allUsers", userService.usergtList(userId));
-        return "admin";
-    }
-
     @GetMapping("/grant/{userId}")
-    public String confirmUser(@PathVariable("userId") Long userId) {
+    public void confirmUser(@PathVariable("userId") Long userId) {
         userService.confirmUser(userId);
-        return "admin";
+    }
+    @GetMapping("/revoke/{userId}")
+    public void revokeUser(@PathVariable("userId") Long userId) {
+        userService.revokeUser(userId);
     }
 }

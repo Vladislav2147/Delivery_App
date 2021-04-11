@@ -20,11 +20,12 @@ public class Order extends AbstractEntity implements Serializable {
     @Basic@Column(name = "state", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private OrderState state;
-    @ManyToOne@JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
     private Customer customer;
     @ManyToOne@JoinColumn(name = "courier_id", referencedColumnName = "id")
     private User courier;
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST)
     private Collection<Ordered> ordered;
     @Basic@Column(name = "ordered_at")
     private Timestamp orderedAt;

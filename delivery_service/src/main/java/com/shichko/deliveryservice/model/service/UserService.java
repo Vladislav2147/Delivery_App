@@ -43,6 +43,7 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+
     public User findUserById(Long userId) {
         Optional<User> userFromDb = userRepository.findById(userId);
         return userFromDb.orElse(new User());
@@ -74,22 +75,15 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public boolean deleteUser(Long userId) {
-        if (userRepository.findById(userId).isPresent()) {
-            userRepository.deleteById(userId);
-            return true;
-        }
-        return false;
-    }
-
-    public List<User> usergtList(Long idMin) {
-        return em.createQuery("SELECT u FROM usr u WHERE u.id > :paramId", User.class)
-                .setParameter("paramId", idMin).getResultList();
-    }
-
     public void confirmUser(Long id) {
         userRepository.findById(id).ifPresent(user -> {
             user.getRoles().add(roleRepository.findFirstByName("ROLE_COURIER"));
+            userRepository.save(user);
+        });
+    }
+    public void revokeUser(Long id) {
+        userRepository.findById(id).ifPresent(user -> {
+            user.getRoles().remove(roleRepository.findFirstByName("ROLE_COURIER"));
             userRepository.save(user);
         });
     }

@@ -1,8 +1,3 @@
-TODO test Product -- DONE
-TODO test Admin --
-TODO test User
-TODO test Customer
-TODO test Order
-TODO test Profile
-TODO test Registration
+Заказ постить к существующим продуктам с новым юзером (возможно запилить проверку, мол если существует),
+идеальный пост в постмане
 TODO validation
