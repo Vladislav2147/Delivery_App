@@ -17,7 +17,7 @@ public class Role extends AbstractEntity implements GrantedAuthority, Serializab
     private String name;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     private Set<User> users;
 
     public Role(long id, String name) {
