@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 
 
@@ -20,7 +21,7 @@ public class RegistrationController {
     private UserService userService;
 
     @PostMapping("/registration")
-    public void addUser(@RequestBody UserDto userDto, HttpServletResponse response) throws IOException {
+    public void addUser(@RequestBody @Valid UserDto userDto, HttpServletResponse response) throws IOException {
         try {
             userService.saveUser(userDto);
             response.setStatus(HttpStatus.CREATED.value());

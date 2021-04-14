@@ -8,6 +8,7 @@ import com.shichko.deliveryservice.model.service.CrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,12 +35,12 @@ public class CommonController<E extends AbstractEntity, D extends AbstractDto, R
     }
 
     @PostMapping
-    public void save(@RequestBody D dto) {
+    public void save(@RequestBody @Valid D dto) {
         service.add(mapper.dtoToEntity(dto));
     }
 
     @PutMapping
-    public void update(@RequestBody D dto) {
+    public void update(@RequestBody @Valid D dto) {
         service.update(mapper.dtoToEntity(dto), dto.getId());
     }
 
