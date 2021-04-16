@@ -1,6 +1,7 @@
 package by.bstu.vs.stpms.courier_application.ui.login.auth
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import by.bstu.vs.stpms.courier_application.R
+import by.bstu.vs.stpms.courier_application.model.retrofit.NetworkService
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class AuthFragment : Fragment() {
 
@@ -26,6 +32,7 @@ class AuthFragment : Fragment() {
     authViewModel.text.observe(viewLifecycleOwner, Observer {
       textView.text = it
     })
+
     return root
   }
 }

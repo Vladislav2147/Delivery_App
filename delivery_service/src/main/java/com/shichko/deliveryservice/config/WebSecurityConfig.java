@@ -9,13 +9,21 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
@@ -81,6 +89,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //Настройка для входа в систему
                 .formLogin()
                 .loginPage("/login")
+                .successHandler((request, response, exception) -> {
+                    response.setStatus(HttpStatus.OK.value());
+                    response.setHeader("Content-Type", "application/json");
+                    UserDetails details = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                    PrintWriter pw = response.getWriter();
+                    pw.write(
+                            details
+                                    .getAuthorities()
+                                    .stream()
+                                    .map(auth -> "\"" + auth.getAuthority() + "\"")
+                                    .collect(Collectors.joining(",", "[", "]"))
+                    );
+                })
                 .failureHandler((request, response, exception) -> response.setStatus(HttpStatus.UNAUTHORIZED.value()))
                 .and()
                 .exceptionHandling().authenticationEntryPoint(new Http401UnauthorizedEntryPoint())
