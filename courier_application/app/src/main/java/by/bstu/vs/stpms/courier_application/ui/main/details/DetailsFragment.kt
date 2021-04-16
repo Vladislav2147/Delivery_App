@@ -1,4 +1,4 @@
-package by.bstu.vs.stpms.courier_application.ui.main.notifications
+package by.bstu.vs.stpms.courier_application.ui.main.details
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import by.bstu.vs.stpms.courier_application.R
 
-class NotificationsFragment : Fragment() {
+class DetailsFragment : Fragment() {
 
-    private lateinit var notificationsViewModel: NotificationsViewModel
+    private lateinit var detailsViewModel: DetailsViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        notificationsViewModel =
-                ViewModelProvider(this).get(NotificationsViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_notifications, container, false)
+        detailsViewModel =
+                ViewModelProvider(this).get(DetailsViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_details, container, false)
         val textView: TextView = root.findViewById(R.id.text_notifications)
-        notificationsViewModel.text.observe(viewLifecycleOwner, Observer {
+        detailsViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root

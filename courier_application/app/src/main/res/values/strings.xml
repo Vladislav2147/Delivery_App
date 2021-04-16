@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">courier_application</string>
-    <string name="title_order">Order</string>
+    <string name="title_order">Orders</string>
     <string name="title_profile">Profile</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_details">Details</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
