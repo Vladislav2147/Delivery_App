@@ -1,4 +1,4 @@
-package by.bstu.vs.stpms.lr13.retrofit.event
+package by.bstu.vs.stpms.courier_application.model.retrofit.event
 
 enum class Status {
     SUCCESS,

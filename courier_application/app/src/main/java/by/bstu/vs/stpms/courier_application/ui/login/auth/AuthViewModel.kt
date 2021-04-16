@@ -1,36 +1,48 @@
 package by.bstu.vs.stpms.courier_application.ui.login.auth
 
-import androidx.lifecycle.LiveData
+import androidx.databinding.BaseObservable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import by.bstu.vs.stpms.courier_application.model.entity.User
+import by.bstu.vs.stpms.courier_application.model.exception.CourierNetworkException
 import by.bstu.vs.stpms.courier_application.model.retrofit.NetworkService
+import by.bstu.vs.stpms.courier_application.model.retrofit.event.Event
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class AuthViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is login Fragment"
-    }
-    val text: LiveData<String> = _text
+    val userLiveData = MutableLiveData<Event<User>>()
+    var loginLiveData = MutableLiveData<String>()
+    var passwordLiveData = MutableLiveData<String>()
 
-    fun login(email: String, password: String, onSuccess: () -> Unit, onError: (String) -> Unit) {
-        NetworkService.loginService().login(email, password).enqueue(object :
-            Callback<List<String>> {
-            override fun onResponse(call: Call<List<String>>, response: Response<List<String>>) {
-                response.body()?.let {
-                    if (it.contains("ROLE_ADMIN")) {
-
+    fun login() {
+        userLiveData.postValue(Event.loading())
+        NetworkService.loginService().login(loginLiveData.value, passwordLiveData.value).enqueue(object :
+            Callback<User> {
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+                try {
+                    when(response.code()) {
+                        200 -> {
+                            val dto: User = response.body()!!
+                            userLiveData.postValue(Event.success(dto))
+                        }
+                        401 -> {
+                            throw CourierNetworkException("Invalid Credentials")
+                        }
+                        else -> {
+                            throw CourierNetworkException("Network Troubles")
+                        }
                     }
+                } catch (e: CourierNetworkException) {
+                    userLiveData.postValue(Event.error(e))
                 }
-
             }
 
-            override fun onFailure(call: Call<List<String>>, t: Throwable) {
-                print(t.message)
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                userLiveData.postValue(Event.error(t))
             }
-
 
         })
     }

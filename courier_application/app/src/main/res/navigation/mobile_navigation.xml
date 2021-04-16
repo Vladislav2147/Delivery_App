@@ -9,7 +9,11 @@
         android:id="@+id/navigation_order"
         android:name="by.bstu.vs.stpms.courier_application.ui.main.order.OrderFragment"
         android:label="@string/title_order"
-        tools:layout="@layout/fragment_order" />
+        tools:layout="@layout/fragment_order" >
+        <argument
+            android:name="currentUserId"
+            app:argType="long" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
@@ -26,7 +30,15 @@
         android:id="@+id/navigation_auth"
         android:name="by.bstu.vs.stpms.courier_application.ui.login.auth.AuthFragment"
         android:label="fragment_auth"
-        tools:layout="@layout/fragment_auth" />
+        tools:layout="@layout/fragment_auth" >
+        <action
+            android:id="@+id/action_navigation_auth_to_navigation_order"
+            app:destination="@id/navigation_order"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_registration"
         android:name="by.bstu.vs.stpms.courier_application.ui.login.registration.RegistrationFragment"

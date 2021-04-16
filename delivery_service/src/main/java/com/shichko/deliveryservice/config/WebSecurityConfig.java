@@ -1,5 +1,9 @@
 package com.shichko.deliveryservice.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.shichko.deliveryservice.controller.mapper.UserMapper;
+import com.shichko.deliveryservice.model.dto.UserDto;
+import com.shichko.deliveryservice.model.entity.User;
 import com.shichko.deliveryservice.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -30,6 +34,8 @@ import java.util.stream.Collectors;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserService userService;
+    @Autowired
+    UserMapper userMapper;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -38,6 +44,44 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+        //Valid config
+        httpSecurity
+                .csrf()
+                .disable()
+                .cors()
+                .disable()
+                .authorizeRequests()
+                //Доступ только для не зарегистрированных пользователей
+                .antMatchers("/registration").not().fullyAuthenticated()
+                .antMatchers("/profile").hasRole("BASIC")
+                //Доступ только для пользователей с ролью Администратор
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/order/**").hasRole("COURIER")
+                //Доступ разрешен всем пользователей
+                .antMatchers("/", "/login", "/resources/**").permitAll()
+                //Все остальные страницы требуют аутентификации
+                .anyRequest().hasRole("ADMIN")
+                .and()
+                //Настройка для входа в систему
+                .formLogin()
+                .loginPage("/login")
+                .successHandler((request, response, exception) -> {
+                    response.setStatus(HttpStatus.OK.value());
+                    response.setHeader("Content-Type", "application/json");
+                    UserDetails details = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                    UserDto authorizedUser = userMapper.entityToDto((User) userService.loadUserByUsername(details.getUsername()));
+                    PrintWriter pw = response.getWriter();
+                    ObjectMapper om = new ObjectMapper();
+                    String json = om.writeValueAsString(authorizedUser);
+                    pw.print(json);
+                })
+                .failureHandler((request, response, exception) -> response.setStatus(HttpStatus.UNAUTHORIZED.value()))
+                .and()
+                .exceptionHandling().authenticationEntryPoint(new Http401UnauthorizedEntryPoint())
+                .and()
+                .logout()
+                .permitAll()
+                .logoutSuccessUrl("/");
         //Test
 //        httpSecurity
 //                .csrf()
@@ -68,47 +112,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .logout()
 //                .permitAll()
 //                .logoutSuccessUrl("/");
-        //Valid config
-        httpSecurity
-                .csrf()
-                .disable()
-                .cors()
-                .disable()
-                .authorizeRequests()
-                //Доступ только для не зарегистрированных пользователей
-                .antMatchers("/registration").not().fullyAuthenticated()
-                .antMatchers("/profile").hasRole("BASIC")
-                //Доступ только для пользователей с ролью Администратор
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/order/**").hasRole("COURIER")
-                //Доступ разрешен всем пользователей
-                .antMatchers("/", "/login", "/resources/**").permitAll()
-                //Все остальные страницы требуют аутентификации
-                .anyRequest().hasRole("ADMIN")
-                .and()
-                //Настройка для входа в систему
-                .formLogin()
-                .loginPage("/login")
-                .successHandler((request, response, exception) -> {
-                    response.setStatus(HttpStatus.OK.value());
-                    response.setHeader("Content-Type", "application/json");
-                    UserDetails details = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-                    PrintWriter pw = response.getWriter();
-                    pw.write(
-                            details
-                                    .getAuthorities()
-                                    .stream()
-                                    .map(auth -> "\"" + auth.getAuthority() + "\"")
-                                    .collect(Collectors.joining(",", "[", "]"))
-                    );
-                })
-                .failureHandler((request, response, exception) -> response.setStatus(HttpStatus.UNAUTHORIZED.value()))
-                .and()
-                .exceptionHandling().authenticationEntryPoint(new Http401UnauthorizedEntryPoint())
-                .and()
-                .logout()
-                .permitAll()
-                .logoutSuccessUrl("/");
+
     }
 
     @Autowired
