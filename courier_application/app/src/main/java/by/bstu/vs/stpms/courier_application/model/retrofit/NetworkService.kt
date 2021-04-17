@@ -2,7 +2,6 @@ package by.bstu.vs.stpms.courier_application.model.retrofit
 
 import android.content.Context
 import by.bstu.vs.stpms.courier_application.model.retrofit.cookie.AddCookiesInterceptor
-import by.bstu.vs.stpms.courier_application.model.retrofit.cookie.CourierCookie
 import by.bstu.vs.stpms.courier_application.model.retrofit.cookie.ReceivedCookiesInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -12,10 +11,10 @@ import com.google.gson.GsonBuilder
 
 import com.google.gson.Gson
 
-class NetworkService(private val context: Context) {
+object NetworkService {
 
     private val BASE_URL = "http://10.0.2.2:8080/"
-
+    lateinit var context: Context
 
     private val loggingInterceptor = run {
         val httpLoggingInterceptor = HttpLoggingInterceptor()
@@ -24,20 +23,22 @@ class NetworkService(private val context: Context) {
         }
     }
 
-    private val client: OkHttpClient = OkHttpClient
+    private val client = lazy {
+        OkHttpClient
             .Builder()
             .addInterceptor(AddCookiesInterceptor(context))
             .addInterceptor(ReceivedCookiesInterceptor(context))
             .addInterceptor(loggingInterceptor)
             .addNetworkInterceptor { chain ->
                 chain.proceed(
-                        chain.request()
-                                .newBuilder()
-                                .header("User-Agent", "mobile")
-                                .build()
+                    chain.request()
+                        .newBuilder()
+                        .header("User-Agent", "mobile")
+                        .build()
                 )
             }
             .build()
+    }
 
     private val gson: Gson = GsonBuilder()
             .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
@@ -47,7 +48,7 @@ class NetworkService(private val context: Context) {
         return Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
+                .client(client.value)
                 .build()
                 .create(UserService::class.java)
     }

@@ -1,4 +1,4 @@
-package by.bstu.vs.stpms.courier_application.ui.login.registration
+package by.bstu.vs.stpms.courier_application.ui.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

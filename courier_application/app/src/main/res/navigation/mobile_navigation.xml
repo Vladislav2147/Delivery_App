@@ -28,7 +28,7 @@
         tools:layout="@layout/fragment_details" />
     <fragment
         android:id="@+id/navigation_auth"
-        android:name="by.bstu.vs.stpms.courier_application.ui.login.auth.AuthFragment"
+        android:name="by.bstu.vs.stpms.courier_application.ui.login.AuthFragment"
         android:label="fragment_auth"
         tools:layout="@layout/fragment_auth" >
         <action
@@ -43,12 +43,23 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_registration"
-        android:name="by.bstu.vs.stpms.courier_application.ui.login.registration.RegistrationFragment"
+        android:name="by.bstu.vs.stpms.courier_application.ui.login.RegistrationFragment"
         android:label="fragment_registration"
         tools:layout="@layout/fragment_registration" />
     <fragment
         android:id="@+id/navigation_splash"
         android:name="by.bstu.vs.stpms.courier_application.ui.login.SplashFragment"
         android:label="@string/fragment_splash"
-        tools:layout="@layout/fragment_spash" />
+        tools:layout="@layout/fragment_spash" >
+        <action
+            android:id="@+id/action_navigation_splash_to_navigation_auth"
+            app:destination="@id/navigation_auth"
+            app:popUpTo="@id/navigation_splash"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_navigation_splash_to_navigation_order"
+            app:destination="@id/navigation_order"
+            app:popUpTo="@id/navigation_splash"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

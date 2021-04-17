@@ -5,12 +5,12 @@
     <data>
         <variable
             name="vm"
-            type="by.bstu.vs.stpms.courier_application.ui.login.auth.AuthViewModel" />
+            type="by.bstu.vs.stpms.courier_application.ui.login.AuthViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.login.auth.AuthFragment" >
+        tools:context=".ui.login.AuthFragment" >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
