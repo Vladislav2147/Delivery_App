@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -22,9 +22,9 @@ class AuthFragment : Fragment() {
   private lateinit var navController: NavController
 
   override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
+          inflater: LayoutInflater,
+          container: ViewGroup?,
+          savedInstanceState: Bundle?
   ): View? {
     authViewModel =
             ViewModelProvider(this).get(AuthViewModel::class.java)
@@ -57,6 +57,7 @@ class AuthFragment : Fragment() {
           progressBar.visibility = View.INVISIBLE
           Log.d("HTTP", "news: success")
           val action = AuthFragmentDirections.actionNavigationAuthToNavigationOrder(it.data!!.id!!)
+
           navController.navigate(action)
         }
         Status.LOADING -> {

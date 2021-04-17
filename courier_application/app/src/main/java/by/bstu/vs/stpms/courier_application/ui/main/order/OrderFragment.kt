@@ -23,7 +23,7 @@ class OrderFragment : Fragment() {
                 ViewModelProvider(this).get(OrderViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_order, container, false)
         val textView: TextView = root.findViewById(R.id.text_home)
-        orderViewModel.text.observe(viewLifecycleOwner, Observer {
+        orderViewModel.text.observe(viewLifecycleOwner, {
             textView.text = it
         })
         return root

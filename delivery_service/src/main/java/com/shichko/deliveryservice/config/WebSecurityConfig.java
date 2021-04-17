@@ -80,8 +80,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(new Http401UnauthorizedEntryPoint())
                 .and()
                 .logout()
+                .invalidateHttpSession(true)
                 .permitAll()
-                .logoutSuccessUrl("/");
+                .logoutSuccessUrl("/")
+                .and()
+                .rememberMe().key("DeliveryServiceSecretKey");
         //Test
 //        httpSecurity
 //                .csrf()

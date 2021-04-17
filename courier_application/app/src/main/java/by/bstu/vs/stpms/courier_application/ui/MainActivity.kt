@@ -3,7 +3,6 @@ package by.bstu.vs.stpms.courier_application.ui
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
@@ -11,8 +10,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import by.bstu.vs.stpms.courier_application.R
-import by.bstu.vs.stpms.courier_application.ui.main.order.OrderFragment
-import by.bstu.vs.stpms.courier_application.ui.main.profile.ProfileFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -47,6 +44,13 @@ class MainActivity : AppCompatActivity() {
             }
 
             navView.visibility = visibility
+
+            if (navController.currentDestination?.label.toString() == getString(R.string.fragment_splash)) {
+                supportActionBar?.hide()
+            } else {
+                supportActionBar?.show()
+            }
+
         }
 
         setupActionBarWithNavController(navController, appBarConfiguration)

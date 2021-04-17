@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_auth">
+    app:startDestination="@+id/navigation_splash">
 
     <fragment
         android:id="@+id/navigation_order"
@@ -37,11 +37,18 @@
             app:enterAnim="@anim/from_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right" />
+            app:popExitAnim="@anim/to_right"
+            app:popUpTo="@id/navigation_auth"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/navigation_registration"
         android:name="by.bstu.vs.stpms.courier_application.ui.login.registration.RegistrationFragment"
         android:label="fragment_registration"
         tools:layout="@layout/fragment_registration" />
+    <fragment
+        android:id="@+id/navigation_splash"
+        android:name="by.bstu.vs.stpms.courier_application.ui.login.SplashFragment"
+        android:label="@string/fragment_splash"
+        tools:layout="@layout/fragment_spash" />
 </navigation>
