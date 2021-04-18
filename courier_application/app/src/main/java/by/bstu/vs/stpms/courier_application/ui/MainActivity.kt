@@ -10,7 +10,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import by.bstu.vs.stpms.courier_application.R
-import by.bstu.vs.stpms.courier_application.model.retrofit.NetworkService
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 

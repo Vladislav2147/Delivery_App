@@ -1,4 +1,4 @@
-package by.bstu.vs.stpms.courier_application.model.retrofit.event
+package by.bstu.vs.stpms.courier_application.model.network.util.event
 
 data class Event<out T>(val status: Status, val data: T?, val t: Throwable?) {
 

@@ -1,8 +1,9 @@
-package by.bstu.vs.stpms.courier_application.model.retrofit
+package by.bstu.vs.stpms.courier_application.model.network
 
 import android.content.Context
-import by.bstu.vs.stpms.courier_application.model.retrofit.cookie.AddCookiesInterceptor
-import by.bstu.vs.stpms.courier_application.model.retrofit.cookie.ReceivedCookiesInterceptor
+import by.bstu.vs.stpms.courier_application.model.network.util.cookie.AddCookiesInterceptor
+import by.bstu.vs.stpms.courier_application.model.network.util.cookie.ReceivedCookiesInterceptor
+import by.bstu.vs.stpms.courier_application.model.network.services.UserService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

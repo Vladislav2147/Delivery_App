@@ -8,8 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.NavHostFragment
 import by.bstu.vs.stpms.courier_application.R
-import by.bstu.vs.stpms.courier_application.model.retrofit.event.Status
-import kotlinx.coroutines.delay
+import by.bstu.vs.stpms.courier_application.model.network.util.event.Status
 
 class SplashFragment : Fragment() {
 

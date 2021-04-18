@@ -1,8 +1,7 @@
-package by.bstu.vs.stpms.courier_application.model.retrofit.cookie;
+package by.bstu.vs.stpms.courier_application.model.network.util.cookie;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import java.io.IOException;
 import java.util.HashSet;

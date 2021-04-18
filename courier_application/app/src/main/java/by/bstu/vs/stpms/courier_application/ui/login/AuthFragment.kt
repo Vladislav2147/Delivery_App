@@ -13,7 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import by.bstu.vs.stpms.courier_application.R
 import by.bstu.vs.stpms.courier_application.databinding.FragmentAuthBinding
-import by.bstu.vs.stpms.courier_application.model.retrofit.event.Status
+import by.bstu.vs.stpms.courier_application.model.network.util.event.Status
 
 class AuthFragment : Fragment() {
 
