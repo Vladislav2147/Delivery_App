@@ -18,7 +18,7 @@ class SplashFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        
         val navHostFragment =
             requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
         val navController = navHostFragment!!.navController
