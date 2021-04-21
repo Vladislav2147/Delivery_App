@@ -11,14 +11,20 @@ import java.util.List;
 import by.bstu.vs.stpms.courier_application.model.database.entity.Product;
 
 @Dao
-public interface ProductDao {
+public abstract class ProductDao extends AbstractDao<Product> {
     @Insert
-    void insert(Product product);
-
-//    @Query("DELETE FROM product where id = :id")
+    @Override
+    public abstract void insert(Product product);
     @Delete
-    void delete(Product product);
-
+    @Override
+    public abstract void delete(Product product);
+    @Delete
+    @Override
+    public abstract void update(Product product);
+    @Query("SELECT * FROM product WHERE id = :id")
+    @Override
+    public abstract LiveData<Product> findById(long id);
     @Query("SELECT * FROM product")
-    List<Product> getAll();
+    @Override
+    public abstract LiveData<List<Product>> getAll();
 }

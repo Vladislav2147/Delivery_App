@@ -1,7 +1,6 @@
 package by.bstu.vs.stpms.courier_application.model.database;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
 import androidx.annotation.NonNull;
@@ -51,9 +50,12 @@ public abstract class CourierDatabase extends RoomDatabase {
     private static void createTriggers(SupportSQLiteDatabase db) {
         for (TableName tableName: TableName.values()) {
             try {
-                db.execSQL(DbContract.getInsertTrigger(tableName));
-                db.execSQL(DbContract.getUpdateTrigger(tableName));
-                db.execSQL(DbContract.getDeleteTrigger(tableName));
+                db.execSQL(DbContract.getInsertTriggerIfFirst(tableName));
+                db.execSQL(DbContract.getInsertTriggerIfNotFirst(tableName));
+                db.execSQL(DbContract.getUpdateTriggerIfFirst(tableName));
+                db.execSQL(DbContract.getUpdateTriggerIfNotFirst(tableName));
+                db.execSQL(DbContract.getDeleteTriggerIfFirst(tableName));
+                db.execSQL(DbContract.getDeleteTriggerIfNotFirst(tableName));
             } catch(SQLiteException e) {
                 e.printStackTrace();
             }

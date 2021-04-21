@@ -5,6 +5,7 @@ import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
@@ -16,9 +17,7 @@ import java.util.List;
                 @ForeignKey(entity = User.class, parentColumns = "id", childColumns = "courierId")
         }
 )
-public class Order {
-    @PrimaryKey
-    private long id;
+public class Order extends AbstractEntity implements Serializable {
     private String address;
     private String info;
     private String state;
@@ -34,79 +33,67 @@ public class Order {
     public Order() {
     }
 
-    public long getId() {
-        return this.id;
-    }
-
     public String getAddress() {
-        return this.address;
-    }
-
-    public String getInfo() {
-        return this.info;
-    }
-
-    public String getState() {
-        return this.state;
-    }
-
-    public Long getCustomerId() {
-        return this.customerId;
-    }
-
-    public Long getCourierId() {
-        return this.courierId;
-    }
-
-    public String getOrderedAt() {
-        return this.orderedAt;
-    }
-
-    public String getDeliveredAt() {
-        return this.deliveredAt;
-    }
-
-    public List<Ordered> getOrdereds() {
-        return this.ordereds;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+        return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
     }
 
+    public String getInfo() {
+        return info;
+    }
+
     public void setInfo(String info) {
         this.info = info;
+    }
+
+    public String getState() {
+        return state;
     }
 
     public void setState(String state) {
         this.state = state;
     }
 
+    public Long getCustomerId() {
+        return customerId;
+    }
+
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;
+    }
+
+    public Long getCourierId() {
+        return courierId;
     }
 
     public void setCourierId(Long courierId) {
         this.courierId = courierId;
     }
 
+    public String getOrderedAt() {
+        return orderedAt;
+    }
+
     public void setOrderedAt(String orderedAt) {
         this.orderedAt = orderedAt;
+    }
+
+    public String getDeliveredAt() {
+        return deliveredAt;
     }
 
     public void setDeliveredAt(String deliveredAt) {
         this.deliveredAt = deliveredAt;
     }
 
-    public void setOrdereds(List<Ordered> ordereds) {
-        this.ordereds = ordereds;
+    public List<Ordered> getOrdereds() {
+        return ordereds;
     }
 
-    public String toString() {
-        return "Order(id=" + this.getId() + ", address=" + this.getAddress() + ", info=" + this.getInfo() + ", state=" + this.getState() + ", customerId=" + this.getCustomerId() + ", courierId=" + this.getCourierId() + ", orderedAt=" + this.getOrderedAt() + ", deliveredAt=" + this.getDeliveredAt() + ", ordereds=" + this.getOrdereds() + ")";
+    public void setOrdereds(List<Ordered> ordereds) {
+        this.ordereds = ordereds;
     }
 }
