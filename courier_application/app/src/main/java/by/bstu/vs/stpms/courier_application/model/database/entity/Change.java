@@ -1,5 +1,6 @@
 package by.bstu.vs.stpms.courier_application.model.database.entity;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;

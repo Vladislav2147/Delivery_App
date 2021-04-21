@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import by.bstu.vs.stpms.courier_application.R
 import by.bstu.vs.stpms.courier_application.model.database.CourierDatabase
 import by.bstu.vs.stpms.courier_application.model.database.entity.Change
+import by.bstu.vs.stpms.courier_application.model.database.entity.Product
 import by.bstu.vs.stpms.courier_application.model.network.NetworkService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -40,9 +41,23 @@ class OrderFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         //TODO remove test code
-//        CoroutineScope(Dispatchers.IO).launch {
-//            CourierDatabase.getDatabase(NetworkService.context).changeDao.insert(Change("tabl", 5, "op", Calendar.getInstance()))
-//        }
+        CoroutineScope(Dispatchers.IO).launch {
+            val product1 = Product().apply {
+                name = "prod1"
+                weight = 0.5
+                price = 2.0
+            }
+
+            val product2 = Product().apply {
+                id = 229
+                name = "prod2"
+                weight = 0.5
+                price = 2.0
+            }
+            CourierDatabase.getDatabase(NetworkService.context).productDao.insert(product1)
+            CourierDatabase.getDatabase(NetworkService.context).productDao.insert(product2)
+            CourierDatabase.getDatabase(NetworkService.context).productDao.delete(product2)
+        }
         CourierDatabase.getDatabase(NetworkService.context).changeDao.select().observe(viewLifecycleOwner, { list -> list.forEach { Toast.makeText(activity, it.toString(), Toast.LENGTH_SHORT).show() }})
     }
 }

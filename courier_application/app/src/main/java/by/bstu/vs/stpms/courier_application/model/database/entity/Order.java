@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity(
-        tableName = "order",
+        tableName = "orders",
         foreignKeys = {
                 @ForeignKey(entity = Customer.class, parentColumns = "id", childColumns = "customerId"),
                 @ForeignKey(entity = User.class, parentColumns = "id", childColumns = "courierId")

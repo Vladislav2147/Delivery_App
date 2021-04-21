@@ -1,9 +1,8 @@
 package by.bstu.vs.stpms.courier_application.model.database.contract;
 
 public enum TableName {
-    CHANGE("changes"),
     CUSTOMER("customer"),
-    ORDER("order"),
+    ORDER("orders"),
     ORDERED("ordered"),
     PRODUCT("product"),
     ROLE("role"),
