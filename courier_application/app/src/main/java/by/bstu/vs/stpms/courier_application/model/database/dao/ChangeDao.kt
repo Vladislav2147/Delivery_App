@@ -12,5 +12,5 @@ interface ChangeDao {
     fun select(): LiveData<List<Change>>
 
     @Insert
-    fun insert(change: Change?)
+    fun insert(change: Change)
 }

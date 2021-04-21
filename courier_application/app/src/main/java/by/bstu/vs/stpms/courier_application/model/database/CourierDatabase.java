@@ -6,13 +6,15 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import by.bstu.vs.stpms.courier_application.model.database.dao.ChangeDao;
 import by.bstu.vs.stpms.courier_application.model.database.dao.ProductDao;
 import by.bstu.vs.stpms.courier_application.model.database.entity.*;
 
-@Database(entities = { Change.class, Customer.class, Order.class, Ordered.class, Product.class, Role.class, User.class, UserRole.class }, version = 3)
+@Database(entities = { Change.class, Customer.class, Order.class, Ordered.class, Product.class, Role.class, User.class, UserRole.class }, version = 7)
 public abstract class CourierDatabase extends RoomDatabase {
 
     public abstract ProductDao getProductDao();
+    public abstract ChangeDao getChangeDao();
 //    public abstract SubjectDao getSubjectDao();
 //    public abstract TermDao getTermDao();
 

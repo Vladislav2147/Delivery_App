@@ -4,7 +4,6 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
-import java.time.LocalDate;
 import java.util.Calendar;
 
 import by.bstu.vs.stpms.courier_application.model.database.entity.converters.CalendarConverter;
@@ -18,6 +17,7 @@ public class Change {
     private long itemId;
     private String operation;
     private Calendar timeStamp;
+    private boolean isUpToDate;
 
     public int getId() {
         return id;
@@ -75,5 +75,13 @@ public class Change {
 
     public void setTimeStamp(Calendar timeStamp) {
         this.timeStamp = timeStamp;
+    }
+
+    public boolean isUpToDate() {
+        return isUpToDate;
+    }
+
+    public void setUpToDate(boolean upToDate) {
+        isUpToDate = upToDate;
     }
 }
