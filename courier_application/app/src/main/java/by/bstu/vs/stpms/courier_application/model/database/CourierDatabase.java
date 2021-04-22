@@ -10,19 +10,22 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import by.bstu.vs.stpms.courier_application.model.database.contract.DbContract;
+import by.bstu.vs.stpms.courier_application.model.database.contract.RoleType;
 import by.bstu.vs.stpms.courier_application.model.database.contract.TableName;
 import by.bstu.vs.stpms.courier_application.model.database.dao.ChangeDao;
+import by.bstu.vs.stpms.courier_application.model.database.dao.OrderDao;
 import by.bstu.vs.stpms.courier_application.model.database.dao.ProductDao;
+import by.bstu.vs.stpms.courier_application.model.database.dao.UserDao;
 import by.bstu.vs.stpms.courier_application.model.database.entity.*;
 
 @Database(entities = { Change.class, Customer.class, Order.class, Ordered.class, Product.class, Role.class, User.class, UserRole.class },
-        version = 17)
+        version = 18)
 public abstract class CourierDatabase extends RoomDatabase {
 
     public abstract ProductDao getProductDao();
     public abstract ChangeDao getChangeDao();
-//    public abstract SubjectDao getSubjectDao();
-//    public abstract TermDao getTermDao();
+    public abstract OrderDao getOrderDao();
+    public abstract UserDao getUserDao();
 
     private static volatile CourierDatabase INSTANCE;
 
@@ -32,10 +35,12 @@ public abstract class CourierDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             CourierDatabase.class, "courier_database")
+                            .allowMainThreadQueries()
                             .addCallback(new Callback() {
                                 @Override
                                 public void onCreate(@NonNull SupportSQLiteDatabase db) {
                                     super.onCreate(db);
+                                    createRoles(db);
                                     createTriggers(db);
                                 }
                             })
@@ -45,6 +50,12 @@ public abstract class CourierDatabase extends RoomDatabase {
             }
         }
         return INSTANCE;
+    }
+
+    private static void createRoles(SupportSQLiteDatabase db) {
+        for (RoleType roleType: RoleType.values()) {
+            db.execSQL(DbContract.getInsertRole(roleType));
+        }
     }
 
     private static void createTriggers(SupportSQLiteDatabase db) {

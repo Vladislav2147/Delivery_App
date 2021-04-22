@@ -1,6 +1,11 @@
 package by.bstu.vs.stpms.courier_application.model.database.contract;
 
 public class DbContract {
+
+    public static String getInsertRole(RoleType role) {
+        return "insert into role (id, name) values (" + role.getId() + ", '" + role.name() + "')";
+    }
+
     public static String getInsertTriggerIfFirst(TableName tableName) {
         String name = tableName.getName();
         return "create trigger if not exists tr_insert_" + name + "_if_first after insert on " + name + " for each row\n" +

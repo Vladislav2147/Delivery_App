@@ -6,10 +6,9 @@ public enum TableName {
     ORDERED("ordered"),
     PRODUCT("product"),
     ROLE("role"),
-    USER("user"),
-    USER_ROLE("user_role");
+    USER("user");
 
-    private String name;
+    private final String name;
 
     TableName(String name) {
         this.name = name;
