@@ -29,7 +29,10 @@ public abstract class UserDao {
     public abstract void update(User user);
 
     @Query("SELECT * FROM user WHERE email = :email")
-    public abstract User findByEmail(String email);
+    public abstract LiveData<User> findByEmail(String email);
+
+    @Query("SELECT * FROM user LIMIT 1")
+    public abstract LiveData<List<User>> getUser();
 
     @Query("SELECT * FROM user")
     public abstract LiveData<List<User>> getAllUsersWithoutRoles();

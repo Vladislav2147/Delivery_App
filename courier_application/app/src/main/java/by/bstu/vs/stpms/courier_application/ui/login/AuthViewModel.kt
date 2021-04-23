@@ -1,27 +1,11 @@
 package by.bstu.vs.stpms.courier_application.ui.login
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import by.bstu.vs.stpms.courier_application.model.database.CourierDatabase
-import by.bstu.vs.stpms.courier_application.model.database.entity.Change
 import by.bstu.vs.stpms.courier_application.model.database.entity.User
-import by.bstu.vs.stpms.courier_application.model.exception.CourierNetworkException
-import by.bstu.vs.stpms.courier_application.model.network.NetworkService
 import by.bstu.vs.stpms.courier_application.model.network.NetworkService.context
-import by.bstu.vs.stpms.courier_application.model.network.dto.UserDto
-import by.bstu.vs.stpms.courier_application.model.network.util.event.Event
+import by.bstu.vs.stpms.courier_application.model.util.event.Event
 import by.bstu.vs.stpms.courier_application.model.repository.UserRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.util.*
 
 class AuthViewModel: ViewModel() {
 

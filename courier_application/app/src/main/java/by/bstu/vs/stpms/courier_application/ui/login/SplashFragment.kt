@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.NavHostFragment
 import by.bstu.vs.stpms.courier_application.R
-import by.bstu.vs.stpms.courier_application.model.network.util.event.Status
+import by.bstu.vs.stpms.courier_application.model.util.event.Status
 
 class SplashFragment : Fragment() {
 

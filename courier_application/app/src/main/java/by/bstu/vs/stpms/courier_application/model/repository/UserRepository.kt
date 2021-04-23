@@ -3,17 +3,16 @@ package by.bstu.vs.stpms.courier_application.model.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import by.bstu.vs.stpms.courier_application.model.database.CourierDatabase
-import by.bstu.vs.stpms.courier_application.model.database.contract.RoleType
-import by.bstu.vs.stpms.courier_application.model.database.entity.Role
 import by.bstu.vs.stpms.courier_application.model.database.entity.User
 import by.bstu.vs.stpms.courier_application.model.database.entity.UserRole
 import by.bstu.vs.stpms.courier_application.model.exception.CourierNetworkException
-import by.bstu.vs.stpms.courier_application.model.network.NetworkService
+import by.bstu.vs.stpms.courier_application.model.util.livedata.observeOnce
+import by.bstu.vs.stpms.courier_application.model.network.NetworkService.context
+import by.bstu.vs.stpms.courier_application.model.network.NetworkService.isOnline
 import by.bstu.vs.stpms.courier_application.model.network.NetworkService.loginService
 import by.bstu.vs.stpms.courier_application.model.network.dto.UserDto
-import by.bstu.vs.stpms.courier_application.model.network.util.event.Event
+import by.bstu.vs.stpms.courier_application.model.util.event.Event
 import by.bstu.vs.stpms.courier_application.model.repository.mapper.UserMapper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,17 +26,12 @@ import retrofit2.Response
 class UserRepository(context: Context?) {
 
     private val service = loginService()
-    private val db: CourierDatabase
-
-    init {
-        db = CourierDatabase.getDatabase(context)
-    }
+    private val db: CourierDatabase = CourierDatabase.getDatabase(context)
 
     fun login(login: String, password: String, userLiveData: MutableLiveData<Event<User>>) {
         userLiveData.postValue(Event.loading())
         Log.d("TAGGG", "mew")
         service.login(login, password, true).enqueue(CustomUserCallback(userLiveData) { user ->
-            //TODO db flex
             db.userDao.insert(user)
             for (role in user.roles) {
                 db.userRoleDao.insert(UserRole().apply {
@@ -50,12 +44,26 @@ class UserRepository(context: Context?) {
         })
     }
 
+    //TODO if no connection then take one user from db
     fun tryAutoLogin(userLiveData: MutableLiveData<Event<User>>) {
         CoroutineScope(Dispatchers.IO).launch {
             delay(1500)
-            service.currentUser().enqueue(CustomUserCallback(userLiveData) { user ->
-                userLiveData.postValue(Event.success(user))
-            })
+            if(isOnline(context)) {
+                service.currentUser().enqueue(CustomUserCallback(userLiveData) { user ->
+                    userLiveData.postValue(Event.success(user))
+                })
+            } else {
+                CoroutineScope(Dispatchers.Main).launch {
+                    db.userDao.user.observeOnce {
+                        val optionalUser = it.stream().findFirst()
+                        if (optionalUser.isPresent) {
+                            userLiveData.postValue(Event.success(optionalUser.get()))
+                        } else {
+                            userLiveData.postValue(Event.error(CourierNetworkException("User noy found")))
+                        }
+                    }
+                }
+            }
         }
     }
 

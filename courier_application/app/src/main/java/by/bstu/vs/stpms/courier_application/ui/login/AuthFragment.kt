@@ -13,10 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import by.bstu.vs.stpms.courier_application.R
 import by.bstu.vs.stpms.courier_application.databinding.FragmentAuthBinding
-import by.bstu.vs.stpms.courier_application.model.database.CourierDatabase
-import by.bstu.vs.stpms.courier_application.model.network.NetworkService
-import by.bstu.vs.stpms.courier_application.model.network.util.event.Status
-import java.time.Duration
+import by.bstu.vs.stpms.courier_application.model.util.event.Status
 
 class AuthFragment : Fragment() {
 

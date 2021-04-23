@@ -1,4 +1,4 @@
-package by.bstu.vs.stpms.courier_application.model.network.util.cookie;
+package by.bstu.vs.stpms.courier_application.model.util.cookie;
 
 import android.content.Context;
 

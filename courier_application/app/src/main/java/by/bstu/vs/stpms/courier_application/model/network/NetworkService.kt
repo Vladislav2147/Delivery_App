@@ -1,16 +1,18 @@
 package by.bstu.vs.stpms.courier_application.model.network
 
 import android.content.Context
-import by.bstu.vs.stpms.courier_application.model.network.util.cookie.AddCookiesInterceptor
-import by.bstu.vs.stpms.courier_application.model.network.util.cookie.ReceivedCookiesInterceptor
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import by.bstu.vs.stpms.courier_application.model.network.services.UserService
+import by.bstu.vs.stpms.courier_application.model.util.cookie.AddCookiesInterceptor
+import by.bstu.vs.stpms.courier_application.model.util.cookie.ReceivedCookiesInterceptor
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import com.google.gson.GsonBuilder
 
-import com.google.gson.Gson
 
 object NetworkService {
 
@@ -32,10 +34,10 @@ object NetworkService {
             .addInterceptor(loggingInterceptor)
             .addNetworkInterceptor { chain ->
                 chain.proceed(
-                    chain.request()
-                        .newBuilder()
-                        .header("User-Agent", "mobile")
-                        .build()
+                        chain.request()
+                                .newBuilder()
+                                .header("User-Agent", "mobile")
+                                .build()
                 )
             }
             .build()
@@ -52,5 +54,16 @@ object NetworkService {
                 .client(client.value)
                 .build()
                 .create(UserService::class.java)
+    }
+
+    fun isOnline(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+        if (capabilities != null) {
+            return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+                    || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+                    || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+        }
+        return false
     }
 }
