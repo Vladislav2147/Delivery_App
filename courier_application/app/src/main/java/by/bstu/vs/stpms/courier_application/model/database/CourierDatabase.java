@@ -12,20 +12,22 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import by.bstu.vs.stpms.courier_application.model.database.contract.DbContract;
 import by.bstu.vs.stpms.courier_application.model.database.contract.RoleType;
 import by.bstu.vs.stpms.courier_application.model.database.contract.TableName;
-import by.bstu.vs.stpms.courier_application.model.database.dao.ChangeDao;
-import by.bstu.vs.stpms.courier_application.model.database.dao.OrderDao;
-import by.bstu.vs.stpms.courier_application.model.database.dao.ProductDao;
-import by.bstu.vs.stpms.courier_application.model.database.dao.UserDao;
+import by.bstu.vs.stpms.courier_application.model.database.dao.*;
 import by.bstu.vs.stpms.courier_application.model.database.entity.*;
 
 @Database(entities = { Change.class, Customer.class, Order.class, Ordered.class, Product.class, Role.class, User.class, UserRole.class },
-        version = 18)
+        version = 20)
 public abstract class CourierDatabase extends RoomDatabase {
 
-    public abstract ProductDao getProductDao();
+
     public abstract ChangeDao getChangeDao();
+    public abstract CustomerDao getCustomerDao();
     public abstract OrderDao getOrderDao();
+    public abstract OrderedDao getOrderedDao();
+    public abstract ProductDao getProductDao();
+    public abstract RoleDao getRoleDao();
     public abstract UserDao getUserDao();
+    public abstract UserRoleDao getUserRoleDao();
 
     private static volatile CourierDatabase INSTANCE;
 
@@ -50,6 +52,13 @@ public abstract class CourierDatabase extends RoomDatabase {
             }
         }
         return INSTANCE;
+    }
+
+    public void clear() {
+        clearAllTables();
+        for (RoleType roleType: RoleType.values()) {
+            getRoleDao().insert(new Role(roleType));
+        }
     }
 
     private static void createRoles(SupportSQLiteDatabase db) {

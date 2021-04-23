@@ -1,13 +1,26 @@
 package by.bstu.vs.stpms.courier_application.ui.main.profile
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.content.Context
 import androidx.lifecycle.ViewModel
+import by.bstu.vs.stpms.courier_application.R
+import by.bstu.vs.stpms.courier_application.model.network.NetworkService
+import by.bstu.vs.stpms.courier_application.model.repository.UserRepository
 
 class ProfileViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is dashboard Fragment"
+    val repository = UserRepository(NetworkService.context)
+
+    fun logout() {
+        repository.logout()
+        NetworkService.context
+            .getSharedPreferences(
+                NetworkService.context.getString(R.string.shared_prefs_cookies),
+                Context.MODE_PRIVATE
+            )
+            .edit()
+            .clear()
+            .apply()
+
     }
-    val text: LiveData<String> = _text
+
 }

@@ -12,19 +12,10 @@ import by.bstu.vs.stpms.courier_application.model.database.entity.Product;
 
 @Dao
 public abstract class ProductDao extends AbstractDao<Product> {
-    @Insert
     @Override
-    public abstract void insert(Product product);
-    @Delete
-    @Override
-    public abstract void delete(Product product);
-    @Delete
-    @Override
-    public abstract void update(Product product);
     @Query("SELECT * FROM product WHERE id = :id")
-    @Override
     public abstract LiveData<Product> findById(long id);
-    @Query("SELECT * FROM product")
     @Override
+    @Query("SELECT * FROM product")
     public abstract LiveData<List<Product>> getAll();
 }

@@ -4,11 +4,15 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
+
+import by.bstu.vs.stpms.courier_application.model.database.entity.converters.CalendarConverter;
 
 @Entity(
         tableName = "orders",
@@ -17,18 +21,23 @@ import java.util.List;
                 @ForeignKey(entity = User.class, parentColumns = "id", childColumns = "courierId")
         }
 )
+@TypeConverters(CalendarConverter.class)
 public class Order extends AbstractEntity implements Serializable {
     private String address;
     private String info;
     private String state;
     private Long customerId;
     private Long courierId;
-    //TODO fix it
-    private String orderedAt;
-    private String deliveredAt;
+
+    private Calendar orderedAt;
+    private Calendar deliveredAt;
 
     @Ignore
     private List<Ordered> ordereds;
+    @Ignore
+    private Customer customer;
+    @Ignore
+    private User courier;
 
     public Order() {
     }
@@ -73,19 +82,19 @@ public class Order extends AbstractEntity implements Serializable {
         this.courierId = courierId;
     }
 
-    public String getOrderedAt() {
+    public Calendar getOrderedAt() {
         return orderedAt;
     }
 
-    public void setOrderedAt(String orderedAt) {
+    public void setOrderedAt(Calendar orderedAt) {
         this.orderedAt = orderedAt;
     }
 
-    public String getDeliveredAt() {
+    public Calendar getDeliveredAt() {
         return deliveredAt;
     }
 
-    public void setDeliveredAt(String deliveredAt) {
+    public void setDeliveredAt(Calendar deliveredAt) {
         this.deliveredAt = deliveredAt;
     }
 
@@ -95,5 +104,21 @@ public class Order extends AbstractEntity implements Serializable {
 
     public void setOrdereds(List<Ordered> ordereds) {
         this.ordereds = ordereds;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public User getCourier() {
+        return courier;
+    }
+
+    public void setCourier(User courier) {
+        this.courier = courier;
     }
 }

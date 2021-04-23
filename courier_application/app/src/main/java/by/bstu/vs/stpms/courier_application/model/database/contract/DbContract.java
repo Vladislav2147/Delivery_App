@@ -24,6 +24,7 @@ public class DbContract {
                 "    set \n" +
                 "    operation = 'insert',\n" +
                 "    timeStamp = strftime('%s', 'now')\n" +
+                "    isUpToDate = 0,\n" +
                 "    where itemId = new.id;              \n" +
                 "end;";
     }
@@ -46,6 +47,7 @@ public class DbContract {
                 "    set \n" +
                 "    operation = 'update',\n" +
                 "    timeStamp = strftime('%s', 'now')\n" +
+                "    isUpToDate = 0,\n" +
                 "    where itemId = new.id;              \n" +
                 "end;";
     }
@@ -68,6 +70,7 @@ public class DbContract {
                 "    set \n" +
                 "    operation = 'delete',\n" +
                 "    timeStamp = strftime('%s', 'now')\n" +
+                "    isUpToDate = 0,\n" +
                 "    where itemId = old.id;              \n" +
                 "end;";
     }

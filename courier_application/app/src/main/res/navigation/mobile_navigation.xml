@@ -19,7 +19,18 @@
         android:id="@+id/navigation_profile"
         android:name="by.bstu.vs.stpms.courier_application.ui.main.profile.ProfileFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_navigation_profile_to_navigation_auth"
+            app:destination="@id/navigation_auth"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/from_right"
+            app:popExitAnim="@anim/to_left"
+            app:popUpTo="@id/mobile_navigation"
+            app:popUpToInclusive="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_details"
@@ -54,11 +65,19 @@
         <action
             android:id="@+id/action_navigation_splash_to_navigation_auth"
             app:destination="@id/navigation_auth"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
             app:popUpTo="@id/navigation_splash"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_navigation_splash_to_navigation_order"
             app:destination="@id/navigation_order"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
             app:popUpTo="@id/navigation_splash"
             app:popUpToInclusive="true" />
     </fragment>

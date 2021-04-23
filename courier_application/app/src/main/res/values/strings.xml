@@ -18,5 +18,6 @@
     <string name="password">Password</string>
     <string name="registration">Registration</string>
     <string name="shared_prefs_cookies">Cookies</string>
-    <string name="fragment_splash">fragment_spash</string>
+    <string name="fragment_splash">fragment_splash</string>
+    <string name="logout">Log out</string>
 </resources>
