@@ -79,7 +79,7 @@ class UserRepository(context: Context?) {
 
     fun logout() {
         //При выходе из учетной записи очищаем локальную базу данных (с информацией текущего пользователя)
-        db.clearAllTables()
+        db.clear()
         //Запрос серверу для выхода (удаляет текущую сессию и cookies)
         service.logout()
     }
@@ -92,10 +92,13 @@ class UserRepository(context: Context?) {
             })
         } else {
             //Если подключения к сети нет, попытка получить текущего пользователя с локальной бд
-            db.userDao.user.observeOnce {
-                val optionalUser = it.stream().findFirst()
-                if (optionalUser.isPresent) {
-                    userLiveData.postValue(Event.success(optionalUser.get()))
+            db.userDao.user.observeOnce { users ->
+                val user = users.firstOrNull()
+                if (user != null) {
+                    db.userRoleDao.getUserRolesByUserId(user.id).observeOnce {
+                        user.roles = HashSet(it)
+                        userLiveData.postValue(Event.success(user))
+                    }
                 } else {
                     userLiveData.postValue(Event.error(CourierNetworkException("User not found")))
                 }

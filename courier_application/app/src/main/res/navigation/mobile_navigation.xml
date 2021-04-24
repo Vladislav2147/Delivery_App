@@ -40,7 +40,7 @@
     <fragment
         android:id="@+id/navigation_auth"
         android:name="by.bstu.vs.stpms.courier_application.ui.login.AuthFragment"
-        android:label="fragment_auth"
+        android:label="@string/login"
         tools:layout="@layout/fragment_auth" >
         <action
             android:id="@+id/action_navigation_auth_to_navigation_order"

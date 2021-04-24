@@ -20,6 +20,6 @@ public abstract class UserRoleDao {
     public abstract void update(UserRole userRole);
     @Delete
     public abstract void delete(UserRole userRole);
-    @Query("SELECT role.id, role.name FROM user_role JOIN role ON user_role.roleId = role.id WHERE userId = :userId")
+    @Query("SELECT * FROM role WHERE role.id IN (SELECT roleId FROM user_role WHERE userId = :userId)")
     public abstract LiveData<List<Role>> getUserRolesByUserId(long userId);
 }
