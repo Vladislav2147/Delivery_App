@@ -44,33 +44,6 @@ class OrderFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         //TODO remove test code
-//        CoroutineScope(Dispatchers.IO).launch {
-////            val product1 = Product().apply {
-////                name = "prod1"
-////                weight = 0.5
-////                price = 2.0
-////            }
-////
-////            val product2 = Product().apply {
-////                id = 229
-////                name = "prod2"
-////                weight = 0.5
-////                price = 2.0
-////            }
-////            CourierDatabase.getDatabase(NetworkService.context).productDao.insert(product1)
-////            CourierDatabase.getDatabase(NetworkService.context).productDao.insert(product2)
-////            CourierDatabase.getDatabase(NetworkService.context).productDao.delete(product2)
-//            val user = User().apply {
-//                firstName = "vladislav"
-//                secondName = "vladislavovich"
-//                email = "vlad@gmail.com"
-//                phone = "+375297729144"
-//                roles = setOf(Role(RoleType.ROLE_ADMIN), Role(RoleType.ROLE_BASIC))
-//            }
-//
-////            CourierDatabase.getDatabase(context).userDao.insert(user)
-//
-//        }
         CourierDatabase.getDatabase(NetworkService.context).roleDao.all.observe(viewLifecycleOwner, { list -> list.forEach {
             Toast.makeText(activity, it.name, Toast.LENGTH_SHORT).show()
         } })

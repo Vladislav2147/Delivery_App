@@ -19,7 +19,7 @@ public class OrderController extends CommonController<Order, OrderDto, OrderRepo
         super(service, mapper);
     }
 
-    @PutMapping("/update")
+    @PutMapping("/updateState")
     public void update(@RequestParam("id") long id, @RequestParam("state") String state) throws DeliveryServiceException {
         service.updateStateById(id, state);
     }

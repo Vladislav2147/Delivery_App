@@ -65,11 +65,6 @@ public class UserService implements UserDetailsService {
             throw new DeliveryServiceException("User already exists");
         }
 
-        //TODO delete this
-        user.setFirstName("Ivan");
-        user.setSecondName("Ivanov");
-        user.setPhone("+375291234567");
-
         user.setRoles(Collections.singleton(roleRepository.findFirstByName("ROLE_BASIC")));
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);

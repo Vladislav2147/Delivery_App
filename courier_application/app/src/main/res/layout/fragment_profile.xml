@@ -6,20 +6,41 @@
         <variable
             name="fragment"
             type="by.bstu.vs.stpms.courier_application.ui.main.profile.ProfileFragment" />
+        <variable
+            name="vm"
+            type="by.bstu.vs.stpms.courier_application.ui.main.profile.ProfileViewModel" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".ui.main.profile.ProfileFragment">
 
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{vm.userLiveData.data.firstName  + ` ` + vm.userLiveData.data.secondName}"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{vm.userLiveData.data.phone}"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{vm.formatRoles(vm.userLiveData.data.roles)}"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{vm.userLiveData.data.email}"/>
+
         <Button
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/logout"
-            android:onClick="@{() -> fragment.logout()}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:onClick="@{() -> fragment.logout()}" />
+    </LinearLayout>
 </layout>
