@@ -15,16 +15,33 @@ class RegistrationFormWatcher(private val field: TextInputEditText): TextWatcher
 
         when (textInputLayout.id.toString()) {
             R.id.til_first_name.toString(), R.id.til_second_name.toString() -> {
-
+                textInputLayout.error = if (RegistrationValidator.isNameValid(editable.toString())) {
+                    null
+                } else {
+                    "Length should be between 2 and 50"
+                }
             }
             R.id.til_email.toString() -> {
-
+                textInputLayout.error = if (RegistrationValidator.isEmailValid(editable.toString())) {
+                    null
+                } else {
+                    "Email should be valid"
+                }
             }
             R.id.til_phone.toString() -> {
+                textInputLayout.error = if (RegistrationValidator.isPhoneValid(editable.toString())) {
+                    null
+                } else {
+                    "Phone should be valid"
+                }
 
             }
             R.id.til_password.toString(), R.id.til_confirm_password.toString() -> {
-
+                textInputLayout.error = if (RegistrationValidator.isPasswordValid(editable.toString())) {
+                    null
+                } else {
+                    "Length should be between 8 and 64"
+                }
             }
         }
     }
