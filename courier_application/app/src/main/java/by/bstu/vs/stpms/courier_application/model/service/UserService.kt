@@ -1,4 +1,4 @@
-package by.bstu.vs.stpms.courier_application.model.repository
+package by.bstu.vs.stpms.courier_application.model.service
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
@@ -6,11 +6,11 @@ import by.bstu.vs.stpms.courier_application.model.database.CourierDatabase
 import by.bstu.vs.stpms.courier_application.model.database.entity.User
 import by.bstu.vs.stpms.courier_application.model.database.entity.UserRole
 import by.bstu.vs.stpms.courier_application.model.exception.CourierNetworkException
-import by.bstu.vs.stpms.courier_application.model.network.NetworkService.context
-import by.bstu.vs.stpms.courier_application.model.network.NetworkService.isOnline
-import by.bstu.vs.stpms.courier_application.model.network.NetworkService.loginService
+import by.bstu.vs.stpms.courier_application.model.network.NetworkRepository.context
+import by.bstu.vs.stpms.courier_application.model.network.NetworkRepository.isOnline
+import by.bstu.vs.stpms.courier_application.model.network.NetworkRepository.userApi
 import by.bstu.vs.stpms.courier_application.model.network.dto.UserDto
-import by.bstu.vs.stpms.courier_application.model.repository.mapper.UserMapper
+import by.bstu.vs.stpms.courier_application.model.service.mapper.UserMapper
 import by.bstu.vs.stpms.courier_application.model.util.event.Event
 import by.bstu.vs.stpms.courier_application.model.util.livedata.observeOnce
 import kotlinx.coroutines.CoroutineScope
@@ -22,9 +22,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UserRepository(context: Context?) {
+class UserService(context: Context?) {
 
-    private val service = loginService()
+    private val userApi = userApi()
     private val db: CourierDatabase = CourierDatabase.getDatabase(context)
 
     //Вызывается при нажатии на кнопку входа в форме логина
@@ -33,7 +33,7 @@ class UserRepository(context: Context?) {
 
         //Формируем запрос к серверу, ответ - объект UserDto, при помощи CustomUserCallback
         //осуществляем обработку ошибок и отображение в User
-        service.login(login, password, true).enqueue(CustomUserCallback(userLiveData) { user ->
+        userApi.login(login, password, true).enqueue(CustomUserCallback(userLiveData) { user ->
             //Вставляем объект User в базу данных
             db.userDao.insert(user)
             //Вставляем роли пользователя в базу данных
@@ -55,7 +55,7 @@ class UserRepository(context: Context?) {
             delay(1500)
             if(isOnline(context)) {
                 //Если есть подключение к сети, попытка получить с сервера текущего пользователя
-                service.currentUser().enqueue(CustomUserCallback(userLiveData) { user ->
+                userApi.currentUser().enqueue(CustomUserCallback(userLiveData) { user ->
                     userLiveData.postValue(Event.success(user))
                 })
             } else {
@@ -81,13 +81,13 @@ class UserRepository(context: Context?) {
         //При выходе из учетной записи очищаем локальную базу данных (с информацией текущего пользователя)
         db.clear()
         //Запрос серверу для выхода (удаляет текущую сессию и cookies)
-        service.logout()
+        userApi.logout()
     }
 
     fun getCurrentUser(userLiveData: MutableLiveData<Event<User>>) {
         if(isOnline(context)) {
             //Если есть подключение к сети, попытка получить с сервера текущего пользователя
-            service.currentUser().enqueue(CustomUserCallback(userLiveData) { user ->
+            userApi.currentUser().enqueue(CustomUserCallback(userLiveData) { user ->
                 userLiveData.postValue(Event.success(user))
             })
         } else {

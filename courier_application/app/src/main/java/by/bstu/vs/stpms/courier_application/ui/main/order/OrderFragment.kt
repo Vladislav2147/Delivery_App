@@ -10,16 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import by.bstu.vs.stpms.courier_application.R
 import by.bstu.vs.stpms.courier_application.model.database.CourierDatabase
-import by.bstu.vs.stpms.courier_application.model.database.contract.RoleType
-import by.bstu.vs.stpms.courier_application.model.database.entity.Change
-import by.bstu.vs.stpms.courier_application.model.database.entity.Product
-import by.bstu.vs.stpms.courier_application.model.database.entity.Role
-import by.bstu.vs.stpms.courier_application.model.database.entity.User
-import by.bstu.vs.stpms.courier_application.model.network.NetworkService
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.util.*
+import by.bstu.vs.stpms.courier_application.model.network.NetworkRepository
 
 class OrderFragment : Fragment() {
 
@@ -44,8 +35,8 @@ class OrderFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         //TODO remove test code
-        CourierDatabase.getDatabase(NetworkService.context).roleDao.all.observe(viewLifecycleOwner, { list -> list.forEach {
-            Toast.makeText(activity, it.name, Toast.LENGTH_SHORT).show()
-        } })
+        CourierDatabase.getDatabase(NetworkRepository.context).roleDao.all.observe(viewLifecycleOwner, { list ->
+            Toast.makeText(activity, list.size.toString(), Toast.LENGTH_SHORT).show()
+        })
     }
 }

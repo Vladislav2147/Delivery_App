@@ -3,9 +3,9 @@ package by.bstu.vs.stpms.courier_application.ui.login
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import by.bstu.vs.stpms.courier_application.model.database.entity.User
-import by.bstu.vs.stpms.courier_application.model.network.NetworkService.context
+import by.bstu.vs.stpms.courier_application.model.network.NetworkRepository.context
 import by.bstu.vs.stpms.courier_application.model.util.event.Event
-import by.bstu.vs.stpms.courier_application.model.repository.UserRepository
+import by.bstu.vs.stpms.courier_application.model.service.UserService
 
 class AuthViewModel: ViewModel() {
 
@@ -13,12 +13,12 @@ class AuthViewModel: ViewModel() {
     var loginLiveData = MutableLiveData("")
     var passwordLiveData = MutableLiveData("")
 
-    val repository = UserRepository(context)
+    private val userService = UserService(context)
 
     fun tryAutoLogin() {
-        repository.tryAutoLogin(userLiveData)
+        userService.tryAutoLogin(userLiveData)
     }
     fun login() {
-        repository.login(loginLiveData.value!!, passwordLiveData.value!!, userLiveData)
+        userService.login(loginLiveData.value!!, passwordLiveData.value!!, userLiveData)
     }
 }

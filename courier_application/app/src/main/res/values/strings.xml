@@ -20,4 +20,10 @@
     <string name="shared_prefs_cookies">Cookies</string>
     <string name="fragment_splash">fragment_splash</string>
     <string name="logout">Log out</string>
+    <string name="first_name">First Name</string>
+    <string name="second_name">Second name</string>
+    <string name="email">Email</string>
+    <string name="phone_number">Phone number</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="sign_up">Sign Up</string>
 </resources>

@@ -1,4 +1,4 @@
-package by.bstu.vs.stpms.courier_application.model.repository.mapper;
+package by.bstu.vs.stpms.courier_application.model.service.mapper;
 
 import org.mapstruct.Mapper;
 

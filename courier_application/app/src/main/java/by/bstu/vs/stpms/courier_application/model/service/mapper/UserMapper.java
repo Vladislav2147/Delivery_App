@@ -1,7 +1,6 @@
-package by.bstu.vs.stpms.courier_application.model.repository.mapper;
+package by.bstu.vs.stpms.courier_application.model.service.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import by.bstu.vs.stpms.courier_application.model.database.entity.User;
 import by.bstu.vs.stpms.courier_application.model.network.dto.UserDto;

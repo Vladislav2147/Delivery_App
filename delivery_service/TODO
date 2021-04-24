@@ -5,6 +5,7 @@ TODO SOAP
 TODO post order unauthorized
 TODO https
 TODO profile stats
+TODO время доставки?
 
 Если интернет есть, то запросы идут с инета в бд, а оттуда уже ловятся изменения, если нет, то просто из локальной бд
 
