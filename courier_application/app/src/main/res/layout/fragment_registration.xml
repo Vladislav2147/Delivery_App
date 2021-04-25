@@ -31,6 +31,7 @@
                 android:layout_height="wrap_content"
                 android:maxLength="50"
                 android:inputType="text"
+                android:text="@={vm.firstNameLiveData}"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -47,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:maxLength="50"
                 android:inputType="text"
+                android:text="@={vm.secondNameLiveData}"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -63,6 +65,7 @@
                 android:layout_height="wrap_content"
                 android:maxLength="320"
                 android:inputType="textEmailAddress"
+                android:text="@={vm.emailLiveData}"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -74,11 +77,14 @@
             android:hint="@string/phone_number"
             app:errorEnabled="true">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <br.com.sapereaude.maskedEditText.MaskedEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="phone"
                 android:maxLength="20"
+                android:text="@={vm.phoneLiveData}"
+                android:hint="@string/num_hint"
+                app:mask="+375 (##) ###-##-##"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -94,6 +100,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLength="64"
+                android:text="@={vm.passwordLiveData}"
                 android:inputType="textPassword"
                 android:maxLines="1" />
 
@@ -111,17 +118,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
+                android:text="@={vm.confirmPasswordLiveData}"
                 android:maxLength="64"
                 android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_login"
+            android:id="@+id/btn_sign_up"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-
+            android:onClick="@{() -> vm.signUp()}"
             android:text="@string/sign_up"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_registration"

@@ -13,14 +13,18 @@ import by.bstu.vs.stpms.courier_application.model.network.dto.UserDto
 import by.bstu.vs.stpms.courier_application.model.service.mapper.UserMapper
 import by.bstu.vs.stpms.courier_application.model.util.event.Event
 import by.bstu.vs.stpms.courier_application.model.util.livedata.observeOnce
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
 import org.mapstruct.factory.Mappers
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 class UserService(context: Context?) {
 
@@ -46,6 +50,43 @@ class UserService(context: Context?) {
             //В таблице изменений помечаем изменение как актуальное
             db.changeDao.setUpToDate("user", user.id)
             userLiveData.postValue(Event.success(user))
+        })
+    }
+
+    //Вызывается при регистрации
+    fun signUp(userDto: UserDto, responseLiveData: MutableLiveData<Event<Void>>) {
+        responseLiveData.postValue(Event.loading())
+        userApi.signUp(userDto).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                try {
+                    when (response.code()) {
+                        //Успешная регистрация
+                        201 -> {
+                            responseLiveData.postValue(Event.success(null))
+                        }
+                        //Возвращается сервером при ошибке валидации
+                        400 -> {
+                            throw CourierNetworkException("Invalid form")
+                        }
+                        //Возвращается сервером, если пользователь уже существует
+                        403 -> {
+                            val gson = Gson()
+                            val jsonObject: JsonObject = gson.fromJson(response.errorBody()?.string(), JsonObject::class.java)
+                            throw CourierNetworkException(jsonObject["message"].asString)
+                        }
+                        else -> {
+                            throw CourierNetworkException("Network Troubles")
+                        }
+                    }
+                } catch (e: CourierNetworkException) {
+                    responseLiveData.postValue(Event.error(e))
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                responseLiveData.postValue(Event.error(t))
+            }
+
         })
     }
 

@@ -64,7 +64,7 @@ class AuthFragment : Fragment() {
                 }
                 Status.SUCCESS -> {
                     progressBar.visibility = View.INVISIBLE
-                    Log.d("HTTP", "news: success")
+                    Log.d("HTTP", "auth: success")
                     val action = AuthFragmentDirections.actionNavigationAuthToNavigationOrder(it.data!!.id)
 
                     navController.navigate(action)
@@ -72,7 +72,7 @@ class AuthFragment : Fragment() {
                 Status.LOADING -> {
                     view?.findViewById<MaterialButton>(R.id.btn_login)?.isEnabled = false
                     progressBar.visibility = View.VISIBLE
-                    Log.d("HTTP", "news: loading")
+                    Log.d("HTTP", "auth: loading")
                 }
             }
         })

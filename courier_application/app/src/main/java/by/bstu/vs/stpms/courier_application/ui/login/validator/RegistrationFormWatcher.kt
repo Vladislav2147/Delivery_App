@@ -4,11 +4,12 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import by.bstu.vs.stpms.courier_application.R
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
-class RegistrationFormWatcher(private val field: TextInputEditText): TextWatcher {
+class RegistrationFormWatcher(private val field: EditText): TextWatcher {
 
     override fun afterTextChanged(editable: Editable?) {
         val textInputLayout = field.parent.parent as TextInputLayout
@@ -29,7 +30,7 @@ class RegistrationFormWatcher(private val field: TextInputEditText): TextWatcher
                 }
             }
             R.id.til_phone.toString() -> {
-                textInputLayout.error = if (RegistrationValidator.isPhoneValid(editable.toString())) {
+                textInputLayout.error = if (RegistrationValidator.isPhoneValid(editable.toString()) || editable.toString().isEmpty() || editable.toString().length > 19) {
                     null
                 } else {
                     "Phone should be valid"
