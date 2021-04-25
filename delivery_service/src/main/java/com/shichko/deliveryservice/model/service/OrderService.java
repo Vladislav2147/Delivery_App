@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class OrderService extends CrudService<Order, OrderRepository> {
     @Autowired
@@ -22,5 +24,9 @@ public class OrderService extends CrudService<Order, OrderRepository> {
         } catch (IllegalArgumentException e) {
             throw new DeliveryServiceException("Invalid state value: " + newState, e);
         }
+    }
+
+    public List<Order> getAvailableOrders() {
+        return repository.getAvailableOrders();
     }
 }

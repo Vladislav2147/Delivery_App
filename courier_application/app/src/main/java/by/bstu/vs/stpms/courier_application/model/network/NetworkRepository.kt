@@ -3,6 +3,8 @@ package by.bstu.vs.stpms.courier_application.model.network
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import by.bstu.vs.stpms.courier_application.model.database.entity.Order
+import by.bstu.vs.stpms.courier_application.model.network.api.OrderApi
 import by.bstu.vs.stpms.courier_application.model.network.api.UserApi
 import by.bstu.vs.stpms.courier_application.model.util.cookie.AddCookiesInterceptor
 import by.bstu.vs.stpms.courier_application.model.util.cookie.ReceivedCookiesInterceptor
@@ -46,7 +48,7 @@ object NetworkRepository {
     }
 
     private val gson: Gson = GsonBuilder()
-            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ")
             .create()
 
     fun userApi(): UserApi {
@@ -56,6 +58,15 @@ object NetworkRepository {
                 .client(client.value)
                 .build()
                 .create(UserApi::class.java)
+    }
+
+    fun orderApi(): OrderApi {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL + "order/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client.value)
+            .build()
+            .create(OrderApi::class.java)
     }
 
     fun isOnline(context: Context): Boolean {

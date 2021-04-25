@@ -11,6 +11,10 @@ import androidx.lifecycle.ViewModelProvider
 import by.bstu.vs.stpms.courier_application.R
 import by.bstu.vs.stpms.courier_application.model.database.CourierDatabase
 import by.bstu.vs.stpms.courier_application.model.network.NetworkRepository
+import by.bstu.vs.stpms.courier_application.model.network.dto.OrderDto
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class OrderFragment : Fragment() {
 
@@ -35,8 +39,21 @@ class OrderFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         //TODO remove test code
-        CourierDatabase.getDatabase(NetworkRepository.context).roleDao.all.observe(viewLifecycleOwner, { list ->
-            Toast.makeText(activity, list.size.toString(), Toast.LENGTH_SHORT).show()
+//        CourierDatabase.getDatabase(NetworkRepository.context).roleDao.all.observe(viewLifecycleOwner, { list ->
+//            Toast.makeText(activity, list.size.toString(), Toast.LENGTH_SHORT).show()
+//        })
+        NetworkRepository.orderApi().availableOrders.enqueue(object: Callback<List<OrderDto>> {
+            override fun onResponse(
+                call: Call<List<OrderDto>>,
+                response: Response<List<OrderDto>>
+            ) {
+                val a = ""
+            }
+
+            override fun onFailure(call: Call<List<OrderDto>>, t: Throwable) {
+                val b = ""
+            }
+
         })
     }
 }

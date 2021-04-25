@@ -2,6 +2,8 @@ package com.shichko.deliveryservice.model.dto;
 
 import lombok.Data;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
@@ -20,4 +22,6 @@ public class OrderDto extends AbstractDto {
     private Collection<OrderedDto> ordered;
     private Timestamp orderedAt;
     private Timestamp deliveredAt;
+    private Timestamp preferredRangeStart;
+    private Timestamp preferredRangeEnd;
 }

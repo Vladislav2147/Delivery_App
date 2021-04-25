@@ -16,7 +16,7 @@ import by.bstu.vs.stpms.courier_application.model.database.dao.*;
 import by.bstu.vs.stpms.courier_application.model.database.entity.*;
 
 @Database(entities = { Change.class, Customer.class, Order.class, Ordered.class, Product.class, Role.class, User.class, UserRole.class },
-        version = 20)
+        version = 21)
 public abstract class CourierDatabase extends RoomDatabase {
 
 

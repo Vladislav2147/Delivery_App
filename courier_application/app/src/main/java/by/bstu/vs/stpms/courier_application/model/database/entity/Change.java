@@ -1,25 +1,24 @@
 package by.bstu.vs.stpms.courier_application.model.database.entity;
 
-import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Calendar;
 
-import by.bstu.vs.stpms.courier_application.model.database.entity.converters.CalendarConverter;
+import by.bstu.vs.stpms.courier_application.model.database.entity.converters.TimestampConverter;
 
 @Entity(tableName = "changes")
-@TypeConverters(CalendarConverter.class)
+@TypeConverters(TimestampConverter.class)
 public class Change extends AbstractEntity implements Serializable {
     private String tableName;
     private long itemId;
     private String operation;
-    private Calendar timeStamp;
+    private Timestamp timeStamp;
     private boolean isUpToDate;
 
-    public Change(String tableName, long itemId, String operation, Calendar timeStamp) {
+    public Change(String tableName, long itemId, String operation, Timestamp timeStamp) {
         this.tableName = tableName;
         this.itemId = itemId;
         this.operation = operation;
@@ -53,11 +52,11 @@ public class Change extends AbstractEntity implements Serializable {
         this.operation = operation;
     }
 
-    public Calendar getTimeStamp() {
+    public Timestamp getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(Calendar timeStamp) {
+    public void setTimeStamp(Timestamp timeStamp) {
         this.timeStamp = timeStamp;
     }
 

@@ -31,5 +31,8 @@ public class Order extends AbstractEntity implements Serializable {
     private Timestamp orderedAt;
     @Basic@Column(name = "delivered_at")
     private Timestamp deliveredAt;
-
+    @Basic@Column(name = "preferred_range_start")
+    private Timestamp preferredRangeStart;
+    @Basic@Column(name = "preferred_range_end")
+    private Timestamp preferredRangeEnd;
 }

@@ -7,9 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface OrderRepository extends CommonRepository<Order> {
     @Modifying
     @Query("update orders o set o.state = :newState where o.id = :id")
     void updateStateById(@Param("id") long id, @Param("newState") OrderState newState);
+
+    @Query("select o from orders o where o.courier is null")
+    List<Order> getAvailableOrders();
 }

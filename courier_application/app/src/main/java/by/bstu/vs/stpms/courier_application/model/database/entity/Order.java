@@ -3,16 +3,13 @@ package by.bstu.vs.stpms.courier_application.model.database.entity;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Collection;
 import java.util.List;
 
-import by.bstu.vs.stpms.courier_application.model.database.entity.converters.CalendarConverter;
+import by.bstu.vs.stpms.courier_application.model.database.entity.converters.TimestampConverter;
 
 @Entity(
         tableName = "orders",
@@ -21,7 +18,7 @@ import by.bstu.vs.stpms.courier_application.model.database.entity.converters.Cal
                 @ForeignKey(entity = User.class, parentColumns = "id", childColumns = "courierId")
         }
 )
-@TypeConverters(CalendarConverter.class)
+@TypeConverters(TimestampConverter.class)
 public class Order extends AbstractEntity implements Serializable {
     private String address;
     private String info;
@@ -29,8 +26,10 @@ public class Order extends AbstractEntity implements Serializable {
     private Long customerId;
     private Long courierId;
 
-    private Calendar orderedAt;
-    private Calendar deliveredAt;
+    private Timestamp orderedAt;
+    private Timestamp deliveredAt;
+    private Timestamp preferredRangeStart;
+    private Timestamp preferredRangeEnd;
 
     @Ignore
     private List<Ordered> ordereds;
@@ -82,22 +81,6 @@ public class Order extends AbstractEntity implements Serializable {
         this.courierId = courierId;
     }
 
-    public Calendar getOrderedAt() {
-        return orderedAt;
-    }
-
-    public void setOrderedAt(Calendar orderedAt) {
-        this.orderedAt = orderedAt;
-    }
-
-    public Calendar getDeliveredAt() {
-        return deliveredAt;
-    }
-
-    public void setDeliveredAt(Calendar deliveredAt) {
-        this.deliveredAt = deliveredAt;
-    }
-
     public List<Ordered> getOrdereds() {
         return ordereds;
     }
@@ -120,5 +103,37 @@ public class Order extends AbstractEntity implements Serializable {
 
     public void setCourier(User courier) {
         this.courier = courier;
+    }
+
+    public Timestamp getOrderedAt() {
+        return orderedAt;
+    }
+
+    public void setOrderedAt(Timestamp orderedAt) {
+        this.orderedAt = orderedAt;
+    }
+
+    public Timestamp getDeliveredAt() {
+        return deliveredAt;
+    }
+
+    public void setDeliveredAt(Timestamp deliveredAt) {
+        this.deliveredAt = deliveredAt;
+    }
+
+    public Timestamp getPreferredRangeStart() {
+        return preferredRangeStart;
+    }
+
+    public void setPreferredRangeStart(Timestamp preferredRangeStart) {
+        this.preferredRangeStart = preferredRangeStart;
+    }
+
+    public Timestamp getPreferredRangeEnd() {
+        return preferredRangeEnd;
+    }
+
+    public void setPreferredRangeEnd(Timestamp preferredRangeEnd) {
+        this.preferredRangeEnd = preferredRangeEnd;
     }
 }
