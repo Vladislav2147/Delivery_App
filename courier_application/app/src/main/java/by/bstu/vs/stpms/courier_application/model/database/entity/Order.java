@@ -7,7 +7,7 @@ import androidx.room.TypeConverters;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.List;
+import java.util.Collection;
 
 import by.bstu.vs.stpms.courier_application.model.database.entity.converters.TimestampConverter;
 
@@ -32,14 +32,9 @@ public class Order extends AbstractEntity implements Serializable {
     private Timestamp preferredRangeEnd;
 
     @Ignore
-    private List<Ordered> ordereds;
+    private Collection<Ordered> ordered;
     @Ignore
     private Customer customer;
-    @Ignore
-    private User courier;
-
-    public Order() {
-    }
 
     public String getAddress() {
         return address;
@@ -81,12 +76,12 @@ public class Order extends AbstractEntity implements Serializable {
         this.courierId = courierId;
     }
 
-    public List<Ordered> getOrdereds() {
-        return ordereds;
+    public Collection<Ordered> getOrdered() {
+        return ordered;
     }
 
-    public void setOrdereds(List<Ordered> ordereds) {
-        this.ordereds = ordereds;
+    public void setOrdered(Collection<Ordered> ordered) {
+        this.ordered = ordered;
     }
 
     public Customer getCustomer() {
@@ -95,14 +90,6 @@ public class Order extends AbstractEntity implements Serializable {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
-    }
-
-    public User getCourier() {
-        return courier;
-    }
-
-    public void setCourier(User courier) {
-        this.courier = courier;
     }
 
     public Timestamp getOrderedAt() {

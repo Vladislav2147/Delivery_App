@@ -22,7 +22,7 @@ public abstract class OrderDao extends AbstractDao<Order> {
     public void insert(Order order) {
         insertOrderOnly(order);
         insertCustomer(order.getCustomer());
-        order.getOrdereds().forEach(ordered ->  {
+        order.getOrdered().forEach(ordered ->  {
             insertProduct(ordered.getProduct());
             insertOrdered(ordered);
         });
