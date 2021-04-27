@@ -31,4 +31,7 @@
     <string name="active_orders">Active Orders</string>
     <string name="details">Details</string>
     <string name="accept">Accept</string>
+    <string name="arrow"><![CDATA[->]]></string>
+    <string name="call">Call</string>
+    <string name="show_on_map">Show on map</string>
 </resources>
