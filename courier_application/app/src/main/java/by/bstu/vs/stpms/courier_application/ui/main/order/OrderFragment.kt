@@ -1,30 +1,31 @@
 package by.bstu.vs.stpms.courier_application.ui.main.order
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import by.bstu.vs.stpms.courier_application.R
-import by.bstu.vs.stpms.courier_application.model.database.CourierDatabase
-import by.bstu.vs.stpms.courier_application.model.database.entity.Product
-import by.bstu.vs.stpms.courier_application.model.exception.CourierNetworkException
-import by.bstu.vs.stpms.courier_application.model.network.NetworkRepository
-import by.bstu.vs.stpms.courier_application.model.network.dto.OrderDto
-import by.bstu.vs.stpms.courier_application.model.service.mapper.OrderMapper
-import by.bstu.vs.stpms.courier_application.model.service.mapper.ProductMapper
-import by.bstu.vs.stpms.courier_application.model.util.event.Event
-import org.mapstruct.factory.Mappers
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import by.bstu.vs.stpms.courier_application.databinding.FragmentOrderBinding
+import by.bstu.vs.stpms.courier_application.model.database.entity.Order
+import by.bstu.vs.stpms.courier_application.model.util.event.Status
+import by.bstu.vs.stpms.courier_application.ui.util.recyclerview.OrderAdapter
 
 class OrderFragment : Fragment() {
 
     private lateinit var orderViewModel: OrderViewModel
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var orderAdapter: OrderAdapter
+    private lateinit var navController: NavController
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -33,46 +34,75 @@ class OrderFragment : Fragment() {
     ): View? {
         orderViewModel =
                 ViewModelProvider(this).get(OrderViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_order, container, false)
-        val textView: TextView = root.findViewById(R.id.text_home)
-        orderViewModel.text.observe(viewLifecycleOwner, {
-            textView.text = it
-        })
+        val navHostFragment =
+                requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
+        navController = navHostFragment!!.navController
 
-        return root
+        val binding = FragmentOrderBinding.inflate(inflater, container, false)
+        binding.apply {
+//            fragment = this@OrderFragment
+            vm = orderViewModel
+            lifecycleOwner = this@OrderFragment
+        }
+
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        NetworkRepository.orderApi().availableOrders.enqueue(object: Callback<List<OrderDto>> {
-            override fun onResponse(call: Call<List<OrderDto>>, response: Response<List<OrderDto>>) {
-                try {
-                    when (response.code()) {
-                        //Успешное получение данных
-                        200 -> {
-                            val mapper = Mappers.getMapper(OrderMapper::class.java)
-                            val orders = mapper.dtosToEntities(response.body())
-                            val i = orders.size
-//                            ordersLiveData.postValue(Event.success(response.body()))
-                        }
-                        //Возвращается сервером, если пользователь не имеет роли курьера
-                        403 -> {
-                            throw CourierNetworkException("Your account is not verified")
-                        }
-                        else -> {
-                            throw CourierNetworkException("Network Troubles")
-                        }
-                    }
-                } catch (e: CourierNetworkException) {
-//                    responseLiveData.postValue(Event.error(e))
+        initRecyclerView()
+        initViewModel()
+
+    }
+
+
+    private fun initRecyclerView() {
+        orderAdapter = OrderAdapter(requireContext())
+        orderAdapter.onClickListener = object : OrderAdapter.OnClickListener {
+            override fun onVariantClick(order: Order?) {
+//                article?.let {
+//                    val intent = Intent(Intent.ACTION_VIEW)
+//                    intent.data = Uri.parse(it.link)
+//                    startActivity(intent)
+//                }
+            }
+        }
+
+        recyclerView = requireView().findViewById<RecyclerView>(R.id.rv_available_orders).apply {
+            isNestedScrollingEnabled = false
+            layoutManager = LinearLayoutManager(context)
+            adapter = orderAdapter
+        }
+
+    }
+
+    private fun initViewModel() {
+        val refresh = requireView().findViewById<SwipeRefreshLayout>(R.id.available_orders_refresh)
+        refresh.setOnRefreshListener {
+            orderViewModel.getAvailableOrders()
+        }
+        orderViewModel.ordersLiveData.observe(viewLifecycleOwner) { orders -> orderAdapter.setArticles(orders.data) }
+        orderViewModel.ordersLiveData.observe(viewLifecycleOwner, {
+            when (it.status) {
+                Status.ERROR -> {
+                    Toast.makeText(context, "error " + it.t?.message, Toast.LENGTH_SHORT).show()
+                    refresh.isRefreshing = false
+                    recyclerView.visibility = View.VISIBLE
+                }
+                Status.SUCCESS -> {
+                    refresh.isRefreshing = false
+                    recyclerView.visibility = View.VISIBLE
+                    Log.d("HTTP", "orders: success")
+                }
+                Status.LOADING -> {
+                    refresh.visibility = View.VISIBLE
+                    recyclerView.visibility = View.GONE
+                    Log.d("HTTP", "orders: loading")
                 }
             }
-
-            override fun onFailure(call: Call<List<OrderDto>>, t: Throwable) {
-                val b = ""
-            }
-
         })
+
+        orderViewModel.getAvailableOrders()
     }
 }

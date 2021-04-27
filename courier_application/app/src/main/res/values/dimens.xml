@@ -5,4 +5,8 @@
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="small_text">12sp</dimen>
+    <dimen name="default_text">16sp</dimen>
+    <dimen name="item_indent">8dp</dimen>
+    <dimen name="large_item_indent">16dp</dimen>
 </resources>
