@@ -6,47 +6,47 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import by.bstu.vs.stpms.courier_application.databinding.AvailableOrderLayoutBinding
-import by.bstu.vs.stpms.courier_application.model.database.entity.Order
+import by.bstu.vs.stpms.courier_application.databinding.ProductLayoutBinding
+import by.bstu.vs.stpms.courier_application.model.database.entity.Ordered
 
-class OrderAdapter(private val context: Context) : RecyclerView.Adapter<OrderAdapter.ViewHolder>() {
+class ProductAdapter(private val context: Context) : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
     interface OnClickListener {
-        fun onVariantClick(order: Order?)
+        fun onVariantClick(ordered: Ordered?)
     }
 
-    var availableOrders: List<Order>? = null
+    var ordereds: List<Ordered>? = null
 
     var onClickListener: OnClickListener? = null
 
-    fun setOrders(orders: List<Order>?) {
-        this.availableOrders = orders
+    fun setProducts(products: List<Ordered>?) {
+        this.ordereds = products
         notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding: AvailableOrderLayoutBinding = AvailableOrderLayoutBinding.inflate(inflater, parent, false)
+        val binding: ProductLayoutBinding = ProductLayoutBinding.inflate(inflater, parent, false)
         return ViewHolder(binding.root)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val order: Order = availableOrders!![position]
-        holder.binding?.order = order
+        val product: Ordered = ordereds!![position]
+        holder.binding?.ordered = product
         if (onClickListener != null) {
             holder.itemView.setOnClickListener {
                 onClickListener?.onVariantClick(
-                        order
+                    product
                 )
             }
         }
     }
 
     override fun getItemCount(): Int {
-        return if (availableOrders == null) 0 else availableOrders!!.size
+        return if (ordereds == null) 0 else ordereds!!.size
     }
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        var binding: AvailableOrderLayoutBinding?
+        var binding: ProductLayoutBinding?
 
         init {
             binding = DataBindingUtil.bind(v)

@@ -34,4 +34,7 @@
     <string name="arrow"><![CDATA[->]]></string>
     <string name="call">Call</string>
     <string name="show_on_map">Show on map</string>
+    <string name="amount">Amount</string>
+    <string name="info">Info</string>
+    <string name="price">Price</string>
 </resources>

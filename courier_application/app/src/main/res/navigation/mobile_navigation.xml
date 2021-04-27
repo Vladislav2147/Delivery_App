@@ -79,19 +79,15 @@
         <action
             android:id="@+id/action_navigation_splash_to_navigation_auth"
             app:destination="@id/navigation_auth"
-            app:enterAnim="@anim/from_right"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
+            app:enterAnim="@anim/from_bottom"
+            app:exitAnim="@anim/to_top"
             app:popUpTo="@id/navigation_splash"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_navigation_splash_to_navigation_order"
             app:destination="@id/navigation_available_order"
-            app:enterAnim="@anim/from_right"
-            app:exitAnim="@anim/to_left"
-            app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"
+            app:enterAnim="@anim/from_bottom"
+            app:exitAnim="@anim/to_top"
             app:popUpTo="@id/navigation_splash"
             app:popUpToInclusive="true" />
     </fragment>

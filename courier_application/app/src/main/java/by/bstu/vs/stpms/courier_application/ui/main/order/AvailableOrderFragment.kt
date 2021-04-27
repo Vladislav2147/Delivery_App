@@ -77,7 +77,7 @@ class AvailableOrderFragment : Fragment() {
         refresh.setOnRefreshListener {
             availableOrderViewModel.getAvailableOrders()
         }
-        availableOrderViewModel.ordersLiveData.observe(viewLifecycleOwner) { orders -> orderAdapter.setArticles(orders.data) }
+        availableOrderViewModel.ordersLiveData.observe(viewLifecycleOwner) { orders -> orderAdapter.setOrders(orders.data) }
         availableOrderViewModel.ordersLiveData.observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.ERROR -> {

@@ -189,13 +189,38 @@
 
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
-                    <ProgressBar
-                        android:id="@+id/news_progress"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:visibility="gone"/>
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginHorizontal="@dimen/item_indent">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="0.2"
+                            android:textAlignment="center"
+                            android:textSize="@dimen/default_text"
+                            android:textStyle="bold"
+                            android:text="@string/amount"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="0.6"
+                            android:textAlignment="center"
+                            android:textSize="@dimen/default_text"
+                            android:textStyle="bold"
+                            android:text="@string/info"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="0.2"
+                            android:textAlignment="center"
+                            android:textSize="@dimen/default_text"
+                            android:textStyle="bold"
+                            android:text="@string/price"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_news"
+                        android:id="@+id/rv_available_orders_products"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                 </LinearLayout>
