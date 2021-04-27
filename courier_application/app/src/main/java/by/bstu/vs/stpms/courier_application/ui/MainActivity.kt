@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { controller: NavController?, destination: NavDestination?, arguments: Bundle? ->
             val fragmentsWithNavView: MutableList<String> = ArrayList()
-            fragmentsWithNavView.add(getString(R.string.title_order))
+            fragmentsWithNavView.add(getString(R.string.title_available_orders))
             fragmentsWithNavView.add(getString(R.string.title_profile))
             val currentFragment =
                 navController.currentDestination!!.label.toString()

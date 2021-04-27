@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -18,7 +17,7 @@ import by.bstu.vs.stpms.courier_application.R
 import by.bstu.vs.stpms.courier_application.databinding.FragmentOrderBinding
 import by.bstu.vs.stpms.courier_application.model.database.entity.Order
 import by.bstu.vs.stpms.courier_application.model.util.event.Status
-import by.bstu.vs.stpms.courier_application.ui.util.recyclerview.OrderAdapter
+import by.bstu.vs.stpms.courier_application.ui.util.OrderAdapter
 
 class OrderFragment : Fragment() {
 

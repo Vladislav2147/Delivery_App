@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/navigation_order"
         android:name="by.bstu.vs.stpms.courier_application.ui.main.order.OrderFragment"
-        android:label="@string/title_order"
+        android:label="@string/title_available_orders"
         tools:layout="@layout/fragment_order" >
         <argument
             android:name="currentUserId"

@@ -1,4 +1,4 @@
-package by.bstu.vs.stpms.courier_application.ui.util.recyclerview
+package by.bstu.vs.stpms.courier_application.ui.util
 
 import android.content.Context
 import android.view.LayoutInflater

@@ -36,6 +36,22 @@ public class Order extends AbstractEntity implements Serializable {
     @Ignore
     private Customer customer;
 
+    public double getTotalPrice() {
+        double price = 0.0;
+        for (Ordered productAmount: ordered) {
+            price += productAmount.getAmount() * productAmount.getProduct().getPrice();
+        }
+        return price;
+    }
+
+    public double getTotalWeight() {
+        double weight = 0.0;
+        for (Ordered productAmount: ordered) {
+            weight += productAmount.getAmount() * productAmount.getProduct().getWeight();
+        }
+        return weight;
+    }
+
     public String getAddress() {
         return address;
     }

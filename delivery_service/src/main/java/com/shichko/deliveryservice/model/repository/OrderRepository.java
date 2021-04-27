@@ -15,6 +15,6 @@ public interface OrderRepository extends CommonRepository<Order> {
     @Query("update orders o set o.state = :newState where o.id = :id")
     void updateStateById(@Param("id") long id, @Param("newState") OrderState newState);
 
-    @Query("select o from orders o where o.courier is null")
+    @Query("select o from orders o where o.courier is null order by o.preferredRangeEnd")
     List<Order> getAvailableOrders();
 }
