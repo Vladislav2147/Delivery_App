@@ -8,18 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import by.bstu.vs.stpms.courier_application.R
 
-class ActiveOrdersFragment : Fragment() {
+class ActiveOrderFragment : Fragment() {
 
-    private lateinit var viewModel: ActiveOrdersViewModel
+    private lateinit var viewModel: ActiveOrderViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.active_orders_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_active_order, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ActiveOrdersViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(ActiveOrderViewModel::class.java)
 
     }
 

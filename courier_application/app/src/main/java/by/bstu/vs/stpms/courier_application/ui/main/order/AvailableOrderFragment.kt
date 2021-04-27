@@ -14,14 +14,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import by.bstu.vs.stpms.courier_application.R
-import by.bstu.vs.stpms.courier_application.databinding.FragmentOrderBinding
+import by.bstu.vs.stpms.courier_application.databinding.FragmentAvailableOrderBinding
 import by.bstu.vs.stpms.courier_application.model.database.entity.Order
 import by.bstu.vs.stpms.courier_application.model.util.event.Status
 import by.bstu.vs.stpms.courier_application.ui.util.OrderAdapter
 
-class OrderFragment : Fragment() {
+class AvailableOrderFragment : Fragment() {
 
-    private lateinit var orderViewModel: OrderViewModel
+    private lateinit var availableOrderViewModel: AvailableOrderViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var orderAdapter: OrderAdapter
     private lateinit var navController: NavController
@@ -31,17 +31,16 @@ class OrderFragment : Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        orderViewModel =
-                ViewModelProvider(this).get(OrderViewModel::class.java)
+        availableOrderViewModel =
+                ViewModelProvider(this).get(AvailableOrderViewModel::class.java)
         val navHostFragment =
                 requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
         navController = navHostFragment!!.navController
 
-        val binding = FragmentOrderBinding.inflate(inflater, container, false)
+        val binding = FragmentAvailableOrderBinding.inflate(inflater, container, false)
         binding.apply {
-//            fragment = this@OrderFragment
-            vm = orderViewModel
-            lifecycleOwner = this@OrderFragment
+            vm = availableOrderViewModel
+            lifecycleOwner = this@AvailableOrderFragment
         }
 
         return binding.root
@@ -60,11 +59,8 @@ class OrderFragment : Fragment() {
         orderAdapter = OrderAdapter(requireContext())
         orderAdapter.onClickListener = object : OrderAdapter.OnClickListener {
             override fun onVariantClick(order: Order?) {
-//                article?.let {
-//                    val intent = Intent(Intent.ACTION_VIEW)
-//                    intent.data = Uri.parse(it.link)
-//                    startActivity(intent)
-//                }
+                val action = AvailableOrderFragmentDirections.actionNavigationAvailableOrderToNavigationAvailableOrderDetails(order!!)
+                navController.navigate(action)
             }
         }
 
@@ -79,10 +75,10 @@ class OrderFragment : Fragment() {
     private fun initViewModel() {
         val refresh = requireView().findViewById<SwipeRefreshLayout>(R.id.available_orders_refresh)
         refresh.setOnRefreshListener {
-            orderViewModel.getAvailableOrders()
+            availableOrderViewModel.getAvailableOrders()
         }
-        orderViewModel.ordersLiveData.observe(viewLifecycleOwner) { orders -> orderAdapter.setArticles(orders.data) }
-        orderViewModel.ordersLiveData.observe(viewLifecycleOwner, {
+        availableOrderViewModel.ordersLiveData.observe(viewLifecycleOwner) { orders -> orderAdapter.setArticles(orders.data) }
+        availableOrderViewModel.ordersLiveData.observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.ERROR -> {
                     Toast.makeText(context, "error " + it.t?.message, Toast.LENGTH_SHORT).show()
@@ -102,6 +98,6 @@ class OrderFragment : Fragment() {
             }
         })
 
-        orderViewModel.getAvailableOrders()
+        availableOrderViewModel.getAvailableOrders()
     }
 }

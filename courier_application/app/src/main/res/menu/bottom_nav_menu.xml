@@ -2,9 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_order"
+        android:id="@+id/navigation_available_order"
         android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/title_available_orders" />
+
+    <item
+        android:id="@+id/navigation_active_order"
+        android:icon="@drawable/ic_baseline_checklist_24"
+        android:title="@string/active_orders" />
 
     <item
         android:id="@+id/navigation_profile"

@@ -28,4 +28,7 @@
     <string name="sign_up">Sign Up</string>
     <string name="num_hint">171234567</string>
     <string name="available_orders">Available orders</string>
+    <string name="active_orders">Active Orders</string>
+    <string name="details">Details</string>
+    <string name="accept">Accept</string>
 </resources>

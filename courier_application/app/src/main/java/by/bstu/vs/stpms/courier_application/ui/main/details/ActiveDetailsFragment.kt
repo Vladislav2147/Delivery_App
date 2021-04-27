@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import by.bstu.vs.stpms.courier_application.R
 
-class DetailsFragment : Fragment() {
+class ActiveDetailsFragment : Fragment() {
 
-    private lateinit var detailsViewModel: DetailsViewModel
+    private lateinit var activeDetailsViewModel: ActiveDetailsViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        detailsViewModel =
-                ViewModelProvider(this).get(DetailsViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_details, container, false)
+        activeDetailsViewModel =
+                ViewModelProvider(this).get(ActiveDetailsViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_active_details, container, false)
         val textView: TextView = root.findViewById(R.id.text_notifications)
-        detailsViewModel.text.observe(viewLifecycleOwner, Observer {
+        activeDetailsViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root

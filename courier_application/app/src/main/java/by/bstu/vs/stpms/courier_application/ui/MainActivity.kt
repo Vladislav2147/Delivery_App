@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_order, R.id.navigation_profile, R.id.navigation_details
+                R.id.navigation_available_order, R.id.navigation_profile, R.id.navigation_active_details
             )
         )
 
@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() {
             val fragmentsWithNavView: MutableList<String> = ArrayList()
             fragmentsWithNavView.add(getString(R.string.title_available_orders))
             fragmentsWithNavView.add(getString(R.string.title_profile))
+            fragmentsWithNavView.add(getString(R.string.active_orders))
             val currentFragment =
                 navController.currentDestination!!.label.toString()
             var visibility = View.GONE
