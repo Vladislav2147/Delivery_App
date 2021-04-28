@@ -11,6 +11,7 @@ import by.bstu.vs.stpms.courier_application.model.service.mapper.OrderMapper
 import by.bstu.vs.stpms.courier_application.model.util.event.Event
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import okhttp3.ResponseBody
 import org.mapstruct.factory.Mappers
 import retrofit2.Call
 import retrofit2.Callback
@@ -50,6 +51,52 @@ class OrderService {
                 ordersLiveData.postValue(Event.error(t))
             }
         })
+    }
+
+    fun accept(orderLiveData: MutableLiveData<Order>, responseLiveData: MutableLiveData<Event<ResponseBody>>) {
+        responseLiveData.postValue(Event.loading())
+        orderLiveData.value?.let {
+            NetworkRepository.orderApi().acceptOrder(it.id).enqueue(object: Callback<ResponseBody>{
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    when (response.code()) {
+                        200 -> responseLiveData.postValue(Event.success(response.body()))
+                        else -> {
+                            val gson = Gson()
+                            val jsonObject: JsonObject = gson.fromJson(response.errorBody()?.string(), JsonObject::class.java)
+                            responseLiveData.postValue(Event.error(CourierNetworkException(jsonObject["message"].asString)))
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    responseLiveData.postValue(Event.error(t))
+                }
+
+            })
+        }
+    }
+
+    fun decline(orderLiveData: MutableLiveData<Order>, responseLiveData: MutableLiveData<Event<ResponseBody>>) {
+        responseLiveData.postValue(Event.loading())
+        orderLiveData.value?.let {
+            NetworkRepository.orderApi().acceptOrder(it.id).enqueue(object: Callback<ResponseBody>{
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    when (response.code()) {
+                        200 -> responseLiveData.postValue(Event.success(response.body()))
+                        else -> {
+                            val gson = Gson()
+                            val jsonObject: JsonObject = gson.fromJson(response.errorBody()?.string(), JsonObject::class.java)
+                            responseLiveData.postValue(Event.error(CourierNetworkException(jsonObject["message"].asString)))
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    responseLiveData.postValue(Event.error(t))
+                }
+
+            })
+        }
     }
 
 }

@@ -20,6 +20,7 @@ import by.bstu.vs.stpms.courier_application.databinding.FragmentAvailableOrderDe
 import by.bstu.vs.stpms.courier_application.model.util.event.Status
 import by.bstu.vs.stpms.courier_application.ui.util.ProductAdapter
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class AvailableOrderDetailsFragment : Fragment() {
@@ -72,16 +73,32 @@ class AvailableOrderDetailsFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = productAdapter
         }
-
     }
 
     private fun initViewModel() {
         viewModel.orderLiveData.observe(viewLifecycleOwner) { order -> productAdapter.setProducts(order.ordered.toList()) }
+
+        viewModel.responseLiveData.observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.ERROR -> {
+                    Toast.makeText(context, "error " + it.t?.message, Toast.LENGTH_SHORT).show()
+                    recyclerView.visibility = View.VISIBLE
+                }
+                Status.SUCCESS -> {
+                    navController.popBackStack()
+                    Log.d("HTTP", "accept: success")
+                }
+                Status.LOADING -> {
+                    Log.d("HTTP", "accept: loading")
+                }
+            }
+        }
     }
 
     private fun initButtons() {
         val callButton = requireView().findViewById<MaterialButton>(R.id.btn_details_call)
         val mapButton = requireView().findViewById<MaterialButton>(R.id.btn_details_map)
+        val acceptButton = requireView().findViewById<FloatingActionButton>(R.id.fab_accept)
 
         callButton.setOnClickListener {
             val phone = viewModel.orderLiveData.value?.customer?.phone
@@ -97,6 +114,10 @@ class AvailableOrderDetailsFragment : Fragment() {
             val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
             mapIntent.setPackage("com.google.android.apps.maps")
             startActivity(mapIntent)
+        }
+
+        acceptButton.setOnClickListener {
+            viewModel.acceptOrder()
         }
     }
 
