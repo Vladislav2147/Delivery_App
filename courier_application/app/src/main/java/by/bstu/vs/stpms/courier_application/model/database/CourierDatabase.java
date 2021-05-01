@@ -16,7 +16,7 @@ import by.bstu.vs.stpms.courier_application.model.database.dao.*;
 import by.bstu.vs.stpms.courier_application.model.database.entity.*;
 
 @Database(entities = { Change.class, Customer.class, Order.class, Ordered.class, Product.class, Role.class, User.class, UserRole.class },
-        version = 21)
+        version = 23)
 public abstract class CourierDatabase extends RoomDatabase {
 
 
@@ -67,6 +67,7 @@ public abstract class CourierDatabase extends RoomDatabase {
         }
     }
 
+    //TODO sync only for order and user, so other not needed?
     private static void createTriggers(SupportSQLiteDatabase db) {
         for (TableName tableName: TableName.values()) {
             try {

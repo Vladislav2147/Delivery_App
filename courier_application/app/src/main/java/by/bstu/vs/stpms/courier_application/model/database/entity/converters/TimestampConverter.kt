@@ -6,13 +6,13 @@ import java.sql.Timestamp
 class TimestampConverter {
 
     @TypeConverter
-    fun fromTimestamp(timestamp: Timestamp): Long {
-        return timestamp.time
+    fun fromTimestamp(timestamp: Timestamp?): Long? {
+        return timestamp?.time
     }
 
     @TypeConverter
-    fun toTimestamp(long: Long): Timestamp {
-        return Timestamp(long)
+    fun toTimestamp(long: Long?): Timestamp? {
+        return long?.let { Timestamp(long) }
     }
 
 }

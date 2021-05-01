@@ -1,11 +1,13 @@
 package by.bstu.vs.stpms.courier_application.model.service
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import by.bstu.vs.stpms.courier_application.model.database.CourierDatabase
 import by.bstu.vs.stpms.courier_application.model.database.entity.Order
 import by.bstu.vs.stpms.courier_application.model.exception.CourierNetworkException
 import by.bstu.vs.stpms.courier_application.model.network.NetworkRepository
 import by.bstu.vs.stpms.courier_application.model.network.NetworkRepository.context
+import by.bstu.vs.stpms.courier_application.model.network.NetworkRepository.isOnline
 import by.bstu.vs.stpms.courier_application.model.network.dto.OrderDto
 import by.bstu.vs.stpms.courier_application.model.service.mapper.OrderMapper
 import by.bstu.vs.stpms.courier_application.model.util.event.Event
@@ -53,13 +55,27 @@ class OrderService {
         })
     }
 
+    fun getActiveOrders() {
+        //TODO online & offline
+        //TODO if isuptodate check
+        if (isOnline(context)) {
+
+        } else {
+
+        }
+
+    }
+
     fun accept(orderLiveData: MutableLiveData<Order>, responseLiveData: MutableLiveData<Event<ResponseBody>>) {
         responseLiveData.postValue(Event.loading())
-        orderLiveData.value?.let {
-            NetworkRepository.orderApi().acceptOrder(it.id).enqueue(object: Callback<ResponseBody>{
+        orderLiveData.value?.let {  order ->
+            NetworkRepository.orderApi().acceptOrder(order.id).enqueue(object: Callback<ResponseBody>{
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     when (response.code()) {
-                        200 -> responseLiveData.postValue(Event.success(response.body()))
+                        200 -> {
+                            insertOrderWithReplace(order)
+                            responseLiveData.postValue(Event.success(response.body()))
+                        }
                         else -> {
                             val gson = Gson()
                             val jsonObject: JsonObject = gson.fromJson(response.errorBody()?.string(), JsonObject::class.java)
@@ -98,6 +114,20 @@ class OrderService {
 
             })
         }
+    }
+
+    fun insertOrderWithReplace(order: Order) {
+        //TODO uptodate only for order?
+        db.customerDao.insertWithReplace(order.customer)
+        Log.d("OrderService", "customer")
+        db.productDao.insertAll(order.ordered.map { it.product })
+        Log.d("OrderService", "products")
+        db.orderDao.insertWithReplace(order)
+        Log.d("OrderService", "order")
+        db.orderedDao.insertAll(order.ordered.toList())
+        Log.d("OrderService", "ordered")
+        db.changeDao.setUpToDate("orders", order.id)
+        Log.d("OrderService", "change")
     }
 
 }
