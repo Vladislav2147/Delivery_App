@@ -39,4 +39,8 @@ public abstract class CrudService<E extends AbstractEntity, R extends CommonRepo
     public Optional<E> findById(long id) {
         return repository.findById(id);
     }
+
+    public E save(E entity) {
+        return repository.save(entity);
+    }
 }

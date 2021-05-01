@@ -13,6 +13,9 @@ public interface OrderApi {
     @GET("available")
     Call<List<OrderDto>> getAvailableOrders();
 
+    @GET("active")
+    Call<List<OrderDto>> getActiveOrders();
+
     @GET("accept/{id}")
     Call<ResponseBody> acceptOrder(@Path("id") long id);
 

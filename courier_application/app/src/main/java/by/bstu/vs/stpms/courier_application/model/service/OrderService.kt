@@ -76,6 +76,7 @@ class OrderService {
         }
     }
 
+    //TODO offline
     fun decline(orderLiveData: MutableLiveData<Order>, responseLiveData: MutableLiveData<Event<ResponseBody>>) {
         responseLiveData.postValue(Event.loading())
         orderLiveData.value?.let {

@@ -29,4 +29,8 @@ public class OrderService extends CrudService<Order, OrderRepository> {
     public List<Order> getAvailableOrders() {
         return repository.getAvailableOrders();
     }
+
+    public List<Order> getActiveOrders(long courierId) {
+        return  repository.getActiveOrdersByCourierId(courierId);
+    }
 }
