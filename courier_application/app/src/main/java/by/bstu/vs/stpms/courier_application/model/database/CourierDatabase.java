@@ -9,6 +9,9 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import by.bstu.vs.stpms.courier_application.model.database.contract.DbContract;
 import by.bstu.vs.stpms.courier_application.model.database.contract.RoleType;
 import by.bstu.vs.stpms.courier_application.model.database.contract.TableName;
@@ -66,10 +69,13 @@ public abstract class CourierDatabase extends RoomDatabase {
             db.execSQL(DbContract.getInsertRole(roleType));
         }
     }
-
-    //TODO sync only for order and user, so other not needed?
+    
     private static void createTriggers(SupportSQLiteDatabase db) {
-        for (TableName tableName: TableName.values()) {
+        List<TableName> clientChangeableTables = new ArrayList<>();
+        clientChangeableTables.add(TableName.ORDER);
+        clientChangeableTables.add(TableName.USER);
+
+        for (TableName tableName: clientChangeableTables) {
             try {
                 db.execSQL(DbContract.getInsertTriggerIfFirst(tableName));
                 db.execSQL(DbContract.getInsertTriggerIfNotFirst(tableName));
