@@ -1,28 +1,17 @@
-package by.bstu.vs.stpms.courier_application.model.database.dao;
+package by.bstu.vs.stpms.courier_application.model.database.dao
 
-import androidx.lifecycle.LiveData;
-import androidx.room.Dao;
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
-import androidx.room.Query;
-
-import java.util.List;
-
-import by.bstu.vs.stpms.courier_application.model.database.entity.Order;
+import androidx.room.*
+import by.bstu.vs.stpms.courier_application.model.database.entity.*
 
 @Dao
-public abstract class OrderDao extends AbstractDao<Order>  {
+abstract class OrderDao : AbstractDao<Order>() {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract void insertAll(List<Order> orders);
-
+    abstract fun insertAll(orders: List<Order>)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract void insertWithReplace(Order order);
-
-    @Override
+    abstract fun insertWithReplace(order: Order)
     @Query("SELECT * FROM orders WHERE id = :id")
-    public abstract Order findById(long id);
+    abstract override suspend fun findById(id: Long): Order?
 
-    @Override
     @Query("SELECT * FROM orders")
-    public abstract List<Order> getAll();
+    abstract override suspend fun getAll(): List<Order>
 }

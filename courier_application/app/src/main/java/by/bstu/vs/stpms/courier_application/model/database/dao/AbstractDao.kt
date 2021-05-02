@@ -1,24 +1,19 @@
-package by.bstu.vs.stpms.courier_application.model.database.dao;
+package by.bstu.vs.stpms.courier_application.model.database.dao
 
-import androidx.lifecycle.LiveData;
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.Update;
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.Update
+import by.bstu.vs.stpms.courier_application.model.database.entity.AbstractEntity
 
-import java.util.Collection;
-import java.util.List;
-
-import by.bstu.vs.stpms.courier_application.model.database.entity.AbstractEntity;
-
-public abstract class AbstractDao<E extends AbstractEntity> {
+abstract class AbstractDao<E : AbstractEntity> {
     @Insert
-    public abstract void insert(E item);
+    abstract fun insert(item: E)
     @Delete
-    public abstract void delete(E item);
+    abstract fun delete(item: E)
     @Delete
-    public abstract void deleteAll(Collection<E> items);
+    abstract fun deleteAll(items: Collection<E>)
     @Update
-    public abstract void update(E item);
-    public abstract E findById(long id);
-    public abstract List<E> getAll();
+    abstract fun update(item: E)
+    abstract suspend fun findById(id: Long): E?
+    abstract suspend fun getAll(): List<E>
 }

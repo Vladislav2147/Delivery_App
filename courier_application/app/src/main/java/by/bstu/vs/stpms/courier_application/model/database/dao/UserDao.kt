@@ -1,42 +1,26 @@
-package by.bstu.vs.stpms.courier_application.model.database.dao;
+package by.bstu.vs.stpms.courier_application.model.database.dao
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Transformations;
-import androidx.room.Dao;
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.Query;
-import androidx.room.Update;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import by.bstu.vs.stpms.courier_application.model.database.dao.AbstractDao;
-import by.bstu.vs.stpms.courier_application.model.database.entity.Role;
-import by.bstu.vs.stpms.courier_application.model.database.entity.User;
-import by.bstu.vs.stpms.courier_application.model.database.entity.UserRole;
+import androidx.lifecycle.LiveData
+import androidx.room.*
+import by.bstu.vs.stpms.courier_application.model.database.entity.Role
+import by.bstu.vs.stpms.courier_application.model.database.entity.User
 
 @Dao
-public abstract class UserDao {
-
+abstract class UserDao {
     @Insert
-    public abstract void insert(User user);
+    abstract fun insert(user: User)
     @Delete
-    public abstract void delete(User user);
+    abstract fun delete(user: User)
     @Update
-    public abstract void update(User user);
-
+    abstract fun update(user: User)
     @Query("SELECT * FROM user WHERE email = :email")
-    public abstract LiveData<User> findByEmail(String email);
+    abstract fun findByEmail(email: String): LiveData<User>
 
-    @Query("SELECT * FROM user LIMIT 1")
-    public abstract LiveData<List<User>> getUser();
+    @get:Query("SELECT * FROM user LIMIT 1")
+    abstract val user: LiveData<List<User>?>
 
-    @Query("SELECT * FROM user")
-    public abstract LiveData<List<User>> getAllUsersWithoutRoles();
+    @get:Query("SELECT * FROM user")
+    abstract val allUsersWithoutRoles: LiveData<List<User>?>
     @Query("SELECT * FROM role WHERE id IN (select roleId from user_role where userId = :userId)")
-    public abstract List<Role> getRolesByUserId(long userId);
-
+    abstract fun getRolesByUserId(userId: Long): List<Role>
 }

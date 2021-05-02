@@ -11,12 +11,10 @@ import by.bstu.vs.stpms.courier_application.model.network.NetworkRepository.isOn
 import by.bstu.vs.stpms.courier_application.model.network.dto.OrderDto
 import by.bstu.vs.stpms.courier_application.model.service.mapper.OrderMapper
 import by.bstu.vs.stpms.courier_application.model.util.event.Event
-import by.bstu.vs.stpms.courier_application.model.util.livedata.observeOnce
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import org.mapstruct.factory.Mappers
@@ -99,7 +97,7 @@ class OrderService {
         }
         //Получаем активные заказы из локальной бд
         CoroutineScope(Dispatchers.IO).launch {
-            val orders = db.orderDao.all
+            val orders = db.orderDao.getAll()
             for (order in orders) {
                 fillOrderFromDb(order)
             }

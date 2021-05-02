@@ -1,20 +1,13 @@
-package by.bstu.vs.stpms.courier_application.model.database.dao;
+package by.bstu.vs.stpms.courier_application.model.database.dao
 
-import androidx.lifecycle.LiveData;
-import androidx.room.Dao;
-import androidx.room.Query;
-
-import java.util.List;
-
-import by.bstu.vs.stpms.courier_application.model.database.entity.Product;
-import by.bstu.vs.stpms.courier_application.model.database.entity.Role;
+import androidx.room.*
+import by.bstu.vs.stpms.courier_application.model.database.entity.*
 
 @Dao
-public abstract class RoleDao extends AbstractDao<Role> {
-    @Override
+abstract class RoleDao : AbstractDao<Role>() {
     @Query("SELECT * FROM role WHERE id = :id")
-    public abstract Role findById(long id);
-    @Override
+    abstract override suspend fun findById(id: Long): Role?
+
     @Query("SELECT * FROM role")
-    public abstract List<Role> getAll();
+    abstract override suspend fun getAll(): List<Role>
 }
