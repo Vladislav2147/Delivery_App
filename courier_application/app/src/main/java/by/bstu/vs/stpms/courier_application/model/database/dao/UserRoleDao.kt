@@ -14,5 +14,5 @@ abstract class UserRoleDao {
     @Delete
     abstract fun delete(userRole: UserRole?)
     @Query("SELECT * FROM role WHERE role.id IN (SELECT roleId FROM user_role WHERE userId = :userId)")
-    abstract fun getUserRolesByUserId(userId: Long): LiveData<List<Role?>?>?
+    abstract suspend fun getUserRolesByUserId(userId: Long): List<Role?>
 }

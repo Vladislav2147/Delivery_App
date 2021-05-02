@@ -87,28 +87,22 @@ class UserService(context: Context?) {
             if(isOnline(context)) {
                 //Если есть подключение к сети, попытка получить с сервера текущего пользователя
                 userApi.currentUser().enqueue(CustomUserCallback(userLiveData) { user ->
-                    db.userDao.user.observeOnce { users ->
-                        val dbUser = users?.firstOrNull()
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val dbUser = db.userDao.getUser()?.firstOrNull()
                         if (dbUser == null) {
                             insertUserToDb(user)
                         }
+                        userLiveData.postValue(Event.success(user))
                     }
-                    userLiveData.postValue(Event.success(user))
                 })
             } else {
                 //Если подключения к сети нет, попытка получить текущего пользователя с локальной бд
-                CoroutineScope(Dispatchers.Main).launch {
-                    db.userDao.user.observeOnce { users ->
-                        val user = users?.firstOrNull()
-                        if (user != null) {
-                            db.userRoleDao.getUserRolesByUserId(user.id)?.observeOnce {
-                                user.roles = HashSet(it)
-                                userLiveData.postValue(Event.success(user))
-                            }
-                        } else {
-                            userLiveData.postValue(Event.error(CourierNetworkException("User not found")))
-                        }
-                    }
+                val user = db.userDao.getUser()?.firstOrNull()
+                if (user != null) {
+                    user.roles = HashSet(db.userRoleDao.getUserRolesByUserId(user.id))
+                    userLiveData.postValue(Event.success(user))
+                } else {
+                    userLiveData.postValue(Event.error(CourierNetworkException("User not found")))
                 }
             }
         }
@@ -129,16 +123,15 @@ class UserService(context: Context?) {
             })
         } else {
             //Если подключения к сети нет, попытка получить текущего пользователя с локальной бд
-            db.userDao.user.observeOnce { users ->
-                val user = users?.firstOrNull()
+            CoroutineScope(Dispatchers.IO).launch {
+                val user = db.userDao.getUser()?.firstOrNull()
                 if (user != null) {
-                    db.userRoleDao.getUserRolesByUserId(user.id)?.observeOnce {
-                        user.roles = HashSet(it)
-                        userLiveData.postValue(Event.success(user))
-                    }
+                    user.roles = HashSet(db.userRoleDao.getUserRolesByUserId(user.id))
+                    userLiveData.postValue(Event.success(user))
                 } else {
                     userLiveData.postValue(Event.error(CourierNetworkException("User not found")))
                 }
+
             }
         }
     }
@@ -164,7 +157,7 @@ class UserService(context: Context?) {
                     200 -> {
                         val dto: UserDto = response.body()!!
                         val mapper = Mappers.getMapper(UserMapper::class.java)
-                        var user = mapper.dtoToEntity(dto)
+                        val user = mapper.dtoToEntity(dto)
                         onStatusOkCallback.invoke(user)
                     }
                     401 -> {
