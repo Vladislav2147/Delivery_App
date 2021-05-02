@@ -38,16 +38,26 @@ public class Order extends AbstractEntity implements Serializable {
 
     public double getTotalPrice() {
         double price = 0.0;
-        for (Ordered productAmount: ordered) {
-            price += productAmount.getAmount() * productAmount.getProduct().getPrice();
+        if (ordered != null) {
+            for (Ordered productAmount: ordered) {
+                Product product = productAmount.getProduct();
+                if (product != null) {
+                    price += productAmount.getAmount() * product.getPrice();
+                }
+            }
         }
         return price;
     }
 
     public double getTotalWeight() {
         double weight = 0.0;
-        for (Ordered productAmount: ordered) {
-            weight += productAmount.getAmount() * productAmount.getProduct().getWeight();
+        if (ordered != null) {
+            for (Ordered productAmount: ordered) {
+                Product product = productAmount.getProduct();
+                if (product != null) {
+                    weight += productAmount.getAmount() * product.getWeight();
+                }
+            }
         }
         return weight;
     }
@@ -138,5 +148,22 @@ public class Order extends AbstractEntity implements Serializable {
 
     public void setPreferredRangeEnd(Timestamp preferredRangeEnd) {
         this.preferredRangeEnd = preferredRangeEnd;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "address='" + address + '\'' +
+                ", info='" + info + '\'' +
+                ", state='" + state + '\'' +
+                ", customerId=" + customerId +
+                ", courierId=" + courierId +
+                ", orderedAt=" + orderedAt +
+                ", deliveredAt=" + deliveredAt +
+                ", preferredRangeStart=" + preferredRangeStart +
+                ", preferredRangeEnd=" + preferredRangeEnd +
+                ", ordered=" + ordered +
+                ", customer=" + customer +
+                "} " + super.toString();
     }
 }

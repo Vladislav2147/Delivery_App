@@ -25,4 +25,7 @@ public abstract class OrderedDao extends AbstractDao<Ordered>  {
     @Override
     @Query("SELECT * FROM ordered")
     public abstract LiveData<List<Ordered>> getAll();
+
+    @Query("SELECT * FROM ordered WHERE orderId = :orderId")
+    public abstract LiveData<List<Ordered>> findByOrderId(long orderId);
 }

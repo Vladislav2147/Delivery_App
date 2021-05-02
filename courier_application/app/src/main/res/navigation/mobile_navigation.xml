@@ -9,7 +9,7 @@
         android:id="@+id/navigation_available_order"
         android:name="by.bstu.vs.stpms.courier_application.ui.main.order.AvailableOrderFragment"
         android:label="@string/title_available_orders"
-        tools:layout="@layout/fragment_available_order" >
+        tools:layout="@layout/fragment_order_list" >
         <argument
             android:name="currentUserId"
             app:argType="long" />

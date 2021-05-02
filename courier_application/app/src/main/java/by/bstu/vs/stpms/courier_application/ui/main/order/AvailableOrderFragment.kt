@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import by.bstu.vs.stpms.courier_application.R
-import by.bstu.vs.stpms.courier_application.databinding.FragmentAvailableOrderBinding
 import by.bstu.vs.stpms.courier_application.model.database.entity.Order
 import by.bstu.vs.stpms.courier_application.model.util.event.Status
 import by.bstu.vs.stpms.courier_application.ui.util.OrderAdapter
@@ -37,13 +36,7 @@ class AvailableOrderFragment : Fragment() {
                 requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
         navController = navHostFragment!!.navController
 
-        val binding = FragmentAvailableOrderBinding.inflate(inflater, container, false)
-        binding.apply {
-            vm = availableOrderViewModel
-            lifecycleOwner = this@AvailableOrderFragment
-        }
-
-        return binding.root
+        return inflater.inflate(R.layout.fragment_order_list, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -64,7 +57,7 @@ class AvailableOrderFragment : Fragment() {
             }
         }
 
-        recyclerView = requireView().findViewById<RecyclerView>(R.id.rv_available_orders).apply {
+        recyclerView = requireView().findViewById<RecyclerView>(R.id.rv_orders).apply {
             isNestedScrollingEnabled = false
             layoutManager = LinearLayoutManager(context)
             adapter = orderAdapter
@@ -73,7 +66,7 @@ class AvailableOrderFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        val refresh = requireView().findViewById<SwipeRefreshLayout>(R.id.available_orders_refresh)
+        val refresh = requireView().findViewById<SwipeRefreshLayout>(R.id.orders_refresh)
         refresh.setOnRefreshListener {
             availableOrderViewModel.getAvailableOrders()
         }

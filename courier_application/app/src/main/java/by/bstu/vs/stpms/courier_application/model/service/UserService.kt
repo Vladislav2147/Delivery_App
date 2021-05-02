@@ -38,17 +38,7 @@ class UserService(context: Context?) {
         //Формируем запрос к серверу, ответ - объект UserDto, при помощи CustomUserCallback
         //осуществляем обработку ошибок и отображение в User
         userApi.login(login, password, true).enqueue(CustomUserCallback(userLiveData) { user ->
-            //Вставляем объект User в базу данных
-            db.userDao.insert(user)
-            //Вставляем роли пользователя в базу данных
-            for (role in user.roles) {
-                db.userRoleDao.insert(UserRole().apply {
-                    userId = user.id
-                    roleId = role.id
-                })
-            }
-            //В таблице изменений помечаем изменение как актуальное
-            db.changeDao.setUpToDate("user", user.id)
+            insertUserToDb(user)
             userLiveData.postValue(Event.success(user))
         })
     }
@@ -97,6 +87,12 @@ class UserService(context: Context?) {
             if(isOnline(context)) {
                 //Если есть подключение к сети, попытка получить с сервера текущего пользователя
                 userApi.currentUser().enqueue(CustomUserCallback(userLiveData) { user ->
+                    db.userDao.user.observeOnce { users ->
+                        val dbUser = users.firstOrNull()
+                        if (dbUser == null) {
+                            insertUserToDb(user)
+                        }
+                    }
                     userLiveData.postValue(Event.success(user))
                 })
             } else {
@@ -145,6 +141,20 @@ class UserService(context: Context?) {
                 }
             }
         }
+    }
+
+    private fun insertUserToDb(user: User) {
+        //Вставляем объект User в базу данных
+        db.userDao.insert(user)
+        //Вставляем роли пользователя в базу данных
+        for (role in user.roles) {
+            db.userRoleDao.insert(UserRole().apply {
+                userId = user.id
+                roleId = role.id
+            })
+        }
+        //В таблице изменений помечаем изменение как актуальное
+        db.changeDao.setUpToDate("user", user.id)
     }
 
     private class CustomUserCallback(val userLiveData: MutableLiveData<Event<User>>, val onStatusOkCallback: (User) -> Unit) : Callback<UserDto> {

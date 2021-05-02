@@ -1,27 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.main.order.AvailableOrderFragment">
-    <data>
-        <variable
-            name="vm"
-            type="by.bstu.vs.stpms.courier_application.ui.main.order.AvailableOrderViewModel" />
-    </data>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/available_orders_refresh"
+            android:id="@+id/orders_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_available_orders"
+                android:id="@+id/rv_orders"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
