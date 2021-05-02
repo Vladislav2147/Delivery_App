@@ -88,7 +88,7 @@ class UserService(context: Context?) {
                 //Если есть подключение к сети, попытка получить с сервера текущего пользователя
                 userApi.currentUser().enqueue(CustomUserCallback(userLiveData) { user ->
                     db.userDao.user.observeOnce { users ->
-                        val dbUser = users.firstOrNull()
+                        val dbUser = users?.firstOrNull()
                         if (dbUser == null) {
                             insertUserToDb(user)
                         }
@@ -99,9 +99,9 @@ class UserService(context: Context?) {
                 //Если подключения к сети нет, попытка получить текущего пользователя с локальной бд
                 CoroutineScope(Dispatchers.Main).launch {
                     db.userDao.user.observeOnce { users ->
-                        val user = users.firstOrNull()
+                        val user = users?.firstOrNull()
                         if (user != null) {
-                            db.userRoleDao.getUserRolesByUserId(user.id).observeOnce {
+                            db.userRoleDao.getUserRolesByUserId(user.id)?.observeOnce {
                                 user.roles = HashSet(it)
                                 userLiveData.postValue(Event.success(user))
                             }
@@ -130,9 +130,9 @@ class UserService(context: Context?) {
         } else {
             //Если подключения к сети нет, попытка получить текущего пользователя с локальной бд
             db.userDao.user.observeOnce { users ->
-                val user = users.firstOrNull()
+                val user = users?.firstOrNull()
                 if (user != null) {
-                    db.userRoleDao.getUserRolesByUserId(user.id).observeOnce {
+                    db.userRoleDao.getUserRolesByUserId(user.id)?.observeOnce {
                         user.roles = HashSet(it)
                         userLiveData.postValue(Event.success(user))
                     }
