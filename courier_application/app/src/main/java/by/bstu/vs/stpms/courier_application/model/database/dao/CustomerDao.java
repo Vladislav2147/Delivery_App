@@ -19,8 +19,8 @@ public abstract class CustomerDao extends AbstractDao<Customer> {
 
     @Override
     @Query("SELECT * FROM customer WHERE id = :id")
-    public abstract LiveData<Customer> findById(long id);
+    public abstract Customer findById(long id);
     @Override
     @Query("SELECT * FROM customer")
-    public abstract LiveData<List<Customer>> getAll();
+    public abstract List<Customer> getAll();
 }

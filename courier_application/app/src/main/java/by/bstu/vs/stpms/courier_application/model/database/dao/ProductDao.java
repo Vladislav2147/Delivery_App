@@ -19,8 +19,8 @@ public abstract class ProductDao extends AbstractDao<Product> {
 
     @Override
     @Query("SELECT * FROM product WHERE id = :id")
-    public abstract LiveData<Product> findById(long id);
+    public abstract Product findById(long id);
     @Override
     @Query("SELECT * FROM product")
-    public abstract LiveData<List<Product>> getAll();
+    public abstract List<Product> getAll();
 }

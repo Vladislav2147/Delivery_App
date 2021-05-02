@@ -98,12 +98,14 @@ class OrderService {
             })
         }
         //Получаем активные заказы из локальной бд
-        db.orderDao.all.observeOnce { orders ->
+        CoroutineScope(Dispatchers.IO).launch {
+            val orders = db.orderDao.all
             for (order in orders) {
                 fillOrderFromDb(order)
             }
             ordersLiveData.postValue(Event.success(orders))
         }
+
     }
 
     //Принять заказ (только онлайн)
@@ -183,20 +185,15 @@ class OrderService {
         db.orderDao.delete(order)
     }
 
-    private fun fillOrderFromDb(order: Order) {
-        CoroutineScope(Dispatchers.IO).launch {
-            db.customerDao.findById(order.customerId).observeOnce { customer ->
-                order.customer = customer
-            }
-            db.orderedDao.findByOrderId(order.id).observeOnce { orderedList ->
-                for (ordered in orderedList) {
-                    db.productDao.findById(ordered.productId).observeOnce { product ->
-                        ordered.product = product
-                    }
-                }
-                order.ordered = orderedList
-            }
+    private suspend fun fillOrderFromDb(order: Order) {
+        order.customer = db.customerDao.findById(order.customerId)
+        val orderedList = db.orderedDao.findByOrderId(order.id)
+        for (ordered in orderedList) {
+            val product = db.productDao.findById(ordered.productId)
+            ordered.product = product
         }
+        order.ordered = orderedList
+
     }
 
 }

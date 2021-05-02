@@ -13,8 +13,8 @@ import by.bstu.vs.stpms.courier_application.model.database.entity.Role;
 public abstract class RoleDao extends AbstractDao<Role> {
     @Override
     @Query("SELECT * FROM role WHERE id = :id")
-    public abstract LiveData<Role> findById(long id);
+    public abstract Role findById(long id);
     @Override
     @Query("SELECT * FROM role")
-    public abstract LiveData<List<Role>> getAll();
+    public abstract List<Role> getAll();
 }

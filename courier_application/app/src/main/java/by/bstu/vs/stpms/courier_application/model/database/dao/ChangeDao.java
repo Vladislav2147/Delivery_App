@@ -15,10 +15,10 @@ public abstract class ChangeDao extends AbstractDao<Change> {
 
     @Query("SELECT * FROM changes WHERE id = :id")
     @Override
-    public abstract LiveData<Change> findById(long id);
+    public abstract Change findById(long id);
     @Query("SELECT * FROM changes")
     @Override
-    public abstract LiveData<List<Change>> getAll();
+    public abstract List<Change> getAll();
 
     @Query("UPDATE changes SET isUpToDate = 1 WHERE tableName = :tableName AND itemId = :itemId")
     public abstract void setUpToDate(String tableName, long itemId);

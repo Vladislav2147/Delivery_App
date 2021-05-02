@@ -19,6 +19,6 @@ public abstract class AbstractDao<E extends AbstractEntity> {
     public abstract void deleteAll(Collection<E> items);
     @Update
     public abstract void update(E item);
-    public abstract LiveData<E> findById(long id);
-    public abstract LiveData<List<E>> getAll();
+    public abstract E findById(long id);
+    public abstract List<E> getAll();
 }
