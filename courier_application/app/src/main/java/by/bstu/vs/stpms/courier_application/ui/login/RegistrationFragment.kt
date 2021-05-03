@@ -78,12 +78,6 @@ class RegistrationFragment : Fragment() {
                 }
             }
         })
-
-
-        (activity as AppCompatActivity?)?.supportActionBar?.let {
-            it.setDisplayShowCustomEnabled(false)
-            it.setDisplayHomeAsUpEnabled(false)
-        }
     }
 
 

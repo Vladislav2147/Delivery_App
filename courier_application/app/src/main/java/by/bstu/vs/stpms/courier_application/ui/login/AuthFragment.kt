@@ -48,11 +48,6 @@ class AuthFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        (activity as AppCompatActivity?)?.supportActionBar?.let {
-            it.setDisplayShowCustomEnabled(false)
-            it.setDisplayHomeAsUpEnabled(false)
-        }
-
         val progressBar = requireActivity().findViewById<ProgressBar>(R.id.login_progress)
 
         authViewModel.userLiveData.observe(viewLifecycleOwner, {

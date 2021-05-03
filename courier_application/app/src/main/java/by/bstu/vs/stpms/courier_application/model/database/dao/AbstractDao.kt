@@ -2,6 +2,7 @@ package by.bstu.vs.stpms.courier_application.model.database.dao
 
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.Transaction
 import androidx.room.Update
 import by.bstu.vs.stpms.courier_application.model.database.entity.AbstractEntity
 
@@ -10,6 +11,7 @@ abstract class AbstractDao<E : AbstractEntity> {
     abstract fun insert(item: E)
     @Delete
     abstract fun delete(item: E)
+
     @Delete
     abstract fun deleteAll(items: Collection<E>)
     @Update

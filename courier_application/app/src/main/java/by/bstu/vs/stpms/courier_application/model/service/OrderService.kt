@@ -73,6 +73,7 @@ class OrderService {
                                 val mapper = Mappers.getMapper(OrderMapper::class.java)
                                 val orders = mapper.dtosToEntities(response.body())
                                 //Обновление локальной базы данных
+                                //TODO delete all (at least orders and ordered) and insert new list
                                 for (order in orders) {
                                     insertOrderWithReplaceToLocalDb(order)
                                 }

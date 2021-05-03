@@ -55,11 +55,6 @@ class AvailableOrderDetailsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        (activity as AppCompatActivity?)?.supportActionBar?.let {
-            it.setDisplayShowCustomEnabled(false)
-            it.setDisplayHomeAsUpEnabled(false)
-        }
-
         initRecyclerView()
         initViewModel()
         initButtons()
