@@ -50,9 +50,8 @@ class ActiveOrderFragment : Fragment() {
         orderAdapter = OrderAdapter(requireContext())
         orderAdapter.onClickListener = object : OrderAdapter.OnClickListener {
             override fun onVariantClick(order: Order?) {
-                //TODO fix
-//                val action = AvailableOrderFragmentDirections.actionNavigationAvailableOrderToNavigationAvailableOrderDetails(order!!)
-//                navController.navigate(action)
+                val action = ActiveOrderFragmentDirections.actionNavigationActiveOrderToNavigationActiveDetails(order!!)
+                navController.navigate(action)
             }
         }
 

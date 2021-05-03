@@ -13,7 +13,7 @@ class AuthViewModel: ViewModel() {
     var loginLiveData = MutableLiveData("")
     var passwordLiveData = MutableLiveData("")
 
-    private val userService = UserService(context)
+    private val userService = UserService
 
     fun tryAutoLogin() {
         userService.tryAutoLogin(userLiveData)

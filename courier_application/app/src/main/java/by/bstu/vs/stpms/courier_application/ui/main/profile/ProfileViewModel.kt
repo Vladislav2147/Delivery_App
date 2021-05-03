@@ -17,7 +17,7 @@ import java.util.stream.Collectors
 class ProfileViewModel : ViewModel() {
 
     val userLiveData = MutableLiveData<Event<User>>()
-    private val userService = UserService(context)
+    private val userService = UserService
 
     fun logout() {
         viewModelScope.launch {

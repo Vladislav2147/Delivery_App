@@ -15,7 +15,7 @@
             app:argType="long" />
         <action
             android:id="@+id/action_navigation_available_order_to_navigation_available_order_details"
-            app:destination="@id/navigation_available_order_details"
+            app:destination="@id/navigation_available_details"
             app:enterAnim="@anim/from_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
@@ -43,7 +43,11 @@
         android:id="@+id/navigation_active_details"
         android:name="by.bstu.vs.stpms.courier_application.ui.main.details.ActiveDetailsFragment"
         android:label="@string/title_details"
-        tools:layout="@layout/fragment_active_details" />
+        tools:layout="@layout/fragment_active_details" >
+        <argument
+            android:name="activeOrder"
+            app:argType="by.bstu.vs.stpms.courier_application.model.database.entity.Order" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_auth"
         android:name="by.bstu.vs.stpms.courier_application.ui.login.AuthFragment"
@@ -95,12 +99,20 @@
         android:id="@+id/navigation_active_order"
         android:name="by.bstu.vs.stpms.courier_application.ui.main.order.ActiveOrderFragment"
         android:label="@string/active_orders"
-        tools:layout="@layout/fragment_active_order" />
+        tools:layout="@layout/fragment_active_order" >
+        <action
+            android:id="@+id/action_navigation_active_order_to_navigation_active_details"
+            app:destination="@id/navigation_active_details"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
+    </fragment>
     <fragment
-        android:id="@+id/navigation_available_order_details"
-        android:name="by.bstu.vs.stpms.courier_application.ui.main.details.AvailableOrderDetailsFragment"
+        android:id="@+id/navigation_available_details"
+        android:name="by.bstu.vs.stpms.courier_application.ui.main.details.AvailableDetailsFragment"
         android:label="@string/details"
-        tools:layout="@layout/fragment_available_order_details" >
+        tools:layout="@layout/fragment_available_details" >
         <argument
             android:name="availableOrder"
             app:argType="by.bstu.vs.stpms.courier_application.model.database.entity.Order" />

@@ -1,22 +1,243 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.main.details.ActiveDetailsFragment">
-
-    <TextView
-        android:id="@+id/text_notifications"
+    tools:context=".ui.main.details.AvailableDetailsFragment">
+    <data>
+        <variable
+            name="vm"
+            type="by.bstu.vs.stpms.courier_application.ui.main.details.ActiveDetailsViewModel" />
+    </data>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <androidx.core.widget.NestedScrollView
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/item_indent">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/item_indent"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/available_customer"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawablePadding="@dimen/item_indent"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:singleLine="false"
+                                android:text="@{vm.orderLiveData.customer.firstName + ` ` + vm.orderLiveData.customer.secondName}"
+                                android:textSize="@dimen/default_text"
+                                android:textStyle="bold"
+                                app:drawableStartCompat="@drawable/ic_baseline_person_16"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                            <TextView
+                                android:id="@+id/available_adress"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawablePadding="@dimen/item_indent"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:singleLine="false"
+                                android:text="@{vm.orderLiveData.address}"
+                                android:textSize="@dimen/default_text"
+                                android:textStyle="bold"
+                                app:drawableStartCompat="@drawable/ic_baseline_location_on_16"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/available_phone"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawablePadding="@dimen/item_indent"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:singleLine="false"
+                                android:text="@{vm.orderLiveData.customer.phone}"
+                                android:textSize="@dimen/default_text"
+                                android:textStyle="bold"
+                                app:drawableStartCompat="@drawable/ic_baseline_phone_16"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/available_adress" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:id="@+id/available_time_start"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:drawablePadding="@dimen/item_indent"
+                                    android:ellipsize="end"
+                                    android:maxLines="1"
+                                    android:singleLine="false"
+                                    android:text="@{vm.orderLiveData.preferredRangeStart}"
+                                    android:textSize="@dimen/default_text"
+                                    android:textStyle="bold"
+                                    app:drawableStartCompat="@drawable/ic_baseline_access_time_16"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/default_text"
+                                    android:textStyle="bold"
+                                    android:layout_marginHorizontal="@dimen/item_indent"
+                                    android:text="@string/arrow"/>
+
+                                <TextView
+                                    android:id="@+id/available_time_end"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:drawablePadding="@dimen/item_indent"
+                                    android:ellipsize="end"
+                                    android:maxLines="1"
+                                    android:singleLine="false"
+                                    android:text="@{vm.orderLiveData.preferredRangeEnd}"
+                                    android:textSize="@dimen/default_text"
+                                    android:textStyle="bold"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/available_weight"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawablePadding="@dimen/item_indent"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:singleLine="false"
+                                android:text="@{vm.orderLiveData.totalWeight}"
+                                android:textSize="@dimen/default_text"
+                                android:textStyle="bold"
+                                app:drawableStartCompat="@drawable/ic_weight_16" />
+                            <TextView
+                                android:id="@+id/available_info"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawablePadding="@dimen/item_indent"
+                                android:ellipsize="end"
+                                android:maxLines="5"
+                                android:singleLine="false"
+                                android:text="@{vm.orderLiveData.info}"
+                                android:textSize="@dimen/default_text"
+                                android:textStyle="bold"
+                                app:drawableStartCompat="@drawable/ic_baseline_info_16" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <View
+                                    android:layout_width="0dp"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="1" />
+                                <TextView
+                                    android:id="@+id/available_price"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:maxLines="1"
+                                    android:singleLine="false"
+                                    android:text="@{vm.orderLiveData.totalPrice}"
+                                    android:textSize="48sp"
+                                    android:textStyle="bold"
+                                    app:drawableStartCompat="@drawable/ic_baseline_attach_money_48" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/btn_details_call"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="0.5"
+                                    android:layout_marginEnd="4dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/call"/>
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/btn_details_map"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="0.5"
+                                    android:layout_marginStart="4dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/show_on_map"/>
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginHorizontal="@dimen/item_indent">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="0.2"
+                            android:textAlignment="center"
+                            android:textSize="@dimen/default_text"
+                            android:textStyle="bold"
+                            android:text="@string/amount"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="0.6"
+                            android:textAlignment="center"
+                            android:textSize="@dimen/default_text"
+                            android:textStyle="bold"
+                            android:text="@string/info"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="0.2"
+                            android:textAlignment="center"
+                            android:textSize="@dimen/default_text"
+                            android:textStyle="bold"
+                            android:text="@string/price"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_available_orders_products"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView >
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_decline"
+            android:background="@color/design_default_color_secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/accept"
+            android:src="@drawable/ic_baseline_decline_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

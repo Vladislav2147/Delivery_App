@@ -15,11 +15,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class AvailableOrderDetailsViewModel : ViewModel() {
+class AvailableDetailsViewModel : ViewModel() {
     val orderLiveData = MutableLiveData<Order>()
     val responseLiveData = MutableLiveData<Event<ResponseBody>>()
 
-    val service = OrderService()
+    val service = OrderService
 
     fun acceptOrder() {
         service.accept(orderLiveData, responseLiveData)

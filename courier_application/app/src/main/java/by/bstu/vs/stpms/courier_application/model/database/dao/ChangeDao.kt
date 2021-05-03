@@ -16,4 +16,10 @@ abstract class ChangeDao : AbstractDao<Change>() {
     abstract override suspend fun getAll(): List<Change>
     @Query("UPDATE changes SET isUpToDate = 1 WHERE tableName = :tableName AND itemId = :itemId")
     abstract fun setUpToDate(tableName: String, itemId: Long)
+
+    @Query("DELETE FROM changes WHERE tableName = :tableName AND itemId = :itemId")
+    abstract fun deleteByTableAndItemId(tableName: String, itemId: Long)
+
+    @Query("SELECT * FROM changes WHERE tableName = :tableName AND operation = :operation")
+    abstract suspend fun findAllByTableAndOperation(tableName: String, operation: String): List<Change>
 }

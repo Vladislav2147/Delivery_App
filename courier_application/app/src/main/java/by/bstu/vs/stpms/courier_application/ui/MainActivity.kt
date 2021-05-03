@@ -1,6 +1,10 @@
 package by.bstu.vs.stpms.courier_application.ui
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.Network
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +15,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import by.bstu.vs.stpms.courier_application.R
+import by.bstu.vs.stpms.courier_application.model.util.ConnectionListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -30,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_available_order, R.id.navigation_profile, R.id.navigation_active_order, R.id.navigation_available_order_details, R.id.navigation_auth, R.id.navigation_registration
+                R.id.navigation_available_order, R.id.navigation_profile, R.id.navigation_active_order, R.id.navigation_available_details, R.id.navigation_auth, R.id.navigation_registration
             )
         )
 
@@ -61,6 +66,8 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        ConnectionListener.init(this)
     }
 
 }

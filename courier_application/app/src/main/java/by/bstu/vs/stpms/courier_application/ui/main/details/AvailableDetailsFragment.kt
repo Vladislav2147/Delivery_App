@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -16,16 +15,16 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.bstu.vs.stpms.courier_application.R
-import by.bstu.vs.stpms.courier_application.databinding.FragmentAvailableOrderDetailsBinding
+import by.bstu.vs.stpms.courier_application.databinding.FragmentAvailableDetailsBinding
 import by.bstu.vs.stpms.courier_application.model.util.event.Status
 import by.bstu.vs.stpms.courier_application.ui.util.ProductAdapter
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
-class AvailableOrderDetailsFragment : Fragment() {
+class AvailableDetailsFragment : Fragment() {
 
-    private lateinit var viewModel: AvailableOrderDetailsViewModel
+    private lateinit var viewModel: AvailableDetailsViewModel
     private lateinit var productAdapter: ProductAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var navController: NavController
@@ -36,17 +35,17 @@ class AvailableOrderDetailsFragment : Fragment() {
     ): View? {
 
 
-        viewModel = ViewModelProvider(this).get(AvailableOrderDetailsViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(AvailableDetailsViewModel::class.java)
         val navHostFragment =
             requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
         navController = navHostFragment!!.navController
 
-        val binding = FragmentAvailableOrderDetailsBinding.inflate(inflater, container, false)
+        val binding = FragmentAvailableDetailsBinding.inflate(inflater, container, false)
         binding.apply {
             vm = viewModel
-            lifecycleOwner = this@AvailableOrderDetailsFragment
+            lifecycleOwner = this@AvailableDetailsFragment
         }
-        val order = AvailableOrderDetailsFragmentArgs.fromBundle(requireArguments()).availableOrder
+        val order = AvailableDetailsFragmentArgs.fromBundle(requireArguments()).availableOrder
         viewModel.orderLiveData.postValue(order)
 
         return binding.root
@@ -93,7 +92,7 @@ class AvailableOrderDetailsFragment : Fragment() {
     private fun initButtons() {
         val callButton = requireView().findViewById<MaterialButton>(R.id.btn_details_call)
         val mapButton = requireView().findViewById<MaterialButton>(R.id.btn_details_map)
-        val acceptButton = requireView().findViewById<FloatingActionButton>(R.id.fab_accept)
+        val acceptButton = requireView().findViewById<FloatingActionButton>(R.id.fab_decline)
 
         callButton.setOnClickListener {
             val phone = viewModel.orderLiveData.value?.customer?.phone

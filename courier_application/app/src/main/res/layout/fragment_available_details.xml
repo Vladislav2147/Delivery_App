@@ -2,11 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.main.details.AvailableOrderDetailsFragment">
+    tools:context=".ui.main.details.AvailableDetailsFragment">
     <data>
         <variable
             name="vm"
-            type="by.bstu.vs.stpms.courier_application.ui.main.details.AvailableOrderDetailsViewModel" />
+            type="by.bstu.vs.stpms.courier_application.ui.main.details.AvailableDetailsViewModel" />
     </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -227,7 +227,7 @@
             </androidx.core.widget.NestedScrollView >
         </androidx.constraintlayout.widget.ConstraintLayout>
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_accept"
+            android:id="@+id/fab_decline"
             android:background="@color/design_default_color_secondary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

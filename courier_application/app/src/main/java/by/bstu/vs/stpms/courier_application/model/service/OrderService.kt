@@ -22,8 +22,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class OrderService {
-
+object OrderService {
+    private final val TAG = "OrderService"
     private val orderApi = NetworkRepository.orderApi()
     private val db: CourierDatabase = CourierDatabase.getDatabase(context)
 
@@ -147,7 +147,7 @@ class OrderService {
             //Удаляем запись о заказе из локальной бд
             //При удалении в таблице changes появится соответствующая запись, при возобновлении соединения,
             //по этой записи можно будет отменить заказ на сервере для синхронизации
-            deleteOrderFromLocalDb(it)
+            deleteOrderAndOrderedFromLocalDb(it)
             //Если есть интернет, то выполняем отмену заказа и на сервере
             if (isOnline(context)) {
                 responseLiveData.postValue(Event.loading())
@@ -168,7 +168,28 @@ class OrderService {
                     }
 
                 })
+            } else {
+                responseLiveData.postValue(Event.success(null))
             }
+        }
+    }
+
+
+    suspend fun sendDecline() {
+        val declinedOrdersIdList = db.changeDao.findAllByTableAndOperation("orders", "delete").map { it.itemId }
+        Log.d(TAG, "sendDecline: declined in offline - $declinedOrdersIdList")
+        for (id in declinedOrdersIdList) {
+            NetworkRepository.orderApi().declineOrder(id).enqueue(object: Callback<ResponseBody>{
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    Log.d(TAG, "sendDecline status: " + response.code())
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Log.d(TAG, "sendDecline error: " + t.message)
+                }
+
+            })
+            db.changeDao.deleteByTableAndItemId("orders", id)
         }
     }
 
@@ -186,7 +207,7 @@ class OrderService {
         Log.d("OrderService", "change")
     }
 
-    private suspend fun deleteOrderFromLocalDb(order: Order) {
+    private suspend fun deleteOrderAndOrderedFromLocalDb(order: Order) {
         db.orderedDao.deleteAll(order.ordered)
         db.orderDao.delete(order)
     }
@@ -210,6 +231,5 @@ class OrderService {
         }
         return orders
     }
-
 
 }

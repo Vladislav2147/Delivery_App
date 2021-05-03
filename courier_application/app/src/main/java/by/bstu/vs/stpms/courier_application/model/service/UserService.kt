@@ -26,7 +26,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class UserService(context: Context) {
+object UserService {
 
     private val userApi = userApi()
     private val db: CourierDatabase = CourierDatabase.getDatabase(context)

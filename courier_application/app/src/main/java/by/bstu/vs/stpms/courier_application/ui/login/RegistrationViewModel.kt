@@ -20,7 +20,7 @@ class RegistrationViewModel : ViewModel() {
     var passwordLiveData = MutableLiveData("")
     var confirmPasswordLiveData = MutableLiveData("")
 
-    private val userService = UserService(NetworkRepository.context)
+    private val userService = UserService
 
     fun signUp() {
         val userDto = UserDto().apply {
