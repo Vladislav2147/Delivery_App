@@ -70,12 +70,15 @@ class OrderService {
                         when (response.code()) {
                             //Успешное получение данных
                             200 -> {
-                                val mapper = Mappers.getMapper(OrderMapper::class.java)
-                                val orders = mapper.dtosToEntities(response.body())
-                                //Обновление локальной базы данных
-                                //TODO delete all (at least orders and ordered) and insert new list
-                                for (order in orders) {
-                                    insertOrderWithReplaceToLocalDb(order)
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    val mapper = Mappers.getMapper(OrderMapper::class.java)
+                                    val orders = mapper.dtosToEntities(response.body())
+                                    //Обновление локальной базы данных
+                                    //TODO delete all (at least orders and ordered) and insert new list
+                                    for (order in orders) {
+                                        insertOrderWithReplaceToLocalDb(order)
+                                    }
+                                    ordersLiveData.postValue(Event.success(getActiveOrdersFromLocalDb()))
                                 }
                             }
                             //Возвращается сервером, если пользователь не имеет роли курьера
@@ -95,15 +98,12 @@ class OrderService {
                     ordersLiveData.postValue(Event.error(t))
                 }
             })
-        }
-        //Получаем активные заказы из локальной бд
-        CoroutineScope(Dispatchers.IO).launch {
-            val orders = db.orderDao.getAll()
-            for (order in orders) {
-                fillOrderFromDb(order)
+        } else {
+            CoroutineScope(Dispatchers.IO).launch {
+                ordersLiveData.postValue(Event.success(getActiveOrdersFromLocalDb()))
             }
-            ordersLiveData.postValue(Event.success(orders))
         }
+
 
     }
 
@@ -115,8 +115,10 @@ class OrderService {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     when (response.code()) {
                         200 -> {
-                            insertOrderWithReplaceToLocalDb(order)
-                            responseLiveData.postValue(Event.success(response.body()))
+                            CoroutineScope(Dispatchers.IO).launch {
+                                insertOrderWithReplaceToLocalDb(order)
+                                responseLiveData.postValue(Event.success(response.body()))
+                            }
                         }
                         else -> {
                             val gson = Gson()
@@ -165,7 +167,7 @@ class OrderService {
         }
     }
 
-    fun insertOrderWithReplaceToLocalDb(order: Order) {
+    private suspend fun insertOrderWithReplaceToLocalDb(order: Order) {
         //TODO uptodate only for order?
         db.customerDao.insertWithReplace(order.customer)
         Log.d("OrderService", "customer")
@@ -194,5 +196,15 @@ class OrderService {
         order.ordered = orderedList
 
     }
+
+    private suspend fun getActiveOrdersFromLocalDb(): List<Order> {
+        //Получаем активные заказы из локальной бд
+        val orders = db.orderDao.getAll()
+        for (order in orders) {
+            fillOrderFromDb(order)
+        }
+        return orders
+    }
+
 
 }

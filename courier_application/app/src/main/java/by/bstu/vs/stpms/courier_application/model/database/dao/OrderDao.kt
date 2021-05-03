@@ -6,9 +6,9 @@ import by.bstu.vs.stpms.courier_application.model.database.entity.*
 @Dao
 abstract class OrderDao : AbstractDao<Order>() {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertAll(orders: List<Order>)
+    abstract suspend fun insertAll(orders: List<Order>)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertWithReplace(order: Order)
+    abstract suspend fun insertWithReplace(order: Order)
     @Query("SELECT * FROM orders WHERE id = :id")
     abstract override suspend fun findById(id: Long): Order?
 
