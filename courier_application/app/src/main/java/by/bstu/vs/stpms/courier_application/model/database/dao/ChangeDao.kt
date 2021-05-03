@@ -5,6 +5,10 @@ import by.bstu.vs.stpms.courier_application.model.database.entity.Change
 
 @Dao
 abstract class ChangeDao : AbstractDao<Change>() {
+
+    @Query("DELETE FROM changes WHERE 1=1")
+    abstract override suspend fun truncate()
+
     @Query("SELECT * FROM changes WHERE id = :id")
     abstract override suspend fun findById(id: Long): Change?
 
