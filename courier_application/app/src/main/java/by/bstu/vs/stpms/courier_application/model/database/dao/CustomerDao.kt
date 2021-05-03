@@ -5,10 +5,10 @@ import by.bstu.vs.stpms.courier_application.model.database.entity.Customer
 
 @Dao
 abstract class CustomerDao : AbstractDao<Customer>() {
-    @Insert
-    abstract suspend fun insertAll(customers: List<Customer>)
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun insertWithReplace(customer: Customer)
+
+    @Query("DELETE FROM customer WHERE 1=1")
+    abstract override suspend fun truncate()
+
     @Query("SELECT * FROM customer WHERE id = :id")
     abstract override suspend fun findById(id: Long): Customer?
 

@@ -7,7 +7,6 @@ TODO https
 TODO profile stats
 
 TODO fix when delete order from server not deleting from mobile
-TODO fix active first time db is empty
 
 Если интернет есть, то запросы идут с инета в бд, а оттуда уже ловятся изменения, если нет, то просто из локальной бд
 

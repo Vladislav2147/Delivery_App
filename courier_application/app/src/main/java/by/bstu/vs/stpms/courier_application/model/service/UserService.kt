@@ -26,7 +26,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class UserService(context: Context?) {
+class UserService(context: Context) {
 
     private val userApi = userApi()
     private val db: CourierDatabase = CourierDatabase.getDatabase(context)
@@ -108,7 +108,7 @@ class UserService(context: Context?) {
         }
     }
 
-    fun logout() {
+    suspend fun logout() {
         //При выходе из учетной записи очищаем локальную базу данных (с информацией текущего пользователя)
         db.clear()
         //Запрос серверу для выхода (удаляет текущую сессию и cookies)

@@ -74,10 +74,14 @@ class OrderService {
                                     val mapper = Mappers.getMapper(OrderMapper::class.java)
                                     val orders = mapper.dtosToEntities(response.body())
                                     //Обновление локальной базы данных
-                                    //TODO delete all (at least orders and ordered) and insert new list
+                                    //Очистка записей связанных с заказами
+                                    db.orderedDao.truncate()
+                                    db.orderDao.truncate()
+                                    //Вставка актуальной информации о активных заказах в локальную бд
                                     for (order in orders) {
                                         insertOrderWithReplaceToLocalDb(order)
                                     }
+                                    //Получение списка активных заказов из локальной бд
                                     ordersLiveData.postValue(Event.success(getActiveOrdersFromLocalDb()))
                                 }
                             }
@@ -100,6 +104,7 @@ class OrderService {
             })
         } else {
             CoroutineScope(Dispatchers.IO).launch {
+                //Получение списка активных заказов из локальной бд
                 ordersLiveData.postValue(Event.success(getActiveOrdersFromLocalDb()))
             }
         }
@@ -137,7 +142,7 @@ class OrderService {
     }
 
     //Отмена заказа (доступно без подключения к интернету)
-    fun decline(orderLiveData: MutableLiveData<Order>, responseLiveData: MutableLiveData<Event<ResponseBody>>) {
+    suspend fun decline(orderLiveData: MutableLiveData<Order>, responseLiveData: MutableLiveData<Event<ResponseBody>>) {
         orderLiveData.value?.let {
             //Удаляем запись о заказе из локальной бд
             //При удалении в таблице changes появится соответствующая запись, при возобновлении соединения,
@@ -173,7 +178,7 @@ class OrderService {
         Log.d("OrderService", "customer")
         db.productDao.insertAll(order.ordered.map { it.product })
         Log.d("OrderService", "products $order")
-        db.orderDao.insertWithReplace(order)
+        db.orderDao.insert(order)
         Log.d("OrderService", "order")
         db.orderedDao.insertAll(order.ordered.toList())
         Log.d("OrderService", "ordered")
@@ -181,7 +186,7 @@ class OrderService {
         Log.d("OrderService", "change")
     }
 
-    private fun deleteOrderFromLocalDb(order: Order) {
+    private suspend fun deleteOrderFromLocalDb(order: Order) {
         db.orderedDao.deleteAll(order.ordered)
         db.orderDao.delete(order)
     }

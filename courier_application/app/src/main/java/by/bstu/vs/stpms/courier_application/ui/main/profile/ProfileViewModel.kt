@@ -3,6 +3,7 @@ package by.bstu.vs.stpms.courier_application.ui.main.profile
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import by.bstu.vs.stpms.courier_application.R
 import by.bstu.vs.stpms.courier_application.model.database.contract.RoleType
 import by.bstu.vs.stpms.courier_application.model.database.entity.Role
@@ -10,6 +11,7 @@ import by.bstu.vs.stpms.courier_application.model.database.entity.User
 import by.bstu.vs.stpms.courier_application.model.network.NetworkRepository.context
 import by.bstu.vs.stpms.courier_application.model.service.UserService
 import by.bstu.vs.stpms.courier_application.model.util.event.Event
+import kotlinx.coroutines.launch
 import java.util.stream.Collectors
 
 class ProfileViewModel : ViewModel() {
@@ -18,16 +20,17 @@ class ProfileViewModel : ViewModel() {
     private val userService = UserService(context)
 
     fun logout() {
-        userService.logout()
-        context
-            .getSharedPreferences(
-                context.getString(R.string.shared_prefs_cookies),
-                Context.MODE_PRIVATE
-            )
-            .edit()
-            .clear()
-            .apply()
-
+        viewModelScope.launch {
+            userService.logout()
+            context
+                    .getSharedPreferences(
+                            context.getString(R.string.shared_prefs_cookies),
+                            Context.MODE_PRIVATE
+                    )
+                    .edit()
+                    .clear()
+                    .apply()
+        }
     }
 
     fun getUser() {

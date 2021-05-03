@@ -5,8 +5,10 @@ import by.bstu.vs.stpms.courier_application.model.database.entity.*
 
 @Dao
 abstract class OrderedDao : AbstractDao<Ordered>() {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun insertAll(ordereds: List<Ordered>)
+
+    @Query("DELETE FROM ordered WHERE 1=1")
+    abstract override suspend fun truncate()
+
     @Query("SELECT * FROM ordered WHERE id = :id")
     abstract override suspend fun findById(id: Long): Ordered?
 

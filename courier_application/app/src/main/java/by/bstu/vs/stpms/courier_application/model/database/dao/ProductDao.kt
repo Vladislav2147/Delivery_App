@@ -5,8 +5,11 @@ import by.bstu.vs.stpms.courier_application.model.database.entity.Product
 
 @Dao
 abstract class ProductDao : AbstractDao<Product>() {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun insertAll(products: List<Product>)
+
+
+    @Query("DELETE FROM product WHERE 1=1")
+    abstract override suspend fun truncate()
+
     @Query("SELECT * FROM product WHERE id = :id")
     abstract override suspend fun findById(id: Long): Product?
 
