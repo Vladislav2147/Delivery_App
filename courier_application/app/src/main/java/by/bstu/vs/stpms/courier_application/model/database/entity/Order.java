@@ -9,7 +9,9 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
 
+import by.bstu.vs.stpms.courier_application.model.database.entity.converters.OrderStateConverter;
 import by.bstu.vs.stpms.courier_application.model.database.entity.converters.TimestampConverter;
+import by.bstu.vs.stpms.courier_application.model.database.entity.enums.OrderState;
 
 @Entity(
         tableName = "orders",
@@ -18,11 +20,11 @@ import by.bstu.vs.stpms.courier_application.model.database.entity.converters.Tim
                 @ForeignKey(entity = User.class, parentColumns = "id", childColumns = "courierId")
         }
 )
-@TypeConverters(TimestampConverter.class)
+@TypeConverters({TimestampConverter.class, OrderStateConverter.class})
 public class Order extends AbstractEntity implements Serializable {
     private String address;
     private String info;
-    private String state;
+    private OrderState state;
     private Long customerId;
     private Long courierId;
 
@@ -78,11 +80,11 @@ public class Order extends AbstractEntity implements Serializable {
         this.info = info;
     }
 
-    public String getState() {
+    public OrderState getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(OrderState state) {
         this.state = state;
     }
 

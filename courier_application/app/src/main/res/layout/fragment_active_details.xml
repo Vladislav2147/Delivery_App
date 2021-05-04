@@ -186,6 +186,13 @@
 
                             </LinearLayout>
 
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_state"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/accent_red"
+                                android:text="@{vm.orderLiveData.state.name()}"/>
+
 
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>

@@ -175,10 +175,13 @@ object OrderService {
     }
 
 
+    //Метод вызывается при появлении соединения для отправки информации о заказах, от которых курьер отказался
     suspend fun sendDecline() {
+        //Получаем список ID заказов, которые были удалены из таблицы заказов во время оффлайн использования
         val declinedOrdersIdList = db.changeDao.findAllByTableAndOperation("orders", "delete").map { it.itemId }
         Log.d(TAG, "sendDecline: declined in offline - $declinedOrdersIdList")
         for (id in declinedOrdersIdList) {
+            //Отправляем соответствующий отмене заказа запрос на сервер
             NetworkRepository.orderApi().declineOrder(id).enqueue(object: Callback<ResponseBody>{
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     Log.d(TAG, "sendDecline status: " + response.code())
@@ -189,12 +192,12 @@ object OrderService {
                 }
 
             })
+            //Удаляем запись в таблице изменений для предотвращения последующего повторения
             db.changeDao.deleteByTableAndItemId("orders", id)
         }
     }
 
     private suspend fun insertOrderWithReplaceToLocalDb(order: Order) {
-        //TODO uptodate only for order?
         db.customerDao.insertWithReplace(order.customer)
         Log.d("OrderService", "customer")
         db.productDao.insertAll(order.ordered.map { it.product })

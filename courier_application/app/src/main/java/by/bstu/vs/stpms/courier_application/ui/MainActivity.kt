@@ -12,6 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import by.bstu.vs.stpms.courier_application.R
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
+
 
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
@@ -67,7 +69,16 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        //Предотвращает пересоздание активного фрагмента при повторном нажатии
+        navView.setOnNavigationItemSelectedListener {
+            if (it.itemId != navView.selectedItemId)
+                NavigationUI.onNavDestinationSelected(it, navController)
+            true
+        }
+
         ConnectionListener.init(this)
     }
+
+
 
 }
