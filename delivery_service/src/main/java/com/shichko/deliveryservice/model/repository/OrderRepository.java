@@ -18,6 +18,6 @@ public interface OrderRepository extends CommonRepository<Order> {
     @Query("select o from orders o where o.courier is null order by o.preferredRangeEnd")
     List<Order> getAvailableOrders();
 
-    @Query("select o from orders o where o.courier.id = :courierId and not o.state = 'Delivered'")
+    @Query("select o from orders o where o.courier.id = :courierId and not o.state = 'Delivered' and not o.state = 'Canceled'")
     List<Order> getActiveOrdersByCourierId(@Param("courierId") long courierId);
 }

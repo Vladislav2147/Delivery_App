@@ -37,4 +37,6 @@
     <string name="amount">Amount</string>
     <string name="info">Info</string>
     <string name="price">Price</string>
+    <string name="delivering">Delivering</string>
+    <string name="ordered">Ordered</string>
 </resources>

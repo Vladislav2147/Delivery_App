@@ -22,4 +22,10 @@ class ActiveDetailsViewModel : ViewModel() {
             service.decline(orderLiveData, responseLiveData)
         }
     }
+
+    fun updateState() {
+        viewModelScope.launch {
+            service.updateState(orderLiveData, responseLiveData)
+        }
+    }
 }

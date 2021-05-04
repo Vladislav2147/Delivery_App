@@ -191,7 +191,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:backgroundTint="@color/accent_red"
-                                android:text="@{vm.orderLiveData.state.name()}"/>
+                                android:text="@{`Set state as ` + vm.orderLiveData.state.next.name()}"/>
 
 
                         </LinearLayout>

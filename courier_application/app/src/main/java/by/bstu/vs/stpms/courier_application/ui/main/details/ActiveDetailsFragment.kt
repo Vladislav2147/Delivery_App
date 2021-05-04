@@ -91,6 +91,7 @@ class ActiveDetailsFragment : Fragment() {
     private fun initButtons() {
         val callButton = requireView().findViewById<MaterialButton>(R.id.btn_details_call)
         val mapButton = requireView().findViewById<MaterialButton>(R.id.btn_details_map)
+        val updateStateButton = requireView().findViewById<MaterialButton>(R.id.btn_state)
         val declineButton = requireView().findViewById<FloatingActionButton>(R.id.fab_decline)
 
         callButton.setOnClickListener {
@@ -109,9 +110,9 @@ class ActiveDetailsFragment : Fragment() {
             startActivity(mapIntent)
         }
 
-        declineButton.setOnClickListener {
-            viewModel.declineOrder()
-        }
+        declineButton.setOnClickListener { viewModel.declineOrder() }
+
+        updateStateButton.setOnClickListener { viewModel.updateState() }
     }
 
 }

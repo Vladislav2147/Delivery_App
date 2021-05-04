@@ -80,6 +80,7 @@ dependencies {
     kapt 'org.mapstruct:mapstruct-processor:1.4.2.Final'
 
     implementation 'ru.egslava:MaskedEditText:1.0.5'
+    implementation 'su.j2e:rv-joiner:1.0.9'
 
 
 }

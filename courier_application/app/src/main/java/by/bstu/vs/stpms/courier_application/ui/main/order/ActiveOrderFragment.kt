@@ -15,13 +15,18 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import by.bstu.vs.stpms.courier_application.R
 import by.bstu.vs.stpms.courier_application.model.database.entity.Order
+import by.bstu.vs.stpms.courier_application.model.database.entity.enums.OrderState
 import by.bstu.vs.stpms.courier_application.model.util.event.Status
 import by.bstu.vs.stpms.courier_application.ui.util.OrderAdapter
+import su.j2e.rvjoiner.JoinableAdapter
+import su.j2e.rvjoiner.JoinableLayout
+import su.j2e.rvjoiner.RvJoiner
 
 class ActiveOrderFragment : Fragment() {
     private lateinit var activeOrderViewModel: ActiveOrderViewModel
     private lateinit var recyclerView: RecyclerView
-    private lateinit var orderAdapter: OrderAdapter
+    private lateinit var orderedAdapter: OrderAdapter
+    private lateinit var deliveringAdapter: OrderAdapter
     private lateinit var navController: NavController
 
     override fun onCreateView(
@@ -47,18 +52,30 @@ class ActiveOrderFragment : Fragment() {
 
 
     private fun initRecyclerView() {
-        orderAdapter = OrderAdapter(requireContext())
-        orderAdapter.onClickListener = object : OrderAdapter.OnClickListener {
+
+        val adapterOnClickListener = object : OrderAdapter.OnClickListener {
             override fun onVariantClick(order: Order?) {
                 val action = ActiveOrderFragmentDirections.actionNavigationActiveOrderToNavigationActiveDetails(order!!)
                 navController.navigate(action)
             }
         }
+        orderedAdapter = OrderAdapter(requireContext()).apply {
+            onClickListener = adapterOnClickListener
+        }
+        deliveringAdapter = OrderAdapter(requireContext()).apply {
+            onClickListener = adapterOnClickListener
+        }
+
+        val joiner = RvJoiner()
+        joiner.add(JoinableLayout(R.layout.label_delivering_layout))
+        joiner.add(JoinableAdapter(deliveringAdapter))
+        joiner.add(JoinableLayout(R.layout.label_ordered_layout))
+        joiner.add(JoinableAdapter(orderedAdapter))
 
         recyclerView = requireView().findViewById<RecyclerView>(R.id.rv_orders).apply {
             isNestedScrollingEnabled = false
             layoutManager = LinearLayoutManager(context)
-            adapter = orderAdapter
+            adapter = joiner.adapter
         }
 
     }
@@ -68,7 +85,12 @@ class ActiveOrderFragment : Fragment() {
         refresh.setOnRefreshListener {
             activeOrderViewModel.getActiveOrders()
         }
-        activeOrderViewModel.ordersLiveData.observe(viewLifecycleOwner) { orders -> orderAdapter.setOrders(orders.data) }
+        activeOrderViewModel.ordersLiveData.observe(viewLifecycleOwner) { orders ->
+            val deliveringOrders = orders.data?.filter { it.state == OrderState.Delivering }
+            val orderedOrders = orders.data?.filter { it.state == OrderState.Ordered }
+            deliveringAdapter.setOrders(deliveringOrders)
+            orderedAdapter.setOrders(orderedOrders)
+        }
         activeOrderViewModel.ordersLiveData.observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.ERROR -> {

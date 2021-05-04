@@ -31,10 +31,12 @@ object ConnectionListener {
         })
     }
 
+    //TODO test what happens if server changes some stuff
     fun onAvailable() {
         Log.d(TAG, "Available")
         CoroutineScope(Dispatchers.IO).launch {
             OrderService.sendDecline()
+            OrderService.sendUpdateState()
         }
     }
 

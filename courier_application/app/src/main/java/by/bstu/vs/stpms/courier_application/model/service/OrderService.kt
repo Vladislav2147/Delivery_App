@@ -174,6 +174,37 @@ object OrderService {
         }
     }
 
+    suspend fun updateState(orderLiveData: MutableLiveData<Order>, responseLiveData: MutableLiveData<Event<ResponseBody>>) {
+        orderLiveData.value?.let {
+            val nextState = it.state.next
+
+            db.orderDao.updateState(it.id, nextState.name)
+
+            if (isOnline(context)) {
+                responseLiveData.postValue(Event.loading())
+                NetworkRepository.orderApi().updateState(it.id, nextState.name).enqueue(object: Callback<ResponseBody>{
+                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                        when (response.code()) {
+                            200 -> responseLiveData.postValue(Event.success(response.body()))
+                            else -> {
+                                val gson = Gson()
+                                val jsonObject: JsonObject = gson.fromJson(response.errorBody()?.string(), JsonObject::class.java)
+                                responseLiveData.postValue(Event.error(CourierNetworkException(jsonObject["message"].asString)))
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        responseLiveData.postValue(Event.error(t))
+                    }
+
+                })
+            } else {
+                responseLiveData.postValue(Event.success(null))
+            }
+        }
+    }
+
 
     //Метод вызывается при появлении соединения для отправки информации о заказах, от которых курьер отказался
     suspend fun sendDecline() {
@@ -195,6 +226,10 @@ object OrderService {
             //Удаляем запись в таблице изменений для предотвращения последующего повторения
             db.changeDao.deleteByTableAndItemId("orders", id)
         }
+    }
+    //TODO send update
+    suspend fun sendUpdateState() {
+
     }
 
     private suspend fun insertOrderWithReplaceToLocalDb(order: Order) {
