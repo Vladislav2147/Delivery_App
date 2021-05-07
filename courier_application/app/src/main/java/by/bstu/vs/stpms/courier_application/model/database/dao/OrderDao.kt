@@ -18,4 +18,7 @@ abstract class OrderDao : AbstractDao<Order>() {
 
     @Query("UPDATE orders SET state = :newState WHERE id = :id")
     abstract suspend fun updateState(id: Long, newState: String)
+
+    @Query("SELECT state FROM orders WHERE id = :id")
+    abstract suspend fun getStateById(id: Long) : String?
 }

@@ -229,7 +229,26 @@ object OrderService {
     }
     //TODO send update
     suspend fun sendUpdateState() {
+        //Получаем список заказов, состояние которых было обновлено во время оффлайн использования
+        val updateStateOrdersIdList = db.changeDao.findAllByTableAndOperation("orders", "update").map { it.itemId }
+        Log.d(TAG, "sendUpdateState: updated in offline - $updateStateOrdersIdList")
+        for (id in updateStateOrdersIdList) {
+            //Получаем состояние заказа из БД по id
+            val state = db.orderDao.getStateById(id)
+            //Отправляем соответствующий обновлению состояния заказа запрос на сервер
+            NetworkRepository.orderApi().updateState(id, state).enqueue(object: Callback<ResponseBody>{
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    Log.d(TAG, "sendUpdate status: " + response.code())
+                }
 
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Log.d(TAG, "sendUpdate error: " + t.message)
+                }
+
+            })
+            //Удаляем запись в таблице изменений для предотвращения последующего повторения
+            db.changeDao.deleteByTableAndItemId("orders", id)
+        }
     }
 
     private suspend fun insertOrderWithReplaceToLocalDb(order: Order) {
