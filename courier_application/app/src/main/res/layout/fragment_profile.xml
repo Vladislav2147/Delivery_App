@@ -10,37 +10,111 @@
             name="vm"
             type="by.bstu.vs.stpms.courier_application.ui.main.profile.ProfileViewModel" />
     </data>
-    <LinearLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/profile_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".ui.main.profile.ProfileFragment">
-
-        <com.google.android.material.textview.MaterialTextView
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{vm.userLiveData.data.firstName  + ` ` + vm.userLiveData.data.secondName}"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:context=".ui.main.profile.ProfileFragment">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{vm.userLiveData.data.phone}"/>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/item_indent"
+                android:foreground="?android:attr/selectableItemBackground">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="@dimen/item_indent">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{vm.formatRoles(vm.userLiveData.data.roles)}"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/large_text"
+                        android:textStyle="bold"
+                        android:text="@string/profile_info"/>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{vm.userLiveData.data.email}"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/default_text"
+                        android:textStyle="bold"
+                        android:drawableStart="@drawable/ic_baseline_person_16"
+                        android:drawablePadding="@dimen/item_indent"
+                        android:text="@{vm.userLiveData.data.firstName  + ` ` + vm.userLiveData.data.secondName, default = `Ivanov Ivan`}"/>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="@string/logout"
-            android:onClick="@{() -> fragment.logout()}" />
-    </LinearLayout>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/default_text"
+                        android:textStyle="bold"
+                        android:drawableStart="@drawable/ic_baseline_phone_16"
+                        android:drawablePadding="@dimen/item_indent"
+                        android:text="@{vm.userLiveData.data.phone, default=`+375 (29) 777-77-77`}"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/default_text"
+                        android:textStyle="bold"
+                        android:drawableStart="@drawable/ic_baseline_email_16"
+                        android:drawablePadding="@dimen/item_indent"
+                        android:text="@{vm.userLiveData.data.email, default=`example@email.com`}"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/default_text"
+                        android:textStyle="bold"
+                        android:drawableStart="@{vm.setDrawable(vm.formatRoles(vm.userLiveData.data.roles))}"
+                        android:drawablePadding="@dimen/item_indent"
+                        android:text="@{vm.formatRoles(vm.userLiveData.data.roles), default=`Unverified`}"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/item_indent"
+                android:foreground="?android:attr/selectableItemBackground">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="@dimen/item_indent">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/large_text"
+                        android:textStyle="bold"
+                        android:text="@string/statistics"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/default_text"
+                        android:textStyle="bold"
+                        android:text="@{`Delivered orders: ` + vm.statsLiveData.data.deliveredOrdersCount}"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/default_text"
+                        android:textStyle="bold"
+                        android:text="@{`Delivered orders in time: ` + vm.statsLiveData.data.deliveredInTimeCount}"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/logout"
+                android:onClick="@{() -> fragment.logout()}" />
+        </LinearLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

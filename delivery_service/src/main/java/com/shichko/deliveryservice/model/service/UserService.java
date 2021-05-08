@@ -2,8 +2,10 @@ package com.shichko.deliveryservice.model.service;
 
 import com.shichko.deliveryservice.controller.mapper.UserMapper;
 import com.shichko.deliveryservice.exception.DeliveryServiceException;
+import com.shichko.deliveryservice.model.dto.StatsDto;
 import com.shichko.deliveryservice.model.dto.UserDto;
 import com.shichko.deliveryservice.model.entity.User;
+import com.shichko.deliveryservice.model.repository.OrderRepository;
 import com.shichko.deliveryservice.model.repository.RoleRepository;
 import com.shichko.deliveryservice.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import javax.persistence.ParameterMode;
 import javax.persistence.PersistenceContext;
+import javax.persistence.StoredProcedureQuery;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -81,5 +85,31 @@ public class UserService implements UserDetailsService {
             user.getRoles().remove(roleRepository.findFirstByName("ROLE_COURIER"));
             userRepository.save(user);
         });
+    }
+
+    public StatsDto getStats(long courierId) {
+        int orderCount = getDeliveredOrdersAmount(courierId);
+        int inTimeCount = getDeliveredInTimeOrdersAmount(courierId);
+
+        StatsDto stats = new StatsDto(courierId, orderCount, inTimeCount);
+        return stats;
+    }
+
+    private int getDeliveredOrdersAmount(long courierId) {
+        StoredProcedureQuery query = em.createStoredProcedureQuery("[delivered_orders_amount_by_courier_id]");
+        query.registerStoredProcedureParameter("id", Long.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("count", Integer.class, ParameterMode.OUT);
+        query.setParameter("id", courierId);
+        query.execute();
+        return (int)query.getOutputParameterValue("count");
+    }
+
+    private int getDeliveredInTimeOrdersAmount(long courierId) {
+        StoredProcedureQuery query = em.createStoredProcedureQuery("[delivered_orders_in_time_by_courier_id]");
+        query.registerStoredProcedureParameter("id", Long.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("count", Integer.class, ParameterMode.OUT);
+        query.setParameter("id", courierId);
+        query.execute();
+        return (int)query.getOutputParameterValue("count");
     }
 }

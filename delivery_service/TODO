@@ -9,9 +9,4 @@ TODO profile stats (procedures)
 TODO multiple fragment stack nav bar
 TODO fix login without logout if server was offline user.id unique failed
 
-Если интернет есть, то запросы идут с инета в бд, а оттуда уже ловятся изменения, если нет, то просто из локальной бд
-
 У клиента приоритет на состояние заказа и профиль (кроме ролей), у сервера на все остальное
-
-При отмене заказа с интернетом удаляем из бд + отправляем decline на сервер, Без интернета в табл changes
-появляется запись orders delete {id} при появлении интернета для каждого заказа вызваем серверный decline

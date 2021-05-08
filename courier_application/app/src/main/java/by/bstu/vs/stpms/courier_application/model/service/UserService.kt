@@ -3,13 +3,17 @@ package by.bstu.vs.stpms.courier_application.model.service
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import by.bstu.vs.stpms.courier_application.model.database.CourierDatabase
+import by.bstu.vs.stpms.courier_application.model.database.entity.Stats
 import by.bstu.vs.stpms.courier_application.model.database.entity.User
 import by.bstu.vs.stpms.courier_application.model.database.entity.UserRole
 import by.bstu.vs.stpms.courier_application.model.exception.CourierNetworkException
 import by.bstu.vs.stpms.courier_application.model.network.NetworkRepository.context
 import by.bstu.vs.stpms.courier_application.model.network.NetworkRepository.isOnline
 import by.bstu.vs.stpms.courier_application.model.network.NetworkRepository.userApi
+import by.bstu.vs.stpms.courier_application.model.network.dto.StatsDto
 import by.bstu.vs.stpms.courier_application.model.network.dto.UserDto
+import by.bstu.vs.stpms.courier_application.model.service.mapper.OrderMapper
+import by.bstu.vs.stpms.courier_application.model.service.mapper.StatsMapper
 import by.bstu.vs.stpms.courier_application.model.service.mapper.UserMapper
 import by.bstu.vs.stpms.courier_application.model.util.event.Event
 import by.bstu.vs.stpms.courier_application.model.util.livedata.observeOnce
@@ -134,6 +138,34 @@ object UserService {
 
             }
         }
+    }
+
+    //Метод используется для получения статистики курьера
+    fun getUserStats(statsLiveData: MutableLiveData<Event<Stats>>) {
+        statsLiveData.postValue(Event.loading())
+        userApi.stats.enqueue(object : Callback<StatsDto> {
+            override fun onResponse(call: Call<StatsDto>, response: Response<StatsDto>) {
+                try {
+                    when (response.code()) {
+                        //Успешное получение данных
+                        200 -> {
+                            val mapper = Mappers.getMapper(StatsMapper::class.java)
+                            val stats = mapper.dtoToEntity(response.body())
+                            statsLiveData.postValue(Event.success(stats))
+                        }
+                        else -> {
+                            throw CourierNetworkException("Network Troubles")
+                        }
+                    }
+                } catch (e: CourierNetworkException) {
+                    statsLiveData.postValue(Event.error(e))
+                }
+            }
+
+            override fun onFailure(call: Call<StatsDto>, t: Throwable) {
+                statsLiveData.postValue(Event.error(t))
+            }
+        })
     }
 
     private fun insertUserToDb(user: User) {

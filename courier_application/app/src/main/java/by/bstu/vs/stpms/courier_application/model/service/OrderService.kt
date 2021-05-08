@@ -227,7 +227,8 @@ object OrderService {
             db.changeDao.deleteByTableAndItemId("orders", id)
         }
     }
-    //TODO send update
+
+    //Метод вызывается при появлении соединения для отправки информации о заказах, состояние которых было обновлено курьером
     suspend fun sendUpdateState() {
         //Получаем список заказов, состояние которых было обновлено во время оффлайн использования
         val updateStateOrdersIdList = db.changeDao.findAllByTableAndOperation("orders", "update").map { it.itemId }

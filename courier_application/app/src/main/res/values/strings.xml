@@ -39,4 +39,6 @@
     <string name="price">Price</string>
     <string name="delivering">Delivering</string>
     <string name="ordered">Ordered</string>
+    <string name="profile_info">Profile info</string>
+    <string name="statistics">Statistics</string>
 </resources>

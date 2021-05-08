@@ -1,6 +1,7 @@
 package by.bstu.vs.stpms.courier_application.model.network.api;
 
 
+import by.bstu.vs.stpms.courier_application.model.network.dto.StatsDto;
 import by.bstu.vs.stpms.courier_application.model.network.dto.UserDto;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -23,4 +24,7 @@ public interface UserApi {
 
     @POST("registration")
     Call<ResponseBody> signUp(@Body UserDto userDto);
+
+    @GET("profile/stats")
+    Call<StatsDto> getStats();
 }
