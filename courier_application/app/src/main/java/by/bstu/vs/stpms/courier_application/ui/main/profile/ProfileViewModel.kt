@@ -54,8 +54,8 @@ class ProfileViewModel : ViewModel() {
         } else {
             val roleTypeSet = roles.stream().map { role -> RoleType.valueOf(role.name) }.collect(Collectors.toSet())
 
-            if (roleTypeSet.size == 1 && roleTypeSet.contains(RoleType.ROLE_BASIC)) "Unverified"
-            else "Verified"
+            if (roleTypeSet.contains(RoleType.ROLE_COURIER)) "Verified"
+            else "Unverified"
 
         }
         return formatted

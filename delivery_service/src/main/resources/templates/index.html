@@ -2,13 +2,17 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
     <title>Delivery App</title>
     <script th:inline="javascript">
         var frontendData = [[${frontendData}]];
     </script>
 </head>
 <body>
-<h3>Delivery App</h3>
 <div id="app"></div>
 <script th:src="${isDevMode} ? 'http://localhost:8000/main.js' : 'js/main.js'"></script>
 </body>

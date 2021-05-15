@@ -4,6 +4,7 @@ import com.shichko.deliveryservice.controller.mapper.UserMapper;
 import com.shichko.deliveryservice.model.dto.UserDto;
 import com.shichko.deliveryservice.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,11 +27,11 @@ public class AdminController {
     }
 
     @GetMapping("/grant/{userId}")
-    public void confirmUser(@PathVariable("userId") Long userId) {
-        userService.confirmUser(userId);
+    public void confirmUser(@PathVariable("userId") Long userId, @Param("role") String role) {
+        userService.grantUserRole(userId, role);
     }
     @GetMapping("/revoke/{userId}")
-    public void revokeUser(@PathVariable("userId") Long userId) {
-        userService.revokeUser(userId);
+    public void revokeUser(@PathVariable("userId") Long userId, @Param("role") String role) {
+        userService.revokeUserRole(userId, role);
     }
 }

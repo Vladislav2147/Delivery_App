@@ -10,8 +10,10 @@ module.exports = {
         compress: true,
         port: 8000,
         allowedHosts: [
-            'localhost:8080'
-        ]
+            'localhost:9000'
+        ],
+        stats: 'errors-only',
+        clientLogLevel: 'error',
     },
     module: {
         rules: [
@@ -28,6 +30,13 @@ module.exports = {
             {
                 test: /\.vue$/,
                 loader: 'vue-loader'
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    'vue-style-loader',
+                    'css-loader'
+                ]
             }
         ]
     },
@@ -35,6 +44,10 @@ module.exports = {
         new VueLoaderPlugin()
     ],
     resolve: {
+        extensions: [ '.tsx', '.ts', '.js', '.vue' ],
+        alias: {
+            'Vue': 'vue/dist/vue.esm-bundler.js',
+        },
         modules: [
             path.join(__dirname, 'src', 'main', 'resources', 'static', 'js'),
             path.join(__dirname, 'node_modules'),

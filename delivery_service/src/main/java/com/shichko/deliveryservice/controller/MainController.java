@@ -37,8 +37,8 @@ public class MainController {
         return "index.html";
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "login.html";
-    }
+//    @GetMapping("/login")
+//    public String login() {
+//        return "login.html";
+//    }
 }

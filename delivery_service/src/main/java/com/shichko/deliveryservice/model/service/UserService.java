@@ -5,7 +5,6 @@ import com.shichko.deliveryservice.exception.DeliveryServiceException;
 import com.shichko.deliveryservice.model.dto.StatsDto;
 import com.shichko.deliveryservice.model.dto.UserDto;
 import com.shichko.deliveryservice.model.entity.User;
-import com.shichko.deliveryservice.model.repository.OrderRepository;
 import com.shichko.deliveryservice.model.repository.RoleRepository;
 import com.shichko.deliveryservice.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,15 +73,15 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public void confirmUser(Long id) {
+    public void grantUserRole(Long id, String role) {
         userRepository.findById(id).ifPresent(user -> {
-            user.getRoles().add(roleRepository.findFirstByName("ROLE_COURIER"));
+            user.getRoles().add(roleRepository.findFirstByName(role));
             userRepository.save(user);
         });
     }
-    public void revokeUser(Long id) {
+    public void revokeUserRole(Long id, String role) {
         userRepository.findById(id).ifPresent(user -> {
-            user.getRoles().remove(roleRepository.findFirstByName("ROLE_COURIER"));
+            user.getRoles().remove(roleRepository.findFirstByName(role));
             userRepository.save(user);
         });
     }

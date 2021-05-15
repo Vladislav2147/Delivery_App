@@ -1,6 +1,12 @@
 import Vue from 'vue'
 import VueResource from 'vue-resource'
 import App from 'pages/App.vue'
+import UserList from "./components/users/UserList";
+import Login from "./components/login/Login";
+import Vuetify from "vuetify";
+import VueRouter from 'vue-router';
+import 'vuetify/dist/vuetify.min.css'
+
 
 Array.prototype.removeIf = function(callback) {
     var i = this.length;
@@ -11,43 +17,33 @@ Array.prototype.removeIf = function(callback) {
     }
 };
 
+Vue.use(Vuetify)
 Vue.use(VueResource)
+Vue.use(VueRouter)
+
+const router = new VueRouter({
+    routes: [
+        {
+            path: '/',
+            component: UserList
+        },
+        {
+            path: '/login',
+            component: Login
+        },
+    ]
+})
 
 new Vue({
+    router,
+    vuetify: new Vuetify({
+        icons: {
+            iconfont: 'mdi', // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4' || 'faSvg'
+        },
+    }),
     el: '#app',
     render: a => a(App)
 })
 
 const userApi = Vue.resource('/admin');
-/*
 
-
-Vue.component('message-row', {
-    props: ['item'],
-    template: '<div>{{ item.id }} {{ item.message }}</div>'
-});
-
-Vue.component('messages-list', {
-    props: ['messages'],
-    template: '<div><message-row v-for="item in messages" :key="item.id" :item="item"/></div>',
-    created: function () {
-        messageApi.get().then(result => {
-            result.json().then(data => {
-                data.forEach(courier => {
-                    const message = {};
-                    message.id = courier.id;
-                    message.message = courier.firstName + " " + courier.secondName;
-                    this.messages.push(message)
-                })
-            })
-        })
-    }
-});
-
-var app = new Vue({
-    el: '#app',
-    template: '<messages-list :messages="messages" />',
-    data: {
-        messages: []
-    }
-});*/
