@@ -53,10 +53,7 @@
         data() {
             return {
                 headers:  [
-                    {
-                        text: 'ID',
-                        value: 'id',
-                    },
+                    { text: 'ID', value: 'id' },
                     { text: 'First Name', value: 'firstName' },
                     { text: 'Second Name', value: 'secondName' },
                     { text: 'Phone', value: 'phone' },
@@ -68,6 +65,7 @@
                 users: []
             }
         },
+
     }
 </script>
 

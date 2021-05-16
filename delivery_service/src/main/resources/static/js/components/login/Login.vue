@@ -26,12 +26,6 @@
                             required
                     ></v-text-field>
 
-                    <v-checkbox
-                            v-model="checkbox"
-                            label="Remember me"
-                            required
-                    ></v-checkbox>
-
                     <v-btn
                             :disabled="!valid"
                             color="success"
@@ -62,7 +56,6 @@
                 v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
             ],
             select: null,
-            checkbox: false,
         }),
         methods: {
             validate () {
@@ -71,11 +64,21 @@
                 var formData = new FormData();
                 formData.append('username', this.email);
                 formData.append('password', this.password);
-                formData.append('remember-me', this.checkbox);
+                formData.append('remember-me', "true");
 
                 this.$http.post('/login', formData).then(response => {
                     if (response.ok) {
-                        this.$router.push('/')
+
+                        response.json().then(profileJSON => {
+                            if (!profileJSON.roles.find(role => role.name === "ROLE_ADMIN")) {
+                                alert("This app only for admins!")
+                                this.$resource('/logout').get()
+                            } else {
+                                this.$router.push('/')
+                            }
+
+                        })
+
                     }
                 })
             },

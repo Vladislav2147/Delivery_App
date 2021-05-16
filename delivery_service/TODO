@@ -1,12 +1,11 @@
 Заказ постить к существующим продуктам с новым юзером (возможно запилить проверку, мол если существует),
 идеальный пост в постмане
 TODO mail
-TODO SOAP
+TODO SOAP web
 TODO post order unauthorized
-TODO https
-TODO profile stats (procedures)
 
-TODO multiple fragment stack nav bar
 TODO fix login without logout if server was offline user.id unique failed
+
+TODO web registration
 
 У клиента приоритет на состояние заказа и профиль (кроме ролей), у сервера на все остальное

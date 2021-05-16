@@ -3,6 +3,7 @@ import VueResource from 'vue-resource'
 import App from 'pages/App.vue'
 import UserList from "./components/users/UserList";
 import Login from "./components/login/Login";
+import OrderList from "./components/orders/OrderList";
 import Vuetify from "vuetify";
 import VueRouter from 'vue-router';
 import 'vuetify/dist/vuetify.min.css'
@@ -28,10 +29,14 @@ const router = new VueRouter({
             component: UserList
         },
         {
+            path: '/orders',
+            component: OrderList
+        },
+        {
             path: '/login',
             component: Login
         },
-    ]
+    ],
 })
 
 new Vue({
@@ -39,6 +44,16 @@ new Vue({
     vuetify: new Vuetify({
         icons: {
             iconfont: 'mdi', // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4' || 'faSvg'
+        },
+        theme: {
+            themes: {
+                light: {
+                    primary: '#1565C0',
+                    secondary: '#b0bec5',
+                    accent: '#0D47A1',
+                    error: '#b71c1c',
+                },
+            },
         },
     }),
     el: '#app',
