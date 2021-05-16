@@ -107,6 +107,20 @@
                         android:textStyle="bold"
                         android:text="@{`Delivered orders in time: ` + vm.statsLiveData.data.deliveredInTimeCount}"/>
 
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/default_text"
+                        android:textStyle="bold"
+                        android:text="@{`Total delivered price: ` + vm.statsLiveData.data.deliveredTotalPrice}"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/default_text"
+                        android:textStyle="bold"
+                        android:text="@{`Delivered products: ` + vm.statsLiveData.data.deliveredProductsCount}"/>
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <Button

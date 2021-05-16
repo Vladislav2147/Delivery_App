@@ -4,14 +4,18 @@ public class Stats {
     private long courierId;
     private int deliveredOrdersCount;
     private int deliveredInTimeCount;
+    private double deliveredTotalPrice;
+    private int deliveredProductsCount;
 
     public Stats() {
     }
 
-    public Stats(long courierId, int deliveredOrdersCount, int deliveredInTimeCount) {
+    public Stats(long courierId, int deliveredOrdersCount, int deliveredInTimeCount, double deliveredTotalPrice, int deliveredProductsCount) {
         this.courierId = courierId;
         this.deliveredOrdersCount = deliveredOrdersCount;
         this.deliveredInTimeCount = deliveredInTimeCount;
+        this.deliveredTotalPrice = deliveredTotalPrice;
+        this.deliveredProductsCount = deliveredProductsCount;
     }
 
     public long getCourierId() {
@@ -36,5 +40,21 @@ public class Stats {
 
     public void setDeliveredInTimeCount(int deliveredInTimeCount) {
         this.deliveredInTimeCount = deliveredInTimeCount;
+    }
+
+    public double getDeliveredTotalPrice() {
+        return deliveredTotalPrice;
+    }
+
+    public void setDeliveredTotalPrice(double deliveredTotalPrice) {
+        this.deliveredTotalPrice = deliveredTotalPrice;
+    }
+
+    public int getDeliveredProductsCount() {
+        return deliveredProductsCount;
+    }
+
+    public void setDeliveredProductsCount(int deliveredProductsCount) {
+        this.deliveredProductsCount = deliveredProductsCount;
     }
 }
