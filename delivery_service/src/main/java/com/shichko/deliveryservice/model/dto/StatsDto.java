@@ -9,4 +9,6 @@ public class StatsDto {
     private long courierId;
     private int deliveredOrdersCount;
     private int deliveredInTimeCount;
+    private double deliveredTotalPrice;
+    private int deliveredProductsCount;
 }

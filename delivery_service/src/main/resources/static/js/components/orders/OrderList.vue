@@ -7,6 +7,10 @@
             {{ item.customer.firstName + ' ' + item.customer.secondName }}
         </template>
 
+        <template v-slot:[`item.totalPrice`]="{ item }">
+            <b>{{ orderPrice(item) }}</b>
+        </template>
+
         <template v-slot:[`item.customOrdered`]="{ item }">
             <product-list :ordered="item.ordered"></product-list>
         </template>
@@ -41,6 +45,11 @@
                     }
                 })
             },
+            orderPrice(order) {
+                let sum = 0.0;
+                order.ordered.forEach(ordered => sum += ordered.amount * ordered.product.price)
+                return sum
+            }
         },
         data() {
             return {
@@ -50,9 +59,9 @@
                     { text: 'Address', value: 'address' },
                     { text: 'Info', value: 'info' },
                     { text: 'Phone', value: 'customer.phone' },
-                    { text: 'Email', value: 'customer.email' },
                     { text: 'Customer name', value: 'name' },
                     { text: 'Courier ID', value: 'courierId' },
+                    { text: 'Total price', value: 'totalPrice' },
                     { text: 'State', value: 'state' },
                     { text: 'Cancel', value: 'cancel' },
                 ],

@@ -89,8 +89,10 @@ public class UserService implements UserDetailsService {
     public StatsDto getStats(long courierId) {
         int orderCount = getDeliveredOrdersAmount(courierId);
         int inTimeCount = getDeliveredInTimeOrdersAmount(courierId);
+        double totalPrice = getDeliveredTotalPrice(courierId);
+        int productCount = getDeliveredProductsCount(courierId);
 
-        StatsDto stats = new StatsDto(courierId, orderCount, inTimeCount);
+        StatsDto stats = new StatsDto(courierId, orderCount, inTimeCount, totalPrice, productCount);
         return stats;
     }
 
@@ -100,7 +102,8 @@ public class UserService implements UserDetailsService {
         query.registerStoredProcedureParameter("count", Integer.class, ParameterMode.OUT);
         query.setParameter("id", courierId);
         query.execute();
-        return (int)query.getOutputParameterValue("count");
+        Object result = query.getOutputParameterValue("count");
+        return result == null ? 0: (int)result;
     }
 
     private int getDeliveredInTimeOrdersAmount(long courierId) {
@@ -109,6 +112,27 @@ public class UserService implements UserDetailsService {
         query.registerStoredProcedureParameter("count", Integer.class, ParameterMode.OUT);
         query.setParameter("id", courierId);
         query.execute();
-        return (int)query.getOutputParameterValue("count");
+        Object result = query.getOutputParameterValue("count");
+        return result == null ? 0: (int)result;
+    }
+
+    private double getDeliveredTotalPrice(long courierId) {
+        StoredProcedureQuery query = em.createStoredProcedureQuery("[total_delivered_price_by_courier_id]");
+        query.registerStoredProcedureParameter("id", Long.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("total", Double.class, ParameterMode.OUT);
+        query.setParameter("id", courierId);
+        query.execute();
+        Object result = query.getOutputParameterValue("total");
+        return result == null ? 0.0: (double)result;
+    }
+
+    private int getDeliveredProductsCount(long courierId) {
+        StoredProcedureQuery query = em.createStoredProcedureQuery("[total_delivered_product_amount_by_courier_id]");
+        query.registerStoredProcedureParameter("id", Long.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("amount", Integer.class, ParameterMode.OUT);
+        query.setParameter("id", courierId);
+        query.execute();
+        Object result = query.getOutputParameterValue("amount");
+        return result == null ? 0: (int)result;
     }
 }

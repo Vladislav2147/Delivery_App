@@ -10,11 +10,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.persistence.*;
-import java.util.List;
 
 @RestController
 @RequestMapping("profile")
@@ -36,5 +34,10 @@ public class ProfileController {
     public StatsDto getStats() {
         long userId = getCurrentUser().getId();
         return service.getStats(userId);
+    }
+
+    @GetMapping("/stats/{id}")
+    public StatsDto getStats(@PathVariable("id") Long id) {
+        return service.getStats(id);
     }
 }
