@@ -20,7 +20,7 @@
 
         </v-app-bar>
         <v-main>
-            <router-view v-if="profile || this.$route.fullPath === '/login'"></router-view>
+            <router-view v-if="profile || this.$route.fullPath === '/login' || this.$route.fullPath === '/registration'"></router-view>
             <v-container v-else bg fill-height fluid>
                 <v-row align-center justify="center">
                     <v-card

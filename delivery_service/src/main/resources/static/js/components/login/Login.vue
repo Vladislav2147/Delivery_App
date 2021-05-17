@@ -32,7 +32,14 @@
                             class="mr-4"
                             @click="validate"
                     >
-                        Login
+                        Sign In
+                    </v-btn>
+
+                    <v-btn
+                            class="mr-4"
+                            @click="$router.push('registration')"
+                    >
+                        Sign Up
                     </v-btn>
 
                 </v-form>

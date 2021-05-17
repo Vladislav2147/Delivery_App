@@ -7,18 +7,18 @@
         >
             <template v-slot:[`item.role`]="{ item }">{{ item.roles.map(role => role.name).join(", ") }}</template>
             <template v-slot:[`item.courier`]="{ item }">
-                <v-btn x-small @click="verify(item, { id: 1, name: 'ROLE_COURIER'})">
+                <v-btn x-small @click.stop="verify(item, { id: 1, name: 'ROLE_COURIER'})">
                     Grant Courier
                 </v-btn>
-                <v-btn x-small @click="unverify(item, { id: 1, name: 'ROLE_COURIER'})">
+                <v-btn x-small @click.stop="unverify(item, { id: 1, name: 'ROLE_COURIER'})">
                     Revoke Courier
                 </v-btn>
             </template>
             <template v-slot:[`item.admin`]="{ item }">
-                <v-btn x-small @click="verify(item, { id: 2, name: 'ROLE_ADMIN'})">
+                <v-btn x-small @click.stop="verify(item, { id: 2, name: 'ROLE_ADMIN'})">
                     Grant Admin
                 </v-btn>
-                <v-btn x-small @click="unverify(item, { id: 2, name: 'ROLE_ADMIN'})">
+                <v-btn x-small @click.stop="unverify(item, { id: 2, name: 'ROLE_ADMIN'})">
                     Revoke Admin
                 </v-btn>
             </template>
