@@ -1,25 +1,62 @@
 <template>
-    <v-data-table
-            :headers="headers"
-            :items="users">
-        <template v-slot:[`item.role`]="{ item }">{{ item.roles.map(role => role.name).join(", ") }}</template>
-        <template v-slot:[`item.courier`]="{ item }">
-            <v-btn x-small @click="verify(item, { id: 1, name: 'ROLE_COURIER'})">
-                Grant Courier
-            </v-btn>
-            <v-btn x-small @click="unverify(item, { id: 1, name: 'ROLE_COURIER'})">
-                Revoke Courier
-            </v-btn>
-        </template>
-        <template v-slot:[`item.admin`]="{ item }">
-            <v-btn x-small @click="verify(item, { id: 2, name: 'ROLE_ADMIN'})">
-                Grant Admin
-            </v-btn>
-            <v-btn x-small @click="unverify(item, { id: 2, name: 'ROLE_ADMIN'})">
-                Revoke Admin
-            </v-btn>
-        </template>
-    </v-data-table>
+    <div>
+        <v-data-table
+                :headers="headers"
+                :items="users"
+                @click:row="getStats"
+        >
+            <template v-slot:[`item.role`]="{ item }">{{ item.roles.map(role => role.name).join(", ") }}</template>
+            <template v-slot:[`item.courier`]="{ item }">
+                <v-btn x-small @click="verify(item, { id: 1, name: 'ROLE_COURIER'})">
+                    Grant Courier
+                </v-btn>
+                <v-btn x-small @click="unverify(item, { id: 1, name: 'ROLE_COURIER'})">
+                    Revoke Courier
+                </v-btn>
+            </template>
+            <template v-slot:[`item.admin`]="{ item }">
+                <v-btn x-small @click="verify(item, { id: 2, name: 'ROLE_ADMIN'})">
+                    Grant Admin
+                </v-btn>
+                <v-btn x-small @click="unverify(item, { id: 2, name: 'ROLE_ADMIN'})">
+                    Revoke Admin
+                </v-btn>
+            </template>
+        </v-data-table>
+        <v-dialog
+                v-model="dialog"
+                max-width="290"
+        >
+            <v-card>
+                <v-card-title class="headline">
+                    Stats for user #{{currentUserStats.courierId}}
+                </v-card-title>
+
+                <v-card-text>
+                    Delivered orders: {{currentUserStats.deliveredOrdersCount}}
+                    <v-divider/>
+                    Delivered orders in time: {{currentUserStats.deliveredInTimeCount}}
+                    <v-divider/>
+                    Total delivered price: {{currentUserStats.deliveredTotalPrice.toFixed(2)}}
+                    <v-divider/>
+                    Delivered products: {{currentUserStats.deliveredProductsCount}}
+                    <v-divider/>
+                </v-card-text>
+
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+
+                    <v-btn
+                            color="green darken-1"
+                            text
+                            @click="dialog = false"
+                    >
+                        Ok
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+    </div>
 </template>
 
 <script>
@@ -48,6 +85,16 @@
                         user.roles.removeIf(currentRole => currentRole.name === role.name)
                     }
                 })
+            },
+            getStats(user) {
+                this.$resource('/profile/stats/' + user.id).get().then(result => {
+                    if (result.ok) {
+                        result.json().then(userStatsJSON => this.currentUserStats = userStatsJSON)
+                        this.dialog = true;
+                    }
+                })
+
+
             }
         },
         data() {
@@ -62,7 +109,15 @@
                     { text: '', value: 'courier' },
                     { text: '', value: 'admin' },
                 ],
-                users: []
+                users: [],
+                dialog: false,
+                currentUserStats: {
+                    courierId: 0,
+                    deliveredOrdersCount: 0,
+                    deliveredInTimeCount: 0,
+                    deliveredTotalPrice: 0.0,
+                    deliveredProductsCount: 0
+                },
             }
         },
 
