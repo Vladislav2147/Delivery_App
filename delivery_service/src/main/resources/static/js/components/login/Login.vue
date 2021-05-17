@@ -23,6 +23,11 @@
                             v-model="password"
                             :rules="passwordRules"
                             label="Password"
+                            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                            :type="show1 ? 'text' : 'password'"
+                            name="input-10-1"
+                            counter
+                            @click:append="show1 = !show1"
                             required
                     ></v-text-field>
 
@@ -51,6 +56,7 @@
 <script>
     export default {
         data: () => ({
+            show1: false,
             valid: true,
             password: '',
             passwordRules: [

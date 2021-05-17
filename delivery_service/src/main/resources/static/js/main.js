@@ -6,7 +6,9 @@ import Login from "./components/login/Login";
 import OrderList from "./components/orders/OrderList";
 import Vuetify from "vuetify";
 import VueRouter from 'vue-router';
+import VueMask from 'v-mask'
 import 'vuetify/dist/vuetify.min.css'
+
 import Registration from "./components/login/Registration";
 
 
@@ -19,6 +21,8 @@ Array.prototype.removeIf = function(callback) {
     }
 };
 
+
+Vue.use(VueMask);
 Vue.use(Vuetify)
 Vue.use(VueResource)
 Vue.use(VueRouter)
