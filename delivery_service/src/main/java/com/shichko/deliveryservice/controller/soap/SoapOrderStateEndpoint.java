@@ -28,7 +28,8 @@ public class SoapOrderStateEndpoint {
             OrderState state = new OrderState();
             state.setId(order.getId());
             state.setAddress(order.getAddress());
-            state.setCourier(order.getCourier().getFirstName() + " " + order.getCourier().getSecondName());
+            String courierName = order.getCourier() != null ? order.getCourier().getFirstName() + " " + order.getCourier().getSecondName() + " " + order.getCourier().getPhone() : "-";
+            state.setCourier(courierName);
             state.setState(order.getState().name());
             response.setOrderState(state);
         });

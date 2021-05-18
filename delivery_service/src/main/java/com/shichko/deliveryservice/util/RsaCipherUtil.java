@@ -20,7 +20,7 @@ public class RsaCipherUtil {
 
     }
 
-    public static String encrypt(int num) {
+    public static String encrypt(long num) {
         BigInteger bigNum = BigInteger.valueOf(num);
         BigInteger c = bigNum.modPow(BigInteger.valueOf(e), BigInteger.valueOf(n));
         return c.multiply(BigInteger.valueOf(a)).toString(16);

@@ -13,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,15 +24,9 @@ public class OrderController extends CommonController<Order, OrderDto, OrderRepo
     @Autowired
     private UserService userService;
 
+
     public OrderController(OrderService service, OrderMapper mapper) {
         super(service, mapper);
-    }
-
-    @Override
-    @PostMapping
-    public void save(@Valid OrderDto dto) {
-        //TODO notify client by email and generate soap endpoint
-        super.save(dto);
     }
 
     @PutMapping("/updateState")
