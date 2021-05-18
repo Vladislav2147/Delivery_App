@@ -1,6 +1,7 @@
 package com.shichko.deliveryservice.controller.soap;
 
 import com.shichko.deliveryservice.model.service.OrderService;
+import com.shichko.deliveryservice.util.RsaCipherUtil;
 import https.github_com.vladislav2147.delivery_app.GetOrderStateRequest;
 import https.github_com.vladislav2147.delivery_app.GetOrderStateResponse;
 import https.github_com.vladislav2147.delivery_app.OrderState;
@@ -22,7 +23,8 @@ public class SoapOrderStateEndpoint {
     @ResponsePayload
     public GetOrderStateResponse getOrderState(@RequestPayload GetOrderStateRequest request) {
         GetOrderStateResponse response = new GetOrderStateResponse();
-        service.findById(Long.parseLong(request.getId())).ifPresent(order -> {
+        int id = RsaCipherUtil.decrypt(request.getId());
+        service.findById(id).ifPresent(order -> {
             OrderState state = new OrderState();
             state.setId(order.getId());
             state.setAddress(order.getAddress());

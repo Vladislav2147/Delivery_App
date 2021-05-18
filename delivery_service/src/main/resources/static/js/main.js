@@ -10,6 +10,7 @@ import VueMask from 'v-mask'
 import 'vuetify/dist/vuetify.min.css'
 
 import Registration from "./components/login/Registration";
+import OrderState from "./components/state/OrderState";
 
 
 Array.prototype.removeIf = function(callback) {
@@ -45,6 +46,10 @@ const router = new VueRouter({
             path: '/registration',
             component: Registration
         },
+        {
+            path: '/orderstate',
+            component: OrderState
+        }
     ],
 })
 
