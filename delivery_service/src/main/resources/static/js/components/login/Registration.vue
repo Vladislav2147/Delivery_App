@@ -124,7 +124,7 @@
 
             nameRules: [
                 v => !!v || 'Name is Required',
-                v => v.length >= 1 && v.length <= 50 || 'Name must have length between 1 and 50',
+                v => v.length >= 2 && v.length <= 50 || 'Name must have length between 1 and 50',
             ],
 
             phone: '',

@@ -11,6 +11,7 @@ import 'vuetify/dist/vuetify.min.css'
 
 import Registration from "./components/login/Registration";
 import OrderState from "./components/state/OrderState";
+import ShopCart from "./components/shopcart/ShopCart";
 
 
 Array.prototype.removeIf = function(callback) {
@@ -49,6 +50,10 @@ const router = new VueRouter({
         {
             path: '/orderstate',
             component: OrderState
+        },
+        {
+            path: '/shopcart',
+            component: ShopCart
         }
     ],
 })

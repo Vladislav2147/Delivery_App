@@ -153,6 +153,10 @@ object UserService {
                             val stats = mapper.dtoToEntity(response.body())
                             statsLiveData.postValue(Event.success(stats))
                         }
+                        //Возвращается сервером, если пользователь не имеет прав
+                        403 -> {
+                            throw CourierNetworkException("Your account is not verified")
+                        }
                         else -> {
                             throw CourierNetworkException("Network Troubles")
                         }

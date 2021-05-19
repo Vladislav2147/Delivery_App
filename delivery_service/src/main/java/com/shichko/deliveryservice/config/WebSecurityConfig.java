@@ -8,6 +8,7 @@ import com.shichko.deliveryservice.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -39,26 +40,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        //Valid config
         httpSecurity
                 .csrf()
                 .disable()
                 .cors()
                 .disable()
                 .authorizeRequests()
-                //Доступ только для не зарегистрированных пользователей
                 .antMatchers("/registration").not().fullyAuthenticated()
-                .antMatchers("/profile").hasRole("BASIC")
-                //Доступ только для пользователей с ролью Администратор
+                .antMatchers("/profile/**").hasRole("BASIC")
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/order/**").hasRole("COURIER")
-                .antMatchers("/order/**").hasRole("ADMIN")
-                //Доступ разрешен всем пользователей
+                .antMatchers(HttpMethod.POST, "/order/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/order").hasRole("ADMIN")
+                .antMatchers( "/order/updateState").hasAnyRole("ADMIN", "COURIER")
+                .antMatchers(HttpMethod.GET, "/order/**").hasRole("COURIER")
                 .antMatchers("/", "/login", "/resources/**", "/js/**", "/ws/**").permitAll()
-                //Все остальные страницы требуют аутентификации
                 .anyRequest().hasRole("ADMIN")
                 .and()
-                //Настройка для входа в систему
                 .formLogin()
                 .loginPage("/login")
                 .successHandler((request, response, exception) -> {
@@ -81,37 +78,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/")
                 .and()
                 .rememberMe().key("DeliveryServiceSecretKey");
-        //Test
-//        httpSecurity
-//                .csrf()
-//                .disable()
-//                .authorizeRequests()
-//                .antMatchers("/**").permitAll()
-//                .and()
-//                .formLogin()
-//                .loginPage("/login")
-//                .failureHandler(new AuthenticationFailureHandler() {
-//
-//                    @Override
-//                    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-//                                                        AuthenticationException exception) throws IOException, ServletException {
-//                        String email = request.getParameter("email");
-//                        String error = exception.getMessage();
-//                        System.out.println("A failed login attempt with email: "
-//                                + email + ". Reason: " + error);
-//
-//                        String redirectUrl = request.getContextPath() + "/login?error=true";
-//                        response.sendRedirect(redirectUrl);
-//                    }
-//                })
-//                //Перенарпавление на главную страницу после успешного входа
-//                .defaultSuccessUrl("/")
-//                .permitAll()
-//                .and()
-//                .logout()
-//                .permitAll()
-//                .logoutSuccessUrl("/");
-
     }
 
     @Autowired

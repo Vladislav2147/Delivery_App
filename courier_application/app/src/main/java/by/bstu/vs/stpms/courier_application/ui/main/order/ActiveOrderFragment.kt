@@ -94,7 +94,7 @@ class ActiveOrderFragment : Fragment() {
         activeOrderViewModel.ordersLiveData.observe(viewLifecycleOwner, {
             when (it.status) {
                 Status.ERROR -> {
-                    Toast.makeText(context, "error " + it.t?.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Error: " + it.t?.message, Toast.LENGTH_SHORT).show()
                     refresh.isRefreshing = false
                     recyclerView.visibility = View.VISIBLE
                 }

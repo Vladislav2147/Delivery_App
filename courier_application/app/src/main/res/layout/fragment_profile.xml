@@ -112,7 +112,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/default_text"
                         android:textStyle="bold"
-                        android:text="@{`Total delivered price: ` + vm.statsLiveData.data.deliveredTotalPrice}"/>
+                        android:text="@{`Total delivered price: ` + String.format(`%.2f`, vm.statsLiveData.data.deliveredTotalPrice)}"/>
 
                     <com.google.android.material.textview.MaterialTextView
                         android:layout_width="match_parent"

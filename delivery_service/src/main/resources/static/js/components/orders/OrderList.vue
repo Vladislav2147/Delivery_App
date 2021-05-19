@@ -16,8 +16,14 @@
         </template>
 
         <template v-slot:[`item.cancel`]="{ item }">
-            <v-btn x-small @click="cancel(item)">
-                Cancel order
+            <v-btn x-small @click="setState(item, 'Canceled')">
+                Set Cancelled
+            </v-btn>
+        </template>
+
+        <template v-slot:[`item.ordered`]="{ item }">
+            <v-btn x-small @click="setState(item, 'Ordered')">
+                Set Ordered
             </v-btn>
         </template>
 
@@ -36,12 +42,15 @@
             })
         },
         methods: {
-            cancel(order) {
+            setState(order, newState) {
                 this.$http.put(
-                    '/order/updateState/?id=' + order.id + '&state=Canceled'
+                    '/order/updateState/?id=' + order.id + '&state=' + newState
                 ).then(result => {
                     if (result.ok) {
-                        order.state = 'Canceled'
+                        order.state = newState
+                        if (newState == 'Canceled') {
+                            order.courierId = null
+                        }
                     }
                 })
             },
@@ -64,6 +73,7 @@
                     { text: 'Total price', value: 'totalPrice' },
                     { text: 'State', value: 'state' },
                     { text: 'Cancel', value: 'cancel' },
+                    { text: 'Order', value: 'ordered' },
                 ],
                 orders: []
             }

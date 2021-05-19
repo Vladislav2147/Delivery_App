@@ -75,7 +75,7 @@ class AvailableDetailsFragment : Fragment() {
         viewModel.responseLiveData.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.ERROR -> {
-                    Toast.makeText(context, "Error " + it.t?.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Error: " + it.t?.message, Toast.LENGTH_SHORT).show()
                     recyclerView.visibility = View.VISIBLE
                 }
                 Status.SUCCESS -> {
