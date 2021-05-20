@@ -73,10 +73,19 @@ object OrderService {
                                 CoroutineScope(Dispatchers.IO).launch {
                                     val mapper = Mappers.getMapper(OrderMapper::class.java)
                                     val orders = mapper.dtosToEntities(response.body())
+
+                                    val orderIdList = db.orderDao.getAll().map { order -> order.id }
+
                                     //Обновление локальной базы данных
                                     //Очистка записей связанных с заказами
                                     db.orderedDao.truncate()
                                     db.orderDao.truncate()
+
+                                    //Помечаем записи об удаленных заказах, как актуальные
+                                    orderIdList.forEach {
+                                        db.changeDao.setUpToDate("orders", it)
+                                    }
+
                                     //Вставка актуальной информации о активных заказах в локальную бд
                                     for (order in orders) {
                                         insertOrderWithReplaceToLocalDb(order)
@@ -209,7 +218,7 @@ object OrderService {
     //Метод вызывается при появлении соединения для отправки информации о заказах, от которых курьер отказался
     suspend fun sendDecline() {
         //Получаем список ID заказов, которые были удалены из таблицы заказов во время оффлайн использования
-        val declinedOrdersIdList = db.changeDao.findAllByTableAndOperation("orders", "delete").map { it.itemId }
+        val declinedOrdersIdList = db.changeDao.findAllByTableAndOperation("orders", "delete").filter { change -> !change.isUpToDate }.map { it.itemId }
         Log.d(TAG, "sendDecline: declined in offline - $declinedOrdersIdList")
         for (id in declinedOrdersIdList) {
             //Отправляем соответствующий отмене заказа запрос на сервер
