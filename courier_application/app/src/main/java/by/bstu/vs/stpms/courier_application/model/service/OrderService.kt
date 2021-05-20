@@ -257,7 +257,7 @@ object OrderService {
         Log.d("OrderService", "customer")
         db.productDao.insertAll(order.ordered.map { it.product })
         Log.d("OrderService", "products $order")
-        db.orderDao.insert(order)
+        db.orderDao.insertWithReplace(order)
         Log.d("OrderService", "order")
         db.orderedDao.insertAll(order.ordered.toList())
         Log.d("OrderService", "ordered")

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">courier_application</string>
+    <string name="app_name">Courier App</string>
     <string name="title_available_orders">Available orders</string>
     <string name="title_profile">Profile</string>
     <string name="title_details">Details</string>
